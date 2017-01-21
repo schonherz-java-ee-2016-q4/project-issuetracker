@@ -33,3 +33,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/issue-tracker-parent/issue-tracker-web/.tern-project
