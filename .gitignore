@@ -1,12 +1,35 @@
-*.class
+/target
+/bin
+/logs
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# IDEA-specific
+*.iml
+/.idea
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# Eclipse-specific
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.project
+.externalToolBuilders/
+*.launch
+.classpath
+.factorypath
+.buildpath
+.springBeans
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Netbeans-specific
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
