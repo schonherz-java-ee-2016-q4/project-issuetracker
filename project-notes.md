@@ -24,7 +24,7 @@
 
 - author (`User`): ki üzent
 - date: mikor hozták létre az üzenetet
-- content (Lob, ˙`String`): komment tartalma
+- content (Lob, `String`): komment tartalma
 
 **Event**:
 
@@ -37,6 +37,12 @@
  - `CLOSED`
  - `COMMENTED`
 - content (`Comment`): ha activity `COMMENTED`, akkor az értéke az a `Comment` lesz, amit létrehoztak, egyéb esetben null (reméljük jpa kezeli)
+
+**TicketOrder**: ez az osztály fogja reprezentálni a ticket-ek sorrendjét
+
+- ticket (`Ticket`): melyik ticketről beszélünk
+- no: helye a sorrendben
+
 
 User: meg fogjuk kapni az adminisztráciciós modultól maven dependencyként
 (core-ba majd függőségként felvenni az adaminisztrációs modul core-ját)
