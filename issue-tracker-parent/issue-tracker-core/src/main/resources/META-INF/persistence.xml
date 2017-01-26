@@ -6,9 +6,9 @@
     <persistence-unit name="hu.schonherz.javatraining.jpa" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>java:jboss/datasources/Issuetracker</jta-data-source>
-        <class>hu.schonherz.java.entities.BaseEntity</class>
-        <class>hu.schonherz.java.entities.Role</class>
-        <class>hu.schonherz.java.entities.User</class>
+        <class>hu.schonherz.javatraining.issuetracker.core.entities.BaseEntity</class>
+        <class>hu.schonherz.javatraining.issuetracker.core.entities.RoleEntity</class>
+        <class>hu.schonherz.javatraining.issuetracker.core.entities.UserEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

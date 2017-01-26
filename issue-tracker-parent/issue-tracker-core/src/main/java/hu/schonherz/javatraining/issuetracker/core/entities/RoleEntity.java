@@ -1,17 +1,19 @@
-package hu.schonherz.java.entities;
+package hu.schonherz.javatraining.issuetracker.core.entities;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-public class Role extends BaseEntity implements Serializable {
+@Table(name = "role")
+public class RoleEntity extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
 
-	public Role() {
+	public RoleEntity() {
 		super();
 	}
 

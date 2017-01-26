@@ -1,13 +1,15 @@
-package hu.schonherz.java.entities;
+package hu.schonherz.javatraining.issuetracker.core.entities;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
-public class User extends BaseEntity implements Serializable {
+@Table(name = "user")
+public class UserEntity extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -15,9 +17,9 @@ public class User extends BaseEntity implements Serializable {
 	private String password;
 	
 	@ManyToMany
-	private List<Role> roles;
+	private List<RoleEntity> roles;
 	
-	public User() {
+	public UserEntity() {
 		super();
 	}
 	
@@ -37,11 +39,11 @@ public class User extends BaseEntity implements Serializable {
 		this.password = password;
 	}
 
-	public List<Role> getRoles() {
+	public List<RoleEntity> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
 	

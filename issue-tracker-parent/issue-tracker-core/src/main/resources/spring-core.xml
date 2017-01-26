@@ -16,9 +16,9 @@
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-    <context:component-scan base-package="hu.schonherz.javatraining.issuetracker"/>
+    <context:component-scan base-package="hu.schonherz.javatraining.issuetracker.core"/>
 
-    <jpa:repositories base-package="hu.schonherz.javatraining.issuetracker.repository"
+    <jpa:repositories base-package="hu.schonherz.javatraining.issuetracker.core.dao"
                       repository-impl-postfix="Impl"/>
 
     <bean
