@@ -5,19 +5,16 @@
 - id
 
 **Ticket**:
-
+- Táblában (szűrés, rendezéssel, esetleges global szűrés, my ticket szűrés) 
+- id : normális ticket azonosító (pl. : UCD-001) 
 - title: hiba megnevezése
 - description: hiba leírása
-- type: hiba típusa
+- type: (entity) hiba típusa
 - clientMail: ügyfél emailcíme
-- state: (még nem tudjuk hogy enumeráció, vagy sima string), lehetséges értékek:
- - `OPEN`
- - `IN_PROGRESS`
- - `COMPLETED`
- - `CLOSED` (ha nem complete, akkor ide kerül)
+- state:(entity) (még nem tudjuk hogy enumeráció, vagy sima string), lehetséges értékek , külön joggal szerkeszthető (szerkeszthető/nem szerkeszthető)
 - comments (`List<Comment>`): ticket-hez tartozó kommentek
 - history (`List<Event>`): változások a ticket-en
-- bindedTo (`List<User>`): azok az ügynökök kik láthatják, módosíthatják ezt a ticket-el
+- bindedTo (`User`): azok az ügynökök kik láthatják, módosíthatják ezt a ticket-el
 - company (`Company`): melyik céghez köthető ez a ticket (ez alapján fogjuk tudni kilistázni a cég adminisztrátorának a hozzájuk köthető ticket-eket)
 
 **Comment**:
@@ -47,4 +44,7 @@
 User: meg fogjuk kapni az adminisztráciciós modultól maven dependencyként
 (core-ba majd függőségként felvenni az adaminisztrációs modul core-ját)
 
-
+**Reportok**: (tortadiagram)
+- Személyes
+- Manager (team tagok szerinti felosztásban)
+- nyitott/zárt ticketek megjelnítése vonaldiagrammal 
