@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:jee="http://www.springframework.org/schema/jee"
-       xsi:schemaLocation="
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xsi:schemaLocation="
         http://www.springframework.org/schema/jee
         http://www.springframework.org/schema/jee/spring-jee.xsd
         http://www.springframework.org/schema/beans
@@ -16,28 +17,29 @@
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-    <context:component-scan base-package="hu.schonherz.javatraining.issuetracker.core"/>
+    <context:component-scan
+        base-package="hu.schonherz.javatraining.issuetracker.core" />
 
     <jpa:repositories base-package="hu.schonherz.javatraining.issuetracker.core.dao"
-                      repository-impl-postfix="Impl"/>
+        repository-impl-postfix="Impl" />
 
     <bean
-            class="org.springframework.data.jpa.repository.support.DefaultJpaContext">
+        class="org.springframework.data.jpa.repository.support.DefaultJpaContext">
         <constructor-arg>
             <set>
-                <ref bean="entityManager"/>
+                <ref bean="entityManager" />
             </set>
         </constructor-arg>
     </bean>
 
 
     <jee:jndi-lookup jndi-name="java:/EntityManager" id="entityManager"
-                     expected-type="javax.persistence.EntityManager"/>
+        expected-type="javax.persistence.EntityManager" />
 
     <jee:jndi-lookup jndi-name="java:/EntityManagerFactory"
-                     id="entityManagerFactory" expected-type="javax.persistence.EntityManagerFactory"/>
+        id="entityManagerFactory" expected-type="javax.persistence.EntityManagerFactory" />
 
-    <tx:jta-transaction-manager/>
+    <tx:jta-transaction-manager />
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

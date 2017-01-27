@@ -4,4 +4,5 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 
 public interface RoleService {
 	RoleVo findByName(String name);
+	void save(RoleVo role);
 }

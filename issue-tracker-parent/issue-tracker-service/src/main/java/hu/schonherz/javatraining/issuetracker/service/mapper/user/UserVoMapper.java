@@ -23,6 +23,7 @@ public class UserVoMapper {
 		if (userVO == null) {
 			return null;
 		}
+		
 		return mapper.map(userVO, UserEntity.class);
 	}
 

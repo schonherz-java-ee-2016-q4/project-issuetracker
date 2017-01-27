@@ -30,7 +30,13 @@ public class RoleServiceBean implements RoleServiceLocal, RoleServiceRemote {
 	@Override
 	public RoleVo findByName(String name) {
 		RoleEntity findByName = roleDao.findByName(name);
+		System.out.println(name + " - " + findByName);
 		return RoleVoMapper.toVo(findByName);
+	}
+
+	@Override
+	public void save(RoleVo role) {
+		roleDao.save(RoleVoMapper.toEntity(role));
 	}
 
 }
