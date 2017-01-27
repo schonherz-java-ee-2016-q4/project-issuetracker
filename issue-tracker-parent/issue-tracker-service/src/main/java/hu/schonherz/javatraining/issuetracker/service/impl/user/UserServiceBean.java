@@ -34,8 +34,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	}
 
 	@Override
-	public void save(UserVo user) {
-		userDao.save(UserVoMapper.toEntity(user));
+	public UserVo save(UserVo user) {
+		return UserVoMapper.toVo(userDao.save(UserVoMapper.toEntity(user)));
 	}
 
 }

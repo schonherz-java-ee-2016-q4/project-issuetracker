@@ -3,7 +3,6 @@ package hu.schonherz.javatraining.issuetracker.core.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -17,7 +16,7 @@ public class UserEntity extends BaseEntity implements Serializable {
 	private String username;
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	private List<RoleEntity> roles;
 	
 	public UserEntity() {

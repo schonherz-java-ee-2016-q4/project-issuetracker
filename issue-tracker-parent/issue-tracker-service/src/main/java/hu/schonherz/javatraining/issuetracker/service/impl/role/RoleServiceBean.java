@@ -35,8 +35,8 @@ public class RoleServiceBean implements RoleServiceLocal, RoleServiceRemote {
 	}
 
 	@Override
-	public void save(RoleVo role) {
-		roleDao.save(RoleVoMapper.toEntity(role));
+	public RoleVo save(RoleVo role) {
+		return RoleVoMapper.toVo(roleDao.save(RoleVoMapper.toEntity(role)));
 	}
 
 }

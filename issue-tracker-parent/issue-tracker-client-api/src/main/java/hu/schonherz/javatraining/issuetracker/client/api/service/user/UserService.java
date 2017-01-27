@@ -4,5 +4,5 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
 public interface UserService {
 	UserVo findByUsername(String username);
-	void save(UserVo user);
+	UserVo save(UserVo user);
 }
