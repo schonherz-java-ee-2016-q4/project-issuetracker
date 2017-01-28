@@ -1,29 +1,41 @@
 package hu.schonherz.javatraining.issuetracker.core.entities;
 
 
-import lombok.Data;
-import org.springframework.data.annotation.Version;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 
 @Entity
 @Table(name = "comment")
-public @Data class CommentEntity extends BaseEntity implements Serializable {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CommentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Integer recUserId;
     private Integer modUserId;
-    private Date recDate;
-    @Version private Date modDate;
     private String commentText;
 
-    public CommentEntity() {
-        super();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date recDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modDate;
+
+    @PrePersist
+    public void prePersist() {
         recDate = new Date();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modDate = new Date();
     }
 }
