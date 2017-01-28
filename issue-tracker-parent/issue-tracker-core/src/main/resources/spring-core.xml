@@ -33,10 +33,10 @@
     </bean>
 
 
-    <jee:jndi-lookup jndi-name="java:/EntityManager" id="entityManager"
+    <jee:jndi-lookup jndi-name="java:/IssueTrackerEntityManager" id="entityManager"
         expected-type="javax.persistence.EntityManager" />
 
-    <jee:jndi-lookup jndi-name="java:/EntityManagerFactory"
+    <jee:jndi-lookup jndi-name="java:/IssueTrackerEntityManagerFactory"
         id="entityManagerFactory" expected-type="javax.persistence.EntityManagerFactory" />
 
     <tx:jta-transaction-manager />

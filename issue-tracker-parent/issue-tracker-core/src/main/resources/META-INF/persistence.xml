@@ -19,8 +19,8 @@
             <property name="hibernate.default_schema" value="public" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="jboss.entity.manager.jndi.name" value="java:/EntityManager" />
-            <property name="jboss.entity.manager.factory.jndi.name" value="java:/EntityManagerFactory" />
+            <property name="jboss.entity.manager.jndi.name" value="java:/IssueTrackerEntityManager" />
+            <property name="jboss.entity.manager.factory.jndi.name" value="java:/IssueTrackerEntityManagerFactory" />
         </properties>
 
     </persistence-unit>
