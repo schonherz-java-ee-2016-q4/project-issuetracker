@@ -10,6 +10,8 @@
         <class>hu.schonherz.javatraining.issuetracker.core.entities.BaseEntity</class>
         <class>hu.schonherz.javatraining.issuetracker.core.entities.RoleEntity</class>
         <class>hu.schonherz.javatraining.issuetracker.core.entities.UserEntity</class>
+        <class>hu.schonherz.javatraining.issuetracker.core.entities.CommentEntity</class>
+
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
