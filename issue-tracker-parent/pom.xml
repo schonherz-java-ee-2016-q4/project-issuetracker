@@ -32,7 +32,14 @@
     </repositories>
 
     <dependencyManagement>
+
         <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.12</version>
+            </dependency>
+
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
