@@ -7,8 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "user")
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserEntity extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,34 +29,5 @@ public class UserEntity extends BaseEntity implements Serializable {
 	
 	@ManyToMany
 	private List<RoleEntity> roles;
-	
-	public UserEntity() {
-		super();
-	}
-	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
-	public List<RoleEntity> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<RoleEntity> roles) {
-		this.roles = roles;
-	}
-	
-	
 }
