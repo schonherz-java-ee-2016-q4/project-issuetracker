@@ -11,6 +11,7 @@
         <class>hu.schonherz.javatraining.issuetracker.core.entities.RoleEntity</class>
         <class>hu.schonherz.javatraining.issuetracker.core.entities.UserEntity</class>
         <class>hu.schonherz.javatraining.issuetracker.core.entities.CommentEntity</class>
+        <class>hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity</class>
 
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>

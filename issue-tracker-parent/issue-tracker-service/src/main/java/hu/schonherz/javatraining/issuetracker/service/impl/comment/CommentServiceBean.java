@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import javax.ejb.*;
 import javax.interceptor.Interceptors;
 
-@Stateless(mappedName = "CommentService")
+@Stateless(mappedName = "CompanyService")
 @Local(CommentServiceLocal.class)
 @Remote(CommentServiceRemote.class)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
