@@ -19,15 +19,9 @@ public class CompanyEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer recUserId;
-    private Integer modUserId;
+
     private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date recDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modDate;
 
     @PrePersist
     public void prePersist() {
