@@ -20,8 +20,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.TypeDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.company.CompanyVoMapper;
-import hu.schonherz.javatraining.issuetracker.service.mapper.type.TypeVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "TypeService")
 @Local(TypeServiceLocal.class)
@@ -35,17 +34,17 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 
 	@Override
 	public TypeVo findById(Long id) {
-		return TypeVoMapper.toVo(typeDao.findById(id));
+		return GenericVoMappers.typeVoMapper.toVo(typeDao.findById(id));
 	}
 
 	@Override
 	public TypeVo findByName(String name) {
-        return TypeVoMapper.toVo(typeDao.findByName(name));
+        return GenericVoMappers.typeVoMapper.toVo(typeDao.findByName(name));
 	}
 
 	@Override
 	public List<TypeVo> findByCompany(CompanyVo company) {
-		return TypeVoMapper.toVo(typeDao.findByCompany(CompanyVoMapper.toEntity(company)));
+		return GenericVoMappers.typeVoMapper.toVo(typeDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 		UserEntity user = (UserEntity) auth.getPrincipal();
 		type.setRecUserId(user.getId());
 
-		return TypeVoMapper.toVo(typeDao.save(TypeVoMapper.toEntity(type)));
+		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 		UserEntity user = (UserEntity) auth.getPrincipal();
 		type.setModUserId(user.getId());
 
-		return TypeVoMapper.toVo(typeDao.save(TypeVoMapper.toEntity(type)));
+		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
 	}
 
 }

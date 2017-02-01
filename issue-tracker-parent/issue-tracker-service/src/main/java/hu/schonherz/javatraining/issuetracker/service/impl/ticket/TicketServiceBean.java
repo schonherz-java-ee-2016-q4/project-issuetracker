@@ -20,8 +20,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.TicketDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.ticket.TicketVoMapper;
-import hu.schonherz.javatraining.issuetracker.service.mapper.user.UserVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "TicketService")
 @Local(TicketServiceLocal.class)
@@ -35,17 +34,17 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	
 	@Override
 	public TicketVo findById(Long id) {
-		return TicketVoMapper.toVo(ticketDao.findById(id));
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findById(id));
 	}
 
 	@Override
 	public TicketVo findByUid(String uid) {
-		return TicketVoMapper.toVo(ticketDao.findByUid(uid));
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByUid(uid));
 	}
 
 	@Override
 	public List<TicketVo> findByUser(UserVo user) {
-		return TicketVoMapper.toVo(ticketDao.findByUser(UserVoMapper.toEntity(user)));
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByUser(GenericVoMappers.userVoMapper.toEntity(user)));
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		UserEntity user = (UserEntity) auth.getPrincipal();
 		ticket.setRecUserId(user.getId());
 
-		return TicketVoMapper.toVo(ticketDao.save(TicketVoMapper.toEntity(ticket)));
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		UserEntity user = (UserEntity) auth.getPrincipal();
 		ticket.setModUserId(user.getId());
 
-		return TicketVoMapper.toVo(ticketDao.save(TicketVoMapper.toEntity(ticket)));
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
 	}
 
 }

@@ -20,8 +20,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.HistoryDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.history.HistoryVoMapper;
-import hu.schonherz.javatraining.issuetracker.service.mapper.ticket.TicketVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "HistoryService")
 @Local(HistoryServiceLocal.class)
@@ -35,12 +34,12 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 	
 	@Override
 	public HistoryVo findById(Long id) {
-		return HistoryVoMapper.toVo(historyDao.findById(id));
+		return GenericVoMappers.historyVoMapper.toVo(historyDao.findById(id));
 	}
 
 	@Override
 	public List<HistoryVo> findByTicket(TicketVo ticket) {
-		return HistoryVoMapper.toVo(historyDao.findByTicket(TicketVoMapper.toEntity(ticket)));
+		return GenericVoMappers.historyVoMapper.toVo(historyDao.findByTicket(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 		UserEntity user = (UserEntity) auth.getPrincipal();
 		history.setRecUserId(user.getId());
 
-		return HistoryVoMapper.toVo(historyDao.save(HistoryVoMapper.toEntity(history)));
+		return GenericVoMappers.historyVoMapper.toVo(historyDao.save(GenericVoMappers.historyVoMapper.toEntity(history)));
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 		UserEntity user = (UserEntity) auth.getPrincipal();
 		history.setModUserId(user.getId());
 
-		return HistoryVoMapper.toVo(historyDao.save(HistoryVoMapper.toEntity(history)));
+		return GenericVoMappers.historyVoMapper.toVo(historyDao.save(GenericVoMappers.historyVoMapper.toEntity(history)));
 	}
 
 }
