@@ -1,11 +1,11 @@
 package hu.schonherz.javatraining.issuetracker.core.dao;
 
-import hu.schonherz.javatraining.issuetracker.core.entities.CommentEntity;
-import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
 
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)

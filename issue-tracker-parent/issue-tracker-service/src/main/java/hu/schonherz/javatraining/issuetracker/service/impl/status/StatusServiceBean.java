@@ -18,7 +18,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.StatusDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.StatusEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.comment.CommentVoMapper;
 import hu.schonherz.javatraining.issuetracker.service.mapper.status.StatusVoMapper;
 
 @Stateless(mappedName = "StatusService")
