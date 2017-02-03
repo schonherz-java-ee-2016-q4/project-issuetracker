@@ -16,6 +16,12 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.github.schonherz-java-ee-2016-q4</groupId>
+            <artifactId>project</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>hu.schonherz.javatraining</groupId>
             <artifactId>issue-tracker-client-api</artifactId>
