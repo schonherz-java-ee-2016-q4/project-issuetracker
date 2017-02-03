@@ -82,7 +82,7 @@
         <omnifaces.version>1.4.1</omnifaces.version>
         <prettyfaces.version>3.4.1.Final</prettyfaces.version>
         <spring.version>4.3.2.RELEASE</spring.version>
-        <spring.security.version>4.2.1.RELEASE</spring.security.version>
+        <spring.security.version>4.0.1.RELEASE</spring.security.version>
         <spring.data.version>1.10.2.RELEASE</spring.data.version>
         <spring.webflow.version>2.4.0.RELEASE</spring.webflow.version>
         <hibernate.version>5.2.6.Final</hibernate.version>
