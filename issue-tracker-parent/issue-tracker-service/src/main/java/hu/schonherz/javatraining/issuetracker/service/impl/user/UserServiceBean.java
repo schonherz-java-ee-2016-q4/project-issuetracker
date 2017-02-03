@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
@@ -15,6 +16,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServic
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.UserDao;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
+
 
 @Stateless(mappedName = "UserService")
 @Local(UserServiceLocal.class)
