@@ -92,7 +92,7 @@
         <dozer.version>5.5.1</dozer.version>
         <dozer.jdk8.support.version>1.0.2</dozer.jdk8.support.version>
         <lombok.version>1.16.12</lombok.version>
-        <github.template.version>19e6394cdcd24957a9bb59e6c3eb77e580eb59a8</github.template.version>
+        <github.template.version>77d49e83fe8eb1d1c5c4779654cf8ae8bf31ff17</github.template.version>
     </properties>
 
     <modules>
