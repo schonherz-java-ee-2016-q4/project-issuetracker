@@ -5,7 +5,7 @@
     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
     <persistence-unit name="hu.schonherz.javatraining.jpa" transaction-type="JTA">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:jboss/datasources/Issuetracker</jta-data-source>
         <class>hu.schonherz.javatraining.issuetracker.core.entities.BaseEntity</class>
         <class>hu.schonherz.javatraining.issuetracker.core.entities.CommentEntity</class>
@@ -27,8 +27,8 @@
             <property name="hibernate.default_schema" value="public" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="jboss.entity.manager.jndi.name" value="java:/IssueTrackerEntityManager" />
-            <property name="jboss.entity.manager.factory.jndi.name" value="java:/IssueTrackerEntityManagerFactory" />
+            <property name="jboss.entity.manager.jndi.name" value="java:global/IssueTrackerEntityManager" />
+            <property name="jboss.entity.manager.factory.jndi.name" value="java:global/IssueTrackerEntityManagerFactory" />
         </properties>
 
     </persistence-unit>

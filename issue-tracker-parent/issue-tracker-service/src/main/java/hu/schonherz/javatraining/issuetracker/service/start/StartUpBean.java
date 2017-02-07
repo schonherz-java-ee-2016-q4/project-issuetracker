@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,8 +17,8 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServic
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
-@Startup
-@Singleton
+//@Startup
+//@Singleton
 public class StartUpBean {
 	
 	private static final String ROLE_USER = "ROLE_USER";
