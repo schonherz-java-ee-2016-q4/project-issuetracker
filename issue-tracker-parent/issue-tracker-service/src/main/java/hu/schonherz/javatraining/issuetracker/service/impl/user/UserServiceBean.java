@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
@@ -14,8 +15,8 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServic
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.UserDao;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.user.UserVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
+
 
 @Stateless(mappedName = "UserService")
 @Local(UserServiceLocal.class)
@@ -26,16 +27,16 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
 	@Autowired
 	private UserDao userDao;
+	
 
 	@Override
 	public UserVo findByUsername(String username) {
-		UserEntity user = userDao.findByUsername(username);
-		return UserVoMapper.toVo(user);
+		return GenericVoMappers.userVoMapper.toVo(userDao.findByUsername(username));
 	}
 
 	@Override
 	public UserVo save(UserVo user) {
-		return UserVoMapper.toVo(userDao.save(UserVoMapper.toEntity(user)));
+		return GenericVoMappers.userVoMapper.toVo(userDao.save(GenericVoMappers.userVoMapper.toEntity(user)));
 	}
 
 }

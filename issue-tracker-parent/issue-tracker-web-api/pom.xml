@@ -6,6 +6,7 @@
         <artifactId>issue-tracker-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
     <artifactId>issue-tracker-web-api</artifactId>
     <packaging>war</packaging>
     <dependencies>

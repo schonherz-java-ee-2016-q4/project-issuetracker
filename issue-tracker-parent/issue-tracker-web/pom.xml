@@ -3,16 +3,25 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
     xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>hu.schonherz.javatraining</groupId>
         <artifactId>issue-tracker-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
     <artifactId>issue-tracker-web</artifactId>
     <packaging>war</packaging>
     <name>issue-tracker-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
     <dependencies>
+
+        <dependency>
+            <groupId>com.github.schonherz-java-ee-2016-q4</groupId>
+            <artifactId>project</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>hu.schonherz.javatraining</groupId>
             <artifactId>issue-tracker-client-api</artifactId>
@@ -33,6 +42,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -42,14 +52,17 @@
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-impl</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.primefaces.themes</groupId>
             <artifactId>all-themes</artifactId>
@@ -59,26 +72,32 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.webflow</groupId>
             <artifactId>spring-binding</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.webflow</groupId>
             <artifactId>spring-webflow</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.webflow</groupId>
             <artifactId>spring-faces</artifactId>
@@ -89,21 +108,25 @@
             <artifactId>spring-context</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
@@ -116,6 +139,7 @@
             <version>4.1.6.RELEASE</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>

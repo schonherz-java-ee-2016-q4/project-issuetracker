@@ -15,7 +15,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleServic
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.RoleDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.RoleEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.role.RoleVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "RoleService")
 @Remote(RoleServiceRemote.class)
@@ -31,12 +31,12 @@ public class RoleServiceBean implements RoleServiceLocal, RoleServiceRemote {
 	public RoleVo findByName(String name) {
 		RoleEntity findByName = roleDao.findByName(name);
 		System.out.println(name + " - " + findByName);
-		return RoleVoMapper.toVo(findByName);
+		return GenericVoMappers.roleVoMapper.toVo(findByName);
 	}
 
 	@Override
 	public RoleVo save(RoleVo role) {
-		return RoleVoMapper.toVo(roleDao.save(RoleVoMapper.toEntity(role)));
+		return GenericVoMappers.roleVoMapper.toVo(roleDao.save(GenericVoMappers.roleVoMapper.toEntity(role)));
 	}
 
 }
