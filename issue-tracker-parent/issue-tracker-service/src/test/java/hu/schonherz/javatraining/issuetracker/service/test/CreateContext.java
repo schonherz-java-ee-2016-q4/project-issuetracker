@@ -5,7 +5,6 @@ import java.util.Properties;
 import javax.ejb.embeddable.EJBContainer;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
