@@ -6,7 +6,7 @@
                 template="/templates/issueTrackerMasterLayout.xhtml"
                 xmlns:sec="http://www.springframework.org/security/tags">
 
-        <ui:define name="customTitle">IssueTracker - Login</ui:define>
+        <ui:define name="customTitle">IssueTracker - #{mes.login}</ui:define>
 
     <ui:define name="customHead">
 
@@ -16,17 +16,15 @@
          <ui:define name="customBody">
 
              <div class="form-login">
-
+                 <h:outputLabel value="#{mes.login}:"/>
                 <form id="loginForm" action="#{request.contextPath}/login" method="post">
 
                     <h:panelGroup layout="block" class="error"
                                   styleClass="alert alert-danger"
-                                  rendered="#{param['error'] == 1}">Login failed!</h:panelGroup>
-                    <label class="login-label">Login</label>
-                    <input type="text" class="form-control" name="username" placeholder="Your Username" required="required"/>
-                    <input type="password" class="form-control" name="password" placeholder="Your Password" required="required"/>
-                    <label class="checkbox-inline"> <input type="checkbox" name="remember-me"/>Remember me</label>
-                    <input type="submit" value="Login" class="btn btn-primary"></input>
+                                  rendered="#{param['error'] == 1}">#{mes.login} #{mes.error}</h:panelGroup>
+                    <input type="text" class="form-control" name="username" placeholder="#{mes.username}" required="required"/>
+                    <input type="password" class="form-control" name="password" placeholder="#{mes.password}" required="required"/>
+                    <input type="submit" value="#{mes.login}" class="btn btn-lg btn-primary btn-block"></input>
 
                 </form>
              </div>
