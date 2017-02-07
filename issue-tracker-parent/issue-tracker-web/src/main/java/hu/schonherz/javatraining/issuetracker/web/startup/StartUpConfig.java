@@ -1,14 +1,12 @@
-package hu.schonherz.javatraining.issuetracker.service.start;
+package hu.schonherz.javatraining.issuetracker.web.startup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,10 +15,9 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServic
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
-//@Startup
-//@Singleton
-public class StartUpBean {
-	
+@WebListener
+public class StartUpConfig implements ServletContextListener {
+
 	private static final String ROLE_USER = "ROLE_USER";
 	private static final String ROLE_ADMIN = "ROLE_ADMIN";
 	
@@ -30,9 +27,9 @@ public class StartUpBean {
 	@EJB
 	RoleServiceRemote roleServiceRemote;
 	
-	@PostConstruct
-	public void init() {
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		
 		RoleVo adminRole = roleServiceRemote.findByName(ROLE_ADMIN);
 		if (adminRole == null) {
@@ -73,5 +70,10 @@ public class StartUpBean {
 			userUser.setRoles(userRoles);
 			userServiceRemote.save(userUser);
 		}
-	}
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+    }
+
 }
