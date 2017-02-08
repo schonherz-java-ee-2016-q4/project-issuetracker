@@ -11,15 +11,12 @@ import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.TicketDao;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "TicketService")
@@ -48,20 +45,14 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	}
 
 	@Override
-	public TicketVo save(TicketVo ticket) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserEntity user = (UserEntity) auth.getPrincipal();
-		ticket.setRecUserId(user.getId());
-
+	public TicketVo save(TicketVo ticket, String username) {
+		ticket.setRecUserName(username);
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
 	}
 
 	@Override
-	public TicketVo update(TicketVo ticket) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserEntity user = (UserEntity) auth.getPrincipal();
-		ticket.setModUserId(user.getId());
-
+	public TicketVo update(TicketVo ticket, String username) {
+		ticket.setModUserName(username);
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
 	}
 

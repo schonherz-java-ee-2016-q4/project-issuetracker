@@ -7,6 +7,6 @@ public interface CompanyService {
 
     CompanyVo findById(Long id);
     CompanyVo findByName(String name);
-    CompanyVo save(CompanyVo company);
-    CompanyVo update(CompanyVo company);
+    CompanyVo save(CompanyVo company, String username);
+    CompanyVo update(CompanyVo company, String username);
 }
