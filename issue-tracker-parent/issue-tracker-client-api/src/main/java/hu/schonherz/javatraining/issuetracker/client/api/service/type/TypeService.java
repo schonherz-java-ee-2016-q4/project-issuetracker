@@ -9,6 +9,6 @@ public interface TypeService {
 	TypeVo findById(Long id);
 	TypeVo findByName(String name);
 	List<TypeVo> findByCompany(CompanyVo company);
-	TypeVo save(TypeVo type);
-	TypeVo update(TypeVo type);
+	TypeVo save(TypeVo type, String username);
+	TypeVo update(TypeVo type, String username);
 }

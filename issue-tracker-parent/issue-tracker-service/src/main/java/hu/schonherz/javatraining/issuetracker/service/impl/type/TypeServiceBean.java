@@ -11,15 +11,12 @@ import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.TypeDao;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "TypeService")
@@ -48,20 +45,14 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	}
 
 	@Override
-	public TypeVo save(TypeVo type) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserEntity user = (UserEntity) auth.getPrincipal();
-		type.setRecUserId(user.getId());
-
+	public TypeVo save(TypeVo type, String username) {
+		type.setRecUserName(username);
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
 	}
 
 	@Override
-	public TypeVo update(TypeVo type) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserEntity user = (UserEntity) auth.getPrincipal();
-		type.setModUserId(user.getId());
-
+	public TypeVo update(TypeVo type, String username) {
+		type.setModUserName(username);
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
 	}
 

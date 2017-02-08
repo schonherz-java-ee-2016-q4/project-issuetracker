@@ -8,6 +8,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 public interface HistoryService {
 	HistoryVo findById(Long id);
 	List<HistoryVo> findByTicket(TicketVo ticket);
-	HistoryVo save(HistoryVo history);
-	HistoryVo update(HistoryVo history);
+	HistoryVo save(HistoryVo history, String username);
+	HistoryVo update(HistoryVo history, String username);
 }

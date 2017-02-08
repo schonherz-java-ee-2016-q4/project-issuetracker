@@ -11,15 +11,12 @@ import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.HistoryDao;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "HistoryService")
@@ -43,20 +40,14 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 	}
 
 	@Override
-	public HistoryVo save(HistoryVo history) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserEntity user = (UserEntity) auth.getPrincipal();
-		history.setRecUserId(user.getId());
-
+	public HistoryVo save(HistoryVo history, String username) {
+		history.setRecUserName(username);
 		return GenericVoMappers.historyVoMapper.toVo(historyDao.save(GenericVoMappers.historyVoMapper.toEntity(history)));
 	}
 
 	@Override
-	public HistoryVo update(HistoryVo history) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserEntity user = (UserEntity) auth.getPrincipal();
-		history.setModUserId(user.getId());
-
+	public HistoryVo update(HistoryVo history, String username) {
+		history.setModUserName(username);
 		return GenericVoMappers.historyVoMapper.toVo(historyDao.save(GenericVoMappers.historyVoMapper.toEntity(history)));
 	}
 
