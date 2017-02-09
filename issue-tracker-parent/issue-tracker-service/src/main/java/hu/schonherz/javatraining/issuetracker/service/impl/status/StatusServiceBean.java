@@ -46,7 +46,7 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
 	}
 
 	@Override
-	public StatusVo modify(StatusVo status, String username) {
+	public StatusVo update(StatusVo status, String username) {
         status.setModUserName(username);
         return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
 	}

@@ -17,6 +17,6 @@ public class StatusOrderVo extends BaseVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int fromStatusId;
-	private int toStatusId;
+	private Long fromStatusId;
+	private Long toStatusId;
 }

@@ -8,6 +8,6 @@ public interface StatusService {
 	StatusVo findByName(String name);
 	StatusVo save(StatusVo status, String username);
 	//rákövetkezők módosításának engedélyezése
-	StatusVo modify(StatusVo status, String username);
+	StatusVo update(StatusVo status, String username);
 	//törlést nem engedélyezzük, esetleg később
 }

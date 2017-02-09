@@ -46,7 +46,7 @@ public class StatusOrderServiceBean implements StatusOrderServiceLocal, StatusOr
 	}
 
 	@Override
-	public StatusOrderVo modify(StatusOrderVo statusOrder, String username) {
+	public StatusOrderVo update(StatusOrderVo statusOrder, String username) {
         statusOrder.setModUserName(username);
         return GenericVoMappers.statusOrderVoMapper.toVo(statusOrderDao.save(GenericVoMappers.statusOrderVoMapper.toEntity(statusOrder)));
 	}
