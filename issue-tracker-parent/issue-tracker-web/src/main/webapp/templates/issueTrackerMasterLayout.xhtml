@@ -7,7 +7,7 @@
                 template="/templates/masterLayout.xhtml"
                 xmlns:sec="http://www.springframework.org/security/tags">
 
-    <ui:define name="customLink3">
+    <ui:define name="customLogin">
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
                 <p:link href="/logout">#{mes.logout}</p:link>
