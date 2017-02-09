@@ -7,13 +7,11 @@
                 template="/templates/masterLayout.xhtml"
                 xmlns:sec="http://www.springframework.org/security/tags">
 
-    <ui:define name="customHead">
-
+    <ui:define name="customLink3">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="/logout">#{mes.logout}</p:link>
+            </c:when>
+        </c:choose>
     </ui:define>
-
-    <ui:define name="customBody">
-
-
-    </ui:define>
-
 </ui:composition>
