@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleServiceRemote;
@@ -16,6 +17,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
 @WebListener
+@Log4j
 public class StartUpConfig implements ServletContextListener {
 
 	private static final String ROLE_USER = "ROLE_USER";
@@ -44,6 +46,9 @@ public class StartUpConfig implements ServletContextListener {
 			userRole.setName(ROLE_USER);
 			userRole = roleServiceRemote.save(userRole);
 		}
+
+
+		log.debug("User role id: " + userRole.getId());
 		System.out.println("User role id: " + userRole.getId());
 		
 		if (userServiceRemote.findByUsername("admin") == null) {
