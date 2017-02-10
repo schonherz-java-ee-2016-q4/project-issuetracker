@@ -1,10 +1,7 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
-import lombok.extern.log4j.Log4j;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -36,33 +33,46 @@ public class TestTypeService {
             }
         }
 
-        @Test
-        public void test1Save() throws Exception {
-            transactionalCaller.call(() -> {
-                try {
-                    TypeVo typeVo = new TypeVo();
-                    CompanyVo companyVo = new CompanyVo();
-                    companyVo.setRecUserId(1234);
-                    companyVo.setModUserId(1234);
-                    companyVo.setName("testCompany");
+     /*   @Test
+    public void test1Save() throws Exception {
+        transactionalCaller.call(() -> {
+            try {
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
-                    StatusVo statusVo = new StatusVo();
-                    statusVo.setName("test");
-                    statusVo.setDescription("test");
+                TypeVo typeVo = new TypeVo();
+                CompanyVo companyVo = new CompanyVo();
 
-                    typeVo.setName("testStatus");
-                    typeVo.setDescription("testDescription");
-                    typeVo.setCompany(companyVo);
-                    typeVo.setStartEntity(statusVo);
+                companyVo.setId(1L);
+                companyVo.setRecUserName("test");
+                companyVo.setModUserName("test");
+                companyVo.setRecUserId(2L);
+                companyVo.setModUserId(3L);
+                companyVo.setRecDate(fmt.parse("2013-05-06"));
+                companyVo.setModDate(fmt.parse("2013-05-06"));
+                companyVo.setName("testCompany");
 
-                    serviceLocal.save(typeVo, "testUser");
-                } catch (Exception e) {
-                    log.error("Error to save a typevo",e);
+                StatusVo statusVo = new StatusVo();
+                statusVo.setId(1L);
+                statusVo.setRecUserName("test");
+                statusVo.setModUserName("test");
+                statusVo.setRecDate(fmt.parse("2013-05-06"));
+                statusVo.setModDate(fmt.parse("2013-05-06"));
+                statusVo.setName("test");
+                statusVo.setDescription("test");
 
-                }
-                return null;
-            });
-        }
+                typeVo.setName("testStatus");
+                typeVo.setDescription("testDescription");
+                typeVo.setCompany(companyVo);
+                typeVo.setStartEntity(statusVo);
+
+                serviceLocal.save(typeVo, "testUser");
+            } catch (Exception e) {
+                log.error("Error to save a typevo",e);
+
+            }
+            return null;
+        });
+    }*/
 
         @Test
         public void test2FindByName() throws Exception {
@@ -131,4 +141,5 @@ public class TestTypeService {
             });
         }
     }
+
 

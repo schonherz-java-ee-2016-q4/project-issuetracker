@@ -14,9 +14,7 @@ public class CompanyVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int recUserId;
-    private int modUserId;
-    private Date recDate;
-    private Date modDate;
+    private long recUserId;
+    private long modUserId;
     private String name;
 }
