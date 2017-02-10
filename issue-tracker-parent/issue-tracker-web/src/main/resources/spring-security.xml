@@ -14,7 +14,7 @@
         <security:headers disabled="true"/>
         <security:intercept-url pattern="/secured/*" access="hasRole('USER')"/>
         <security:form-login login-page="/public/login.xhtml"
-                             login-processing-url="/login" default-target-url="/secured/index.xhtml"
+                             login-processing-url="/login" default-target-url="/secured/tickets.xhtml"
                              authentication-failure-url="/public/login.xhtml?error=1"
                              username-parameter="username" password-parameter="password"/>
         <security:logout logout-url="/logout"
