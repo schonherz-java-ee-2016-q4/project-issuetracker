@@ -92,7 +92,9 @@
         <dozer.version>5.5.1</dozer.version>
         <dozer.jdk8.support.version>1.0.2</dozer.jdk8.support.version>
         <lombok.version>1.16.12</lombok.version>
-        <github.template.version>e836667aca911499d7467f60e2056060b0524420</github.template.version>
+        <github.template.version>66787db6f5e5bdef1f23a389762308121ec62cbb</github.template.version>
+        <slf4j-api.versioin>1.7.22</slf4j-api.versioin>
+        <log4j.version>1.2.17</log4j.version>
     </properties>
 
     <modules>
@@ -296,6 +298,19 @@
                 <artifactId>project</artifactId>
                <version>${github.template.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.versioin}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

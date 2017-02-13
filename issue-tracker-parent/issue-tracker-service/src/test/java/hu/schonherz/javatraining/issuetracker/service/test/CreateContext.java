@@ -6,11 +6,13 @@ import javax.ejb.embeddable.EJBContainer;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.extern.log4j.Log4j;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Log4j
 public class CreateContext {
 	protected static EJBContainer ejbContainer;
 
@@ -43,7 +45,7 @@ public class CreateContext {
 			ejbContainer.getContext().bind("java:global/IssueTrackerEntityManager", entityManager);
 
 		} catch (Throwable e) {
-			System.out.println(e.getMessage());
+			log.error("error in SratupConfig",e);
 		}
 	}
 }

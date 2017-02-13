@@ -7,6 +7,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -22,6 +23,7 @@ import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMa
 @Local(RoleServiceLocal.class)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Log4j
 public class RoleServiceBean implements RoleServiceLocal, RoleServiceRemote {
 	
 	@Autowired
@@ -30,7 +32,7 @@ public class RoleServiceBean implements RoleServiceLocal, RoleServiceRemote {
 	@Override
 	public RoleVo findByName(String name) {
 		RoleEntity findByName = roleDao.findByName(name);
-		System.out.println(name + " - " + findByName);
+		log.debug(name + " - " + findByName);
 		return GenericVoMappers.roleVoMapper.toVo(findByName);
 	}
 

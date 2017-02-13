@@ -9,15 +9,12 @@ import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.StatusDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.StatusEntity;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "StatusService")
@@ -43,20 +40,14 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
 	}
 
 	@Override
-	public StatusVo save(StatusVo status) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) auth.getPrincipal();
-        status.setRecUserId(user.getId());
-
+	public StatusVo save(StatusVo status, String username) {
+        status.setRecUserName(username);
         return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
 	}
 
 	@Override
-	public StatusVo modify(StatusVo status) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) auth.getPrincipal();
-        status.setModUserId(user.getId());
-
+	public StatusVo update(StatusVo status, String username) {
+        status.setModUserName(username);
         return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
 	}
 

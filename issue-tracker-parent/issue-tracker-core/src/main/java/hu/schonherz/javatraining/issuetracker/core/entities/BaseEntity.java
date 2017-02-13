@@ -20,9 +20,9 @@ public class BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	String recUser;
-
-	String modUser;
+	String recUserName;
+    String modUserName;
+    
 	@Temporal(TemporalType.TIMESTAMP)
 	Date recDate;
 

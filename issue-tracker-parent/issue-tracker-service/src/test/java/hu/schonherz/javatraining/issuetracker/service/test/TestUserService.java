@@ -32,53 +32,37 @@ public class TestUserService {
 		try {
 			CreateContext.ejbContainer.getContext().bind("inject", this);
 		} catch (Throwable e) {
-
 			throw e;
 		}
 
 	}
 	@Test
 	public void test1WithTransaction() throws Exception {
-        transactionalCaller.call(new Callable() {
-            public Object call() throws Exception {
-            	test1RegistrationClient();
-                return null;
-            }
-        });
+		transactionalCaller.call(() -> {
+			try {
+				UserVo userVO = new UserVo();
+				userVO.setUsername("test2");
+				serviceLocal.save(userVO);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		});
     }
 
 	@Test
 	public void test2WithTransaction() throws Exception {
-        transactionalCaller.call(new Callable() {
-            public Object call() throws Exception {
-            	test1RegistrationClient2();
-                return null;
-            }
-        });
+		transactionalCaller.call(() -> {
+			try {
+				UserVo vo = serviceLocal.findByUsername("test2");
+				Assert.assertEquals("test2", vo.getUsername());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		});
     }
 	
-
-	public void test1RegistrationClient() {
-		try {
-			UserVo userVO = new UserVo();
-			userVO.setUsername("test2");
-			serviceLocal.save(userVO);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-	}
-	
-	public void test1RegistrationClient2() {
-		try {
-
-			UserVo vo = serviceLocal.findByUsername("test2");
-			Assert.assertEquals("test2", vo.getUsername());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-	}
 	
 	public static interface Caller {
         public <V> V call(Callable<V> callable) throws Exception;
