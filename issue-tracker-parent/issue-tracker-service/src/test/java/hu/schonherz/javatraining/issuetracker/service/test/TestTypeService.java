@@ -1,6 +1,8 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -12,6 +14,7 @@ import org.junit.runners.MethodSorters;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
+import java.text.SimpleDateFormat;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ManagedBean
@@ -33,7 +36,7 @@ public class TestTypeService {
             }
         }
 
-     /*   @Test
+     @Test
     public void test1Save() throws Exception {
         transactionalCaller.call(() -> {
             try {
@@ -72,7 +75,7 @@ public class TestTypeService {
             }
             return null;
         });
-    }*/
+    }
 
         @Test
         public void test2FindByName() throws Exception {
