@@ -9,17 +9,13 @@ import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.StatusDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.StatusEntity;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.comment.CommentVoMapper;
-import hu.schonherz.javatraining.issuetracker.service.mapper.status.StatusVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "StatusService")
 @Local(StatusServiceLocal.class)
@@ -34,31 +30,25 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
 	@Override
 	public StatusVo findById(Long id) {
 		StatusEntity status = statusDao.findById(id);
-        return StatusVoMapper.toVo(status);
+        return GenericVoMappers.statusVoMapper.toVo(status);
 	}
 	
 	@Override
 	public StatusVo findByName(String name) {
 		StatusEntity status = statusDao.findByName(name);
-		return StatusVoMapper.toVo(status);
+		return GenericVoMappers.statusVoMapper.toVo(status);
 	}
 
 	@Override
-	public StatusVo save(StatusVo status) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) auth.getPrincipal();
-        status.setRecUserId(user.getId());
-
-        return StatusVoMapper.toVo(statusDao.save(StatusVoMapper.toEntity(status)));
+	public StatusVo save(StatusVo status, String username) {
+        status.setRecUserName(username);
+        return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
 	}
 
 	@Override
-	public StatusVo modify(StatusVo status) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) auth.getPrincipal();
-        status.setModUserId(user.getId());
-
-        return StatusVoMapper.toVo(statusDao.save(StatusVoMapper.toEntity(status)));
+	public StatusVo update(StatusVo status, String username) {
+        status.setModUserName(username);
+        return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
 	}
 
 	

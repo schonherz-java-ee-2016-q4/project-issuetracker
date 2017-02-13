@@ -6,8 +6,8 @@ public interface StatusService {
 	
 	StatusVo findById(Long id);
 	StatusVo findByName(String name);
-	StatusVo save(StatusVo status);
+	StatusVo save(StatusVo status, String username);
 	//rákövetkezők módosításának engedélyezése
-	StatusVo modify(StatusVo status);
+	StatusVo update(StatusVo status, String username);
 	//törlést nem engedélyezzük, esetleg később
 }

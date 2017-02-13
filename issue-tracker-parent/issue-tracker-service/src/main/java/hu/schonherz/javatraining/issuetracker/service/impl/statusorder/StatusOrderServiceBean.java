@@ -9,16 +9,13 @@ import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.StatusOrderDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.StatusOrderEntity;
-import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
-import hu.schonherz.javatraining.issuetracker.service.mapper.statusorder.StatusOrderVoMapper;
+import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "StatusOrderService")
 @Local(StatusOrderServiceLocal.class)
@@ -33,31 +30,25 @@ public class StatusOrderServiceBean implements StatusOrderServiceLocal, StatusOr
 	@Override
 	public StatusOrderVo findByFromStatusId(Long id) {
 		StatusOrderEntity statusOrder = statusOrderDao.findByFromStatusId(id);
-        return StatusOrderVoMapper.toVo(statusOrder);
+        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
 	}
 
 	@Override
 	public StatusOrderVo findByToStatusId(Long id) {
 		StatusOrderEntity statusOrder = statusOrderDao.findByToStatusId(id);
-        return StatusOrderVoMapper.toVo(statusOrder);
+        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
 	}
 
 	@Override
-	public StatusOrderVo save(StatusOrderVo statusOrder) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) auth.getPrincipal();
-        statusOrder.setRecUserId(user.getId());
-
-        return StatusOrderVoMapper.toVo(statusOrderDao.save(StatusOrderVoMapper.toEntity(statusOrder)));
+	public StatusOrderVo save(StatusOrderVo statusOrder, String username) {
+        statusOrder.setRecUserName(username);
+        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrderDao.save(GenericVoMappers.statusOrderVoMapper.toEntity(statusOrder)));
 	}
 
 	@Override
-	public StatusOrderVo modify(StatusOrderVo statusOrder) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) auth.getPrincipal();
-        statusOrder.setModUserId(user.getId());
-
-        return StatusOrderVoMapper.toVo(statusOrderDao.save(StatusOrderVoMapper.toEntity(statusOrder)));
+	public StatusOrderVo update(StatusOrderVo statusOrder, String username) {
+        statusOrder.setModUserName(username);
+        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrderDao.save(GenericVoMappers.statusOrderVoMapper.toEntity(statusOrder)));
 	}
 
 }
