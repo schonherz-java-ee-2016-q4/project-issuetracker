@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/issueTrackerMasterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="customTitle">IssueTracker - #{mes.tickettype_title}</ui:define>
+
+	<ui:define name="customHead">
+	</ui:define>
+
+	<ui:define name="customBody">
+		<h:form id="tickettype">
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>#{mes.tickettype_title}</h3>
+				</div>
+				
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+				
+				<div class="panel-body">
+					<div class="panel panel-default">
+						<div class="panel-heading">#{mes.tickettype_details_title}</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-2"><h:outputLabel for="typename" value="#{mes.tickettype_typename}" /></div>
+								<div class="col-md-10"><p:inputText value="#{typeCreateModifyView.typevo.name}" id="typename"/></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><h:outputLabel for="typedec" value="#{mes.tickettype_typedec}" /></div>
+								<div class="col-md-10"><p:inputText value="#{typeCreateModifyView.typevo.description}" id="typedec"/></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">#{mes.tickettype_status_add_title}</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-2"><h:outputLabel for="statusaddname" value="#{mes.tickettype_status_add_name}" /></div>
+								<div class="col-md-10"><p:inputText value="#{addStatusView.name}" id="statusaddname"/></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><h:outputLabel for="statusadddesc" value="#{mes.tickettype_status_add_desc}" /></div>
+								<div class="col-md-10"><p:inputText value="#{addStatusView.description}" id="statusadddesc"/></div>
+							</div>
+							<div class="row">
+								<div class="col-md-10 col-md-offset-2"><p:commandButton action="#{typeCreateModifyView.addNewStatus()}" value="#{mes.tickettype_status_add_add}" update="tickettype" /></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-10 col-md-offset-2">
+							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" styleClass="pull-right" />
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
