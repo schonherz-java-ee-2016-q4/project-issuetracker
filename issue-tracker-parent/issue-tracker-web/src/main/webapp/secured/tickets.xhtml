@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/templates/issueTrackerMasterLayout.xhtml">
 
-    <ui:define name="customTitle">IssueTracker - #{mes.tickets}</ui:define>
+    <ui:define name="customTitle">IssueTracker - #{mes.mytickets}</ui:define>
 
     <ui:define name="customHead">
 
@@ -15,7 +15,7 @@
 
         <div class="container">
 
-            <h:outputText value="#{mes.mytickets}"/>
+            <p:outputLabel value="" style="margin-top: 2em;"><h3>#{mes.tickets}</h3></p:outputLabel>
 
             <h:form>
 
