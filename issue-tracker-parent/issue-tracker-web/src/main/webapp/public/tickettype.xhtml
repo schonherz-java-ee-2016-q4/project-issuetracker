@@ -52,6 +52,41 @@
 						</div>
 					</div>
 					
+					<div class="panel panel-default">
+						<div class="panel-heading">#{mes.tickettype_status_modify_title}</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-4">
+									<p:dataList value="#{typeCreateModifyView.statuses}" var="status" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+								        <p:commandLink update="tickettype" value="#{status.name}">
+								            <f:setPropertyActionListener value="#{status}" target="#{modifyStatusView.selectedStatus}" />
+								        </p:commandLink>
+									</p:dataList>
+								</div>
+								<h:panelGroup rendered="#{modifyStatusView.selectedStatus != null}">
+									<div class="col-md-8">
+										#{mes.tickettype_status_modify_this} #{modifyStatusView.selectedStatus.name}
+										<div class="row">
+											<div class="col-md-2"><h:outputLabel for="statmodname" value="#{mes.tickettype_status_modify_statname}" /></div>
+											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newName}" id="statmodname"/></div>
+										</div>
+										<div class="row">
+											<div class="col-md-2"><h:outputLabel for="statmoddesc" value="#{mes.tickettype_status_modify_statdesc}" /></div>
+											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newDescription}" id="statmoddesc"/></div>
+										</div>
+										<div class="row">
+											<div class="col-md-10 col-md-offset-2">
+												<p:commandButton action="#{typeCreateModifyView.modifyStatus()}" value="#{mes.tickettype_status_modify_save}" update="tickettype" />
+												<p:commandButton action="#{typeCreateModifyView.deleteStatus()}" value="#{mes.tickettype_status_modify_delete}" update="tickettype" />
+												<p:commandButton action="#{typeCreateModifyView.cancelModifyingStatus()}" value="#{mes.tickettype_status_modify_cancel}" update="tickettype" />
+											</div>
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+					
 					<div class="row">
 						<div class="col-md-10 col-md-offset-2">
 							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" styleClass="pull-right" />

@@ -26,11 +26,14 @@ public class TypeCreateModifyView implements Serializable {
 	private TypeVo typevo;
 	private List<StatusVo> statuses;
 
+	@ManagedProperty("#{mes}")
+	private ResourceBundle bundle;
+	
 	@ManagedProperty(value="#{addStatusView}")
     private AddStatusView addStatusView;
 	
-	@ManagedProperty("#{mes}")
-	private ResourceBundle bundle;
+	@ManagedProperty(value="#{modifyStatusView}")
+    private ModifyStatusView modifyStatusView;
 	
 	@PostConstruct
 	public void init() {
@@ -96,11 +99,41 @@ public class TypeCreateModifyView implements Serializable {
 		}
 	}
 	
+	public void modifyStatus() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		log.debug("modify status");
+		
+		if ("".equals(modifyStatusView.getNewName()) || "".equals(modifyStatusView.getNewDescription())) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_modify_empty")));
+			return;
+		}
+		
+		for (StatusVo statusVo : statuses) {
+			if (statusVo.equals(modifyStatusView.getSelectedStatus())) {
+				String modStatName = statusVo.getName();
+				statusVo.setName(modifyStatusView.getNewName());
+				statusVo.setDescription(modifyStatusView.getNewDescription());
+				modifyStatusView.setSelectedStatus(null);
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", modStatName + " " + bundle.getString("tickettype_status_modify_succes")));
+			}
+		}
+	}
 	
+	public void deleteStatus() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		log.debug("delete status");
+		
+		String modStatName = modifyStatusView.getSelectedStatus().getName();
+		statuses.remove(modifyStatusView.getSelectedStatus());
+		modifyStatusView.setSelectedStatus(null);
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", modStatName + " " + bundle.getString("tickettype_status_modify_deleted")));
+	}
 	
-	
-	
-	
+	public void cancelModifyingStatus() {
+		log.debug("cancel modifying status");
+		
+		modifyStatusView.setSelectedStatus(null);
+	}
 	
 	
 	
