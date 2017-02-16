@@ -75,10 +75,63 @@ public class TypeCreateModifyView implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_empty_desc")));
 			return;
 		}
+		
+		if (!isFullyConnected()) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_order_noconnect")));
+			return;
+		}
+		
+		StatusVo startStatus = getStartStatus();
+		if (startStatus == null) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_order_nostart")));
+			return;
+		}
 
 		logCurrentStatus();
 	}
 
+	private boolean isFullyConnected() {
+		List<String> statusesWithConnection = new ArrayList<>();
+		
+		for (StatusOrderViewModel statusOrder : modifyStatusOrderView.getStatusOrders()) {
+			if (!statusesWithConnection.contains(statusOrder.getTo())) {
+				statusesWithConnection.add(statusOrder.getTo());
+			}
+			if (!statusesWithConnection.contains(statusOrder.getFrom())) {
+				statusesWithConnection.add(statusOrder.getFrom());
+			}
+		}
+		
+		return statusesWithConnection.size() == statuses.size();
+	}
+	
+	private StatusVo getStartStatus() {
+		List<StatusVo> startCandidates = new ArrayList<>();
+		
+		for (StatusVo statusVo : statuses) {
+			boolean hasConnections = false;
+			
+			for (StatusOrderViewModel statusOrderViewModel : modifyStatusOrderView.getStatusOrders()) {
+				if (statusVo.getName().equals(statusOrderViewModel.getTo())) {
+					hasConnections = true;
+					break;
+				}
+			}
+			
+			if (!hasConnections) {
+				startCandidates.add(statusVo);
+			}
+		}
+		
+		if (startCandidates.size() == 1) {
+			return startCandidates.get(0);
+		}
+		
+		return null;
+	}
+	
 	public void addNewStatus() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		log.debug("status add");
