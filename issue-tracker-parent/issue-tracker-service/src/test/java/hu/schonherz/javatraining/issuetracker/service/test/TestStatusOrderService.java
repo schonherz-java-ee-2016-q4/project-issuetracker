@@ -75,21 +75,7 @@ public class TestStatusOrderService {
 	}
 	
 	@Test
-	public void test4FindByFromAndToStatusId() throws Exception {
-		transactionalCaller.call(() -> {
-			try {
-				StatusOrderVo vo = serviceLocal.findByFromAndToStatusId(0L, 1L);
-				Assert.assertEquals(vo.getFromStatusId().longValue() == 0L &&
-						vo.getToStatusId().longValue() == 1L, true);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-			return null;
-		});
-	}
-	
-	@Test
-	public void test5Update() throws Exception {
+	public void test4Update() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
 				StatusOrderVo vo = serviceLocal.findByFromStatusId(0L);
@@ -103,7 +89,7 @@ public class TestStatusOrderService {
 	}
 	
 	@Test
-	public void test6FindByFromStatusIdAfterUpdate() throws Exception {
+	public void test5FindByFromStatusIdAfterUpdate() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
 				StatusOrderVo vo = serviceLocal.findByFromStatusId(2L);

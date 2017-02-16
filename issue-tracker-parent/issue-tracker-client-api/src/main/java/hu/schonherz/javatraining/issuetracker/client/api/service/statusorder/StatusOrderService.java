@@ -6,7 +6,6 @@ public interface StatusOrderService {
 	
 	StatusOrderVo findByFromStatusId(Long id);
 	StatusOrderVo findByToStatusId(Long id);
-	StatusOrderVo findByFromAndToStatusId(Long fromStatusId, Long toStatusId);
 	StatusOrderVo save(StatusOrderVo statusOrder, String username);
 	//rákövetkezők módosításának engedélyezése
 	StatusOrderVo update(StatusOrderVo statusOrder, String username);
