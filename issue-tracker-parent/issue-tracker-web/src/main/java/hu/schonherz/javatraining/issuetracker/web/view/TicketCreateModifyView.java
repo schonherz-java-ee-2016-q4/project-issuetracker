@@ -2,6 +2,7 @@ package hu.schonherz.javatraining.issuetracker.web.view;
 
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
 
@@ -12,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,18 +28,17 @@ public class TicketCreateModifyView implements Serializable{
 
     @ManagedProperty("#{mes}")
     private ResourceBundle bundle;
-
+    private String recUserName;
     private String uid;
     private String threeLetterCompanyID;
     private String title;
     private String description;
     private String clientMail;
-    private CompanyVo companyVo;
     private String companyName;
+    private String statusName;
 
     private TypeVo type;
     private UserVo user;
-    private StatusVo currentStatus;
     private List<CommentVo> comments;
     private List<HistoryVo> history;
     private TicketVo ticketVo;
@@ -47,6 +48,8 @@ public class TicketCreateModifyView implements Serializable{
     private TicketServiceLocal ticketServiceLocal;
     @EJB
     private CompanyServiceLocal companyServiceLocal;
+    @EJB
+    private StatusServiceLocal statusServiceLocal;
 
 
     @PostConstruct
@@ -76,26 +79,41 @@ public class TicketCreateModifyView implements Serializable{
             return;
         }
 
+        if("".equals(companyName))
+        {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "companyerror");
+            context.addMessage(null, facesMessage);
+            return;
+        }
+
+
+        if("".equals(statusName))
+        {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "statuserror");
+            context.addMessage(null, facesMessage);
+            return;
+        }
 
         ticketVo.builder()
                 .uid(getUid())
                 .title(getTitle())
                 .description(getDescription())
                 .clientMail(getClientMail())
-                .companyVo(getCompanyVo())
+                .companyVo(companyServiceLocal.findByName(companyName))
                 .type(getType())
-                .currentStatus(getCurrentStatus())
+                .currentStatus(statusServiceLocal.findByName(statusName))
                 .commets(getComments())
                 .history(getHistory())
                 .build();
 
         try{
-            http
-            ticketServiceLocal.save(ticketVo,);
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            recUserName = request.getUserPrincipal().getName();
+            ticketServiceLocal.save(ticketVo, recUserName);
         }
         catch (Exception e)
         {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erorr!", "ticketerror!");
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "ticketerror!");
             context.addMessage(null, facesMessage);
             return;
             log.error("Nem sikerült menteni a ticketet",e.printStackTrace());
