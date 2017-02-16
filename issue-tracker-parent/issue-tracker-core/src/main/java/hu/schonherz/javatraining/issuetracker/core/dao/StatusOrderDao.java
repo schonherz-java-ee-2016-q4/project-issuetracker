@@ -13,4 +13,5 @@ public interface StatusOrderDao extends JpaRepository<StatusOrderEntity, Long> {
 	
 	StatusOrderEntity findByFromStatusId(Long fromStatusId);
 	StatusOrderEntity findByToStatusId(Long toStatusId);
+	StatusOrderEntity findByFromStatusIdAndToStatusId(Long fromStatusId, Long toStatusId);
 }
