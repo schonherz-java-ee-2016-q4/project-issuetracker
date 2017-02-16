@@ -47,8 +47,18 @@ public class TypeCreateModifyView implements Serializable {
 		statuses.add(StatusVo.builder().name("asd").description("").build());
 		statuses.add(StatusVo.builder().name("asd2").description("").build());
 		
+		List<StatusOrderViewModel> statusOrders = new ArrayList<>();
+		statusOrders.add(StatusOrderViewModel.builder()
+				.from("asd")
+				.to("asd2")
+				.build());
+		statusOrders.add(StatusOrderViewModel.builder()
+				.from("asd2")
+				.to("asd")
+				.build());
+		
 		modifyStatusOrderView.init();
-		modifyStatusOrderView.generateDiagram(statuses);
+		modifyStatusOrderView.generateDiagram(statuses, statusOrders);
 	}
 
 	public void save() {

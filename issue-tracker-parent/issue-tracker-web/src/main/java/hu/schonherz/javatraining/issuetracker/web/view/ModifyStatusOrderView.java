@@ -50,8 +50,16 @@ public class ModifyStatusOrderView implements Serializable {
 		statusOrders = new ArrayList<>();
 	}
 	
-	public void generateDiagram(List<StatusVo> statuses) {
+	public void generateDiagram(List<StatusVo> statuses, List<StatusOrderViewModel> statusOrders) {
 		statuses.forEach(status -> this.addStatus(status.getName()));
+		
+		if (statusOrders == null)
+			return;
+		
+		this.statusOrders = statusOrders;
+		for (StatusOrderViewModel statusOrderViewModel : statusOrders) {
+			model.connect(createConnection(statusOrderViewModel.getFrom(), statusOrderViewModel.getTo()));
+		}
 	}
 	
 	public void addStatus(String status) {
@@ -62,8 +70,8 @@ public class ModifyStatusOrderView implements Serializable {
 		EndPoint inPoint = createDotEndPoint(EndPointAnchor.TOP);
 		inPoint.setTarget(true);
 		
-		newElement.addEndPoint(outPoint);
-		newElement.addEndPoint(inPoint);
+		newElement.addEndPoint(outPoint);	//0 out
+		newElement.addEndPoint(inPoint);	//1 in
 		
 		model.addElement(newElement);
 	}
@@ -97,8 +105,13 @@ public class ModifyStatusOrderView implements Serializable {
 		}
 	}
 
-	private Connection createConnection(EndPoint from, EndPoint to) {
-		Connection conn = new Connection(from, to);
+	private Connection createConnection(String from, String to) {
+		Element fromElement = model.getElements().stream().filter(x -> x.getData().equals(from)).findFirst().get();
+		EndPoint fromEndPoint = fromElement.getEndPoints().get(0);
+		Element toElement = model.getElements().stream().filter(x -> x.getData().equals(to)).findFirst().get();
+		EndPoint toEndPoint = toElement.getEndPoints().get(1);
+		
+		Connection conn = new Connection(fromEndPoint, toEndPoint);
 		conn.getOverlays().add(new ArrowOverlay(20, 20, 1, 1));
 		return conn;
 	}
