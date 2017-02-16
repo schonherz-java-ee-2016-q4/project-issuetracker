@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/templates/issueTrackerMasterLayout.xhtml">
 
-    <ui:define name="customTitle">IssueTracker - #{mes.tickets}</ui:define>
+    <ui:define name="customTitle">IssueTracker - #{mes.mytickets}</ui:define>
 
     <ui:define name="customHead">
 
@@ -15,36 +15,35 @@
 
         <div class="container">
 
-            <h:outputText value="#{mes.mytickets}"/>
+            <p:outputLabel value="" style="margin-top: 2em;"><h3>#{mes.mytickets}</h3></p:outputLabel>
 
             <h:form>
 
-                <p:dataTable var="ticket" value="#{dtFilterView.cars}" widgetVar="ticketsTable"
-                             emptyMessage="#{mes.notfound}" filteredValue="#{dtFilterView.filteredCars}">
+                <p:dataTable var="ticket" value="#{userTicketsView.tickets}" widgetVar="ticketsTable"
+                             emptyMessage="#{mes.notfound}" filteredValue="#{userTicketsView.tickets}">
 
                     <f:facet name="header">
                         <p:outputPanel>
-                            <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            <h:outputText value="#{mes.search}"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('ticketsTable').filter()" style="width:150px" placeholder="#{mes.keyword}"/>
                         </p:outputPanel>
                     </f:facet>
 
-                    <p:column filterBy="#{ticket.id}"  headerText="#{mes.id}" sortBy="#{ticket.id}" filterMatchMode="contains">
+                    <p:column headerText="#{mes.id}" sortBy="#{ticket.id}">
                         <h:outputText value="#{ticket.id}" />
                     </p:column>
 
-                    <p:column filterBy="#{ticket.type}" headerText="#{mes.type}" sortBy="#{ticket.type}" filterMatchMode="contains">
-                        <h:outputText value="#{ticket.type}" />
+                    <p:column headerText="#{mes.type}" sortBy="#{ticket.type.name}">
+                        <h:outputText value="#{ticket.type.name}" />
                     </p:column>
 
-                    <p:column filterBy="#{ticket.status}" headerText="#{mes.status}" sortBy="#{ticket.status}" filterMatchMode="contains">
-                        <h:outputText value="#{ticket.status}" />
+                    <p:column headerText="#{mes.status}" sortBy="#{ticket.currentStatus.name}">
+                        <h:outputText value="#{ticket.currentStatus.name}" />
                     </p:column>
 
-                    <p:column filterBy="#{ticket.user}" headerText="#{mes.user}" sortBy="#{ticket.user}" filterMatchMode="contains">
-                        <h:outputText value="#{ticket.user}" />
+                    <p:column headerText="#{mes.user}" sortBy="#{ticket.user.username}">
+                        <h:outputText value="#{ticket.user.username}" />
                     </p:column>
-
                 </p:dataTable>
 
             </h:form>

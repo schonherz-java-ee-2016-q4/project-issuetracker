@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/issueTrackerMasterLayout.xhtml">
+
+    <ui:define name="customTitle">IssueTracker - #{mes.comments}</ui:define>
+
+    <ui:define name="customHead">
+
+    </ui:define>
+
+    <ui:define name="customBody">
+
+        <div class="container">
+
+            <div class="panel panel-default" style="margin-top: 2em;">
+                <div class="panel-heading"><h3>#{currentTicketView.currentTicket.title}</h3></div>
+                <div class="panel-body">
+
+                    <div class="container">
+                        <div class="col-md-3"><h5>#{mes.id}:#{currentTicketView.currentTicket.id}</h5></div>
+                        <div class="col-md-3"><h5>#{mes.type}:#{currentTicketView.currentTicket.type.name}</h5></div>
+                        <div class="col-md-3"><h5>#{mes.user}:#{currentTicketView.currentTicket.user.username}</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <h5>#{mes.status}:#{currentTicketView.currentTicket.currentStatus.name}</h5></div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">#{mes.description}</div>
+                        <div class="panel-body">#{currentTicketView.currentTicket.description}</div>
+                    </div>
+
+                    <div class="panel panel-default col-md-10 col-md-offset-1">
+                        <div class="panel-heading">#{mes.comments}</div>
+                        <div class="panel-body">
+
+                            <p:dataScroller value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10">
+                                <f:facet name="header">
+                                    Comments
+                                </f:facet>
+
+                                <h:panelGrid columns="1" style="width:100%" columnClasses="detail">
+
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <h:outputText value="#{comment.recUserName}:" style="font-weight: bold"/>
+                                            <h:outputText value="#{comment.commentText}"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </h:panelGrid>
+                            </p:dataScroller>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="container">
+
+                    <div class="form-group col-md-8 col-md-offset-2">
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                        <input type="submit" value="#{mes.send}" class="btn btn-primary"></input>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>
