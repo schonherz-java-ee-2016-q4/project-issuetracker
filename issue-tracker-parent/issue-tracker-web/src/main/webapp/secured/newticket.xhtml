@@ -19,19 +19,40 @@
         <h:form>
             <p:panel id="panel" header="New Ticket">
 
-                <p:messages id="msgs" />
+               
 
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:outputLabel for="Title" value="Title:" />
-                    <p:inputText id="title" value="#{TicketView.title}" required="true" label="Title">
+                    <p:inputText id="title" value="#{TicketCreateModifyView.title}" required="true" label="Title">
                         <f:validateLength minimum="4" />
                     </p:inputText>
-                    <p:message for="title" display="icon" />
 
 
-                </h:panelGrid>
+                <p:inputText id="description" value="#{TicketCreateModifyView.description}" required="true" label="Description">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
 
-                <p:commandButton value="Save" update="panel" actionListener="#{TickerView.save}" icon="ui-icon-check" />
+                <p:selectOneMenu id="type" value="#{TicketCreateModifyView.type.name}" style="width:150px">
+                    <f:selectItem itemLabel="type" itemValue="type" noSelectionOption="true" />
+                    <f:selectItems value="#{TicketCreateModifyView.types.name}" />
+                </p:selectOneMenu>
+
+                <p:selectOneMenu id="company" value="#{TicketCreateModifyView.companyName}" style="width:150px">
+                    <f:selectItem itemLabel="company" itemValue="company" noSelectionOption="true" />
+                    <f:selectItems value="#{TicketCreateModifyView.companies}" />
+                </p:selectOneMenu>
+
+                <p:selectOneMenu id="status" value="#{TicketCreateModifyView.status}" style="width:150px">
+                    <f:selectItem itemLabel="status" itemValue="status" noSelectionOption="true" />
+                    <f:selectItems value="#{TicketCreateModifyView.statuses}" />
+                </p:selectOneMenu>
+
+                <p:inputText id="clientMail" value="#{TicketCreateModifyView.clientMail}" required="true" label="Title">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
+
+
+
+
+                <p:commandButton value="Save" update="panel" actionListener="#{TicketCreateModifyView.save}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
         </div>

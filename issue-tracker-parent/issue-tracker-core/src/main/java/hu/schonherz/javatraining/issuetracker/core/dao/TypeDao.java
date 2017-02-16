@@ -10,5 +10,6 @@ import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
 public interface TypeDao extends JpaRepository<TypeEntity, Long> {
 	TypeEntity findById(Long id);
 	TypeEntity findByName(String name);
+	List<TypeEntity> findAll();
 	List<TypeEntity> findByCompany(CompanyEntity company);
 }

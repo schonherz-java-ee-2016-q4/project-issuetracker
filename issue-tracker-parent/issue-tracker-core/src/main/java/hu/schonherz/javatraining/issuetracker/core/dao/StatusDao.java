@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hu.schonherz.javatraining.issuetracker.core.entities.StatusEntity;
 
+import java.util.List;
+
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface StatusDao extends JpaRepository<StatusEntity, Long>{
 	
 	StatusEntity findByName(String name);
 	StatusEntity findById(Long id);
+	List<StatusEntity> findAll();
 }

@@ -55,5 +55,9 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 		type.setModUserName(username);
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
 	}
+	@Override
+	public List<TypeVo> findAll(){
+		return GenericVoMappers.typeVoMapper.toVo(typeDao.findAll());
+	}
 
 }
