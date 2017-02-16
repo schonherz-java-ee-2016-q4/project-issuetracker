@@ -46,8 +46,6 @@ public class TestTicketService {
                 companyVo.setId(1L);
                 companyVo.setRecUserName("test");
                 companyVo.setModUserName("test");
-                companyVo.setRecUserId(2L);
-                companyVo.setModUserId(3L);
                 companyVo.setRecDate(fmt.parse("2017-02-13"));
                 companyVo.setModDate(fmt.parse("2017-02-13"));
                 companyVo.setName("testCompany");

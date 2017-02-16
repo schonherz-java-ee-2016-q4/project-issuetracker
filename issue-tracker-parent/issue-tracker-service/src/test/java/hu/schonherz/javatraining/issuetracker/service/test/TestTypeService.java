@@ -43,13 +43,11 @@ public class TestTypeService {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
                 TypeVo typeVo = new TypeVo();
+                
                 CompanyVo companyVo = new CompanyVo();
-
                 companyVo.setId(1L);
                 companyVo.setRecUserName("test");
                 companyVo.setModUserName("test");
-                companyVo.setRecUserId(2L);
-                companyVo.setModUserId(3L);
                 companyVo.setRecDate(fmt.parse("2013-05-06"));
                 companyVo.setModDate(fmt.parse("2013-05-06"));
                 companyVo.setName("testCompany");
