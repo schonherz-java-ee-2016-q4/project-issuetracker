@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:pm="http://primefaces.org/mobile"
+                template="/templates/issueTrackerMasterLayout.xhtml">
+
+    <ui:define name="customTitle">IssueTracker - #{mes.editor}</ui:define>
+
+    <ui:define name="customHead">
+
+    </ui:define>
+
+    <ui:define name="customBody">
+
+        <div class="container">
+
+
+        <h:form>
+            <p:panel id="panel" header="New Ticket">
+
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="Title" value="Title:" />
+                    <p:inputText id="title" value="#{TicketView.title}" required="true" label="Title">
+                        <f:validateLength minimum="4" />
+                    </p:inputText>
+                    <p:message for="title" display="icon" />
+
+
+                </h:panelGrid>
+
+                <p:commandButton value="Save" update="panel" actionListener="#{TickerView.save}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
