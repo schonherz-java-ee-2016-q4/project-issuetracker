@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import lombok.Data;
@@ -23,6 +27,12 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class TypeCreateModifyView implements Serializable {
 
+	@EJB
+	private StatusServiceRemote statusService;
+	
+	@EJB
+	private StatusOrderServiceRemote statusOrderService;
+	
 	private TypeVo typevo;
 	private List<StatusVo> statuses;
 
@@ -89,9 +99,35 @@ public class TypeCreateModifyView implements Serializable {
 			return;
 		}
 
+		List<StatusVo> comittedStatuses = new ArrayList<>();
+		for (StatusVo statusVo : statuses) {
+			statusVo = statusService.save(statusVo, "test");
+			comittedStatuses.add(statusVo);
+			log.debug("commited status: " + statusVo.getName() + " id: " + statusVo.getId());
+		}
+		
+		for (StatusOrderViewModel model : modifyStatusOrderView.getStatusOrders()) {
+			StatusVo fromStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getFrom())).findFirst().get();
+			StatusVo toStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getTo())).findFirst().get();
+			log.debug("fromStatusVo id: " + fromStatusVo.getId());
+			log.debug("toStatusVo id: " + toStatusVo.getId());
+			StatusOrderVo newOrderVo = StatusOrderVo.builder()
+					.fromStatusId(fromStatusVo.getId())
+					.toStatusId(toStatusVo.getId())
+					.build();
+			statusOrderService.save(newOrderVo, "test");
+		}
+		
+		
+		//typevo.setStartEntity(startStatus);
+		log.debug("startStatus id: " + startStatus.getId());
+		
+		//typeService.save(typevo, "test");
+		
+		
 		logCurrentStatus();
 	}
-
+	
 	private boolean isFullyConnected() {
 		List<String> statusesWithConnection = new ArrayList<>();
 		
@@ -211,7 +247,7 @@ public class TypeCreateModifyView implements Serializable {
 		log.debug("Description:" + typevo.getDescription());
 		log.debug("Statuses:");
 		for (StatusVo statusVo : statuses) {
-			log.debug(statusVo.getName() + " - " + statusVo.getDescription());
+			log.debug(statusVo.getId() + " - " + statusVo.getName() + " - " + statusVo.getDescription());
 		}
 		log.debug("Connections:");
 		for (StatusOrderViewModel statusOrderViewModel : modifyStatusOrderView.getStatusOrders()) {
