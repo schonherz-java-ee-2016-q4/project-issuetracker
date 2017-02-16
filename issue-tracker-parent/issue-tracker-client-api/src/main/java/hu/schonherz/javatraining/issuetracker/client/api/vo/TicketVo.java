@@ -21,6 +21,7 @@ public class TicketVo extends BaseVo implements Serializable {
 	private String title;
 	private String description;
 	private String clientMail;
+	private CompanyVo company;
 	
 	private TypeVo type;
 	private UserVo user;

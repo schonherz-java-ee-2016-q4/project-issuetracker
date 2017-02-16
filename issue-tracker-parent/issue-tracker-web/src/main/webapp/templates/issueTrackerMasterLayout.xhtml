@@ -11,7 +11,23 @@
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
                 <p:link href="/logout">#{mes.logout}</p:link>
+
             </c:when>
         </c:choose>
     </ui:define>
+    <ui:define name="customLink1">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="/secured/tickets.xhtml">#{mes.tickets}</p:link>
+            </c:when>
+        </c:choose>
+    </ui:define>
+    <ui:define name="customLink2">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="#">REPORTOK</p:link>
+            </c:when>
+        </c:choose>
+    </ui:define>
+
 </ui:composition>
