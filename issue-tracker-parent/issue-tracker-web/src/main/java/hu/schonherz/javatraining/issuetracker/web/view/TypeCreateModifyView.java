@@ -146,9 +146,13 @@ public class TypeCreateModifyView implements Serializable {
 	private void logCurrentStatus() {
 		log.debug("Name: " + typevo.getName());
 		log.debug("Description:" + typevo.getDescription());
-		log.debug("Current statuses:");
+		log.debug("Statuses:");
 		for (StatusVo statusVo : statuses) {
 			log.debug(statusVo.getName() + " - " + statusVo.getDescription());
+		}
+		log.debug("Connections:");
+		for (StatusOrderViewModel statusOrderViewModel : modifyStatusOrderView.getStatusOrders()) {
+			log.debug(statusOrderViewModel.getFrom() + " - " + statusOrderViewModel.getTo());
 		}
 	}
 }

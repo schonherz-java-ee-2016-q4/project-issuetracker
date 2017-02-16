@@ -1,6 +1,7 @@
 package hu.schonherz.javatraining.issuetracker.web.view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -33,17 +34,20 @@ public class ModifyStatusOrderView implements Serializable {
 
 	private static final String ICON_COLOR = "#98AFC7";
 	private static final String ICON_HOVER_COLOR = "#5C738B";
+	private static final int LINE_WIDTH = 3;
 
 	private DefaultDiagramModel model;
+	private List<StatusOrderViewModel> statusOrders;
 	
 	public void init() {
 		model = new DefaultDiagramModel();
 		model.setMaxConnections(-1);
 		model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
 		FlowChartConnector connector = new FlowChartConnector();
-		connector.setPaintStyle("{strokeStyle:'#98AFC7', lineWidth:3}");
-		connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
+		connector.setPaintStyle(String.format("{strokeStyle:'%s', lineWidth:%d}", ICON_COLOR, LINE_WIDTH));
+		connector.setHoverPaintStyle(String.format("{fillStyle:'%s'}", ICON_HOVER_COLOR));
 		model.setDefaultConnector(connector);
+		statusOrders = new ArrayList<>();
 	}
 	
 	public void generateDiagram(List<StatusVo> statuses) {
@@ -68,7 +72,17 @@ public class ModifyStatusOrderView implements Serializable {
 		for (Element element : model.getElements()) {
 			if (element.getData().equals(oldStatus)) {
 				element.setData(newStatus);
-				return;
+				break;
+			}
+		}
+		
+		for (StatusOrderViewModel statusOrderViewModel : statusOrders) {
+			if (statusOrderViewModel.getFrom().equals(oldStatus)) {
+				statusOrderViewModel.setFrom(newStatus);
+			}
+			
+			if (statusOrderViewModel.getTo().equals(oldStatus)) {
+				statusOrderViewModel.setTo(newStatus);
 			}
 		}
 	}
@@ -77,6 +91,7 @@ public class ModifyStatusOrderView implements Serializable {
 		for (Element element : model.getElements()) {
 			if (element.getData().equals(status)) {
 				model.removeElement(element);
+				statusOrders.removeIf(x -> x.getTo().equals(status) || x.getFrom().equals(status));
 				return;
 			}
 		}
@@ -89,11 +104,20 @@ public class ModifyStatusOrderView implements Serializable {
 	}
 
 	public void onConnect(ConnectEvent event) {
-		log.debug("Connected from " + event.getSourceElement().getData() + " to " + event.getTargetElement().getData());
+		String from = (String)event.getSourceElement().getData();
+		String to = (String)event.getTargetElement().getData();
+		log.debug("Connected from " + from + " to " + to);
+		statusOrders.add(StatusOrderViewModel.builder()
+				.from(from)
+				.to(to)
+				.build());
 	}
 
 	public void onDisconnect(DisconnectEvent event) {
-		log.debug("Disconnected from " + event.getSourceElement().getData() + " to " + event.getTargetElement().getData());
+		String from = (String)event.getSourceElement().getData();
+		String to = (String)event.getTargetElement().getData();
+		log.debug("Disconnected from " + from + " to " + to);
+		statusOrders.removeIf(x -> from.equals(x.getFrom()) && to.equals(x.getTo()) );
 	}
 
 	private EndPoint createDotEndPoint(EndPointAnchor anchor) {
