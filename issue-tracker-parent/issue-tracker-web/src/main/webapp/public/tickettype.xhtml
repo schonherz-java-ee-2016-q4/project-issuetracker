@@ -87,11 +87,39 @@
 						</div>
 					</div>
 					
+					<div class="panel panel-default">
+						<div class="panel-heading">#{mes.tickettype_status_order_title}</div>
+						<div class="panel-body">
+							<p:diagram value="#{modifyStatusOrderView.model}" style="height:600px" styleClass="ui-widget-content" var="el">
+								<f:facet name="element">
+									<h:outputText value="#{el}" style="display:block;margin-top:1em;"/>
+								</f:facet>
+								<p:ajax event="connect" listener="#{modifyStatusOrderView.onConnect}" />
+								<p:ajax event="disconnect" listener="#{modifyStatusOrderView.onDisconnect}" />
+							</p:diagram>
+						</div>
+					</div>
+					
 					<div class="row">
 						<div class="col-md-10 col-md-offset-2">
 							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" styleClass="pull-right" />
 						</div>
 					</div>
+					
+<style type="text/css">
+    .ui-diagram-element {
+        border:0.1em dotted #E5E4E2; 
+        background-color: #EFEEEC;
+        width:10em; 
+        height:4em;
+        text-align: center;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    }
+ 
+    .ui-diagram-element:hover {
+        background-color: #C7C6C4;
+    }
+</style>
 					
 				</div>
 			</div>
