@@ -19,8 +19,8 @@ public class UserVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = -2296591055910294732L;
 	
 	private String username;
-	
 	private String password;
+	private CompanyVo company;
 
 	private List<RoleVo> roles;
 }

@@ -13,8 +13,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
@@ -32,6 +35,12 @@ public class TypeCreateModifyView implements Serializable {
 	
 	@EJB
 	private StatusOrderServiceRemote statusOrderService;
+	
+	@EJB
+	private TypeServiceRemote typeService;
+	
+	@EJB
+	private CompanyServiceRemote companyServiceRemote;
 	
 	private TypeVo typevo;
 	private List<StatusVo> statuses;
@@ -109,8 +118,6 @@ public class TypeCreateModifyView implements Serializable {
 		for (StatusOrderViewModel model : modifyStatusOrderView.getStatusOrders()) {
 			StatusVo fromStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getFrom())).findFirst().get();
 			StatusVo toStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getTo())).findFirst().get();
-			log.debug("fromStatusVo id: " + fromStatusVo.getId());
-			log.debug("toStatusVo id: " + toStatusVo.getId());
 			StatusOrderVo newOrderVo = StatusOrderVo.builder()
 					.fromStatusId(fromStatusVo.getId())
 					.toStatusId(toStatusVo.getId())
@@ -118,11 +125,12 @@ public class TypeCreateModifyView implements Serializable {
 			statusOrderService.save(newOrderVo, "test");
 		}
 		
+		StatusVo comittedStartStatus = comittedStatuses.stream().filter(x -> x.getName().equals(startStatus.getName())).findFirst().get();
+		typevo.setStartEntity(comittedStartStatus);
+		CompanyVo companyVo = companyServiceRemote.findByName("test");
+		typevo.setCompany(companyVo);
 		
-		//typevo.setStartEntity(startStatus);
-		log.debug("startStatus id: " + startStatus.getId());
-		
-		//typeService.save(typevo, "test");
+		typeService.save(typevo, "test");
 		
 		
 		logCurrentStatus();
