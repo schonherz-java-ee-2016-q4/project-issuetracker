@@ -1,4 +1,4 @@
-package hu.schonherz.javatraining.issuetracker.web.view;
+package hu.schonherz.javatraining.issuetracker.web.view.tickettype;
 
 import java.io.IOException;
 import java.io.Serializable;

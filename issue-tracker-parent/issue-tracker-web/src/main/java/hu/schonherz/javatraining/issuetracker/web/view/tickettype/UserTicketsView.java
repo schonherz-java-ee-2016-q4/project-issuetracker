@@ -1,4 +1,4 @@
-package hu.schonherz.javatraining.issuetracker.web.view;
+package hu.schonherz.javatraining.issuetracker.web.view.tickettype;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;

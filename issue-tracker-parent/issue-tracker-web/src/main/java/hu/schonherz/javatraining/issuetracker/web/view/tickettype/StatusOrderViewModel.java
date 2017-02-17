@@ -1,4 +1,4 @@
-package hu.schonherz.javatraining.issuetracker.web.view;
+package hu.schonherz.javatraining.issuetracker.web.view.tickettype;
 
 import lombok.Builder;
 import lombok.Data;
