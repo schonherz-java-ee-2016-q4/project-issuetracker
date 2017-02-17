@@ -7,11 +7,38 @@
                 template="/templates/masterLayout.xhtml"
                 xmlns:sec="http://www.springframework.org/security/tags">
 
+    <ui:define name="customLink1">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="/secured/index.xhtml">#{mes.index}</p:link>
+            </c:when>
+        </c:choose>
+    </ui:define>
+    
+    <ui:define name="customLink2">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="/secured/tickets.xhtml">#{mes.tickets}</p:link>
+            </c:when>
+        </c:choose>
+    </ui:define>
+
+    <ui:define name="customLink3">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="/secured/tickettype.xhtml">#{mes.tickettype_create}</p:link>
+            </c:when>
+        </c:choose>
+    </ui:define>
+
     <ui:define name="customLogin">
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
                 <p:link href="/logout">#{mes.logout}</p:link>
             </c:when>
+            <c:otherwise>
+            	<p:link href="/public/login.xhtml">#{mes.login}</p:link>
+            </c:otherwise>
         </c:choose>
     </ui:define>
 </ui:composition>
