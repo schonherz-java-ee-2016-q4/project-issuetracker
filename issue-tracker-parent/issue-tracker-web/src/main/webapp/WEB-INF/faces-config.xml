@@ -15,6 +15,6 @@
             <base-name>.Messages</base-name>
             <var>mes</var>
         </resource-bundle>
-        <!--<message-bundle>issueTracker.Messages</message-bundle>-->
+        
     </application>
 </faces-config>

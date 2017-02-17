@@ -1,11 +1,16 @@
 package hu.schonherz.javatraining.issuetracker.core.entities;
 
 
-import lombok.*;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 
 @Entity
@@ -19,17 +24,5 @@ public class CompanyEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     private String name;
-
-
-    @PrePersist
-    public void prePersist() {
-        recDate = new Date();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        modDate = new Date();
-    }
 }
