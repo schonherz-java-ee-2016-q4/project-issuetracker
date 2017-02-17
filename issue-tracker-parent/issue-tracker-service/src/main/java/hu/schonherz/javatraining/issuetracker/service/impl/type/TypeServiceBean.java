@@ -9,6 +9,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import hu.schonherz.javatraining.issuetracker.core.dao.CompanyDao;
+import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
+import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -29,6 +32,9 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	@Autowired
 	private TypeDao typeDao;
 
+	@Autowired
+	private CompanyDao companyDao;
+
 	@Override
 	public TypeVo findById(Long id) {
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.findById(id));
@@ -47,7 +53,8 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	@Override
 	public TypeVo save(TypeVo type, String username) {
 		type.setRecUserName(username);
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
+		TypeEntity typeEntity= GenericVoMappers.typeVoMapper.toEntity(type);
+		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(typeEntity));
 	}
 
 	@Override
