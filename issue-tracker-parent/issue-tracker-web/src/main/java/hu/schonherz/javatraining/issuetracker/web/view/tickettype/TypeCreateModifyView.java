@@ -95,6 +95,12 @@ public class TypeCreateModifyView implements Serializable {
 			return;
 		}
 		
+		if (statuses.size() < 2) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_order_min")));
+			return;
+		}
+		
 		if (!isFullyConnected()) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_order_noconnect")));
