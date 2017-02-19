@@ -53,4 +53,10 @@ public class StatusOrderServiceBean implements StatusOrderServiceLocal, StatusOr
         return GenericVoMappers.statusOrderVoMapper.toVo(statusOrderDao.save(GenericVoMappers.statusOrderVoMapper.toEntity(statusOrder)));
 	}
 
+	@Override
+	public StatusOrderVo findByFromStatusIdAndToStatusId(Long fromId, Long toId) {
+		StatusOrderEntity statusOrder = statusOrderDao.findByFromStatusIdAndToStatusId(fromId, toId);
+        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
+	}
+
 }

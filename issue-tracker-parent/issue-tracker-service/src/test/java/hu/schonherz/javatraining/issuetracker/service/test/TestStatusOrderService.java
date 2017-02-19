@@ -102,4 +102,17 @@ public class TestStatusOrderService {
 			return null;
 		});
 	}
+	
+	@Test
+	public void test6FindByFromStatusIdAndToStatusId() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				StatusOrderVo vo = serviceLocal.findByFromStatusIdAndToStatusId(2L, 1L);
+				Assert.assertNotEquals(vo, null);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		});
+	}
 }

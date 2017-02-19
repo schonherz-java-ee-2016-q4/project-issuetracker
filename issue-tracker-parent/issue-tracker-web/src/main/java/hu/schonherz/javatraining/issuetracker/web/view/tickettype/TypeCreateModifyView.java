@@ -180,7 +180,12 @@ public class TypeCreateModifyView implements Serializable {
 
 		List<StatusVo> comittedStatuses = new ArrayList<>();
 		for (StatusVo statusVo : statuses) {
-			statusVo = statusService.save(statusVo, user.getUsername());
+			if (statusVo.getId() == null) {
+				statusVo = statusService.save(statusVo, user.getUsername());
+			} else {
+				statusVo = statusService.update(statusVo, user.getUsername());
+			}
+			
 			comittedStatuses.add(statusVo);
 			log.debug("commited status: " + statusVo.getName() + " id: " + statusVo.getId());
 		}
@@ -188,6 +193,15 @@ public class TypeCreateModifyView implements Serializable {
 		for (StatusOrderViewModel model : modifyStatusOrderView.getStatusOrders()) {
 			StatusVo fromStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getFrom())).findFirst().get();
 			StatusVo toStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getTo())).findFirst().get();
+			
+			if (typevo.getId() != null) {
+				StatusOrderVo statusOrderVo = statusOrderService.findByFromStatusIdAndToStatusId(fromStatusVo.getId(), toStatusVo.getId());
+				if (statusOrderVo != null) {
+					statusOrderService.update(statusOrderVo, user.getUsername());
+					continue;
+				}
+			}
+			
 			StatusOrderVo newOrderVo = StatusOrderVo.builder()
 					.fromStatusId(fromStatusVo.getId())
 					.toStatusId(toStatusVo.getId())
@@ -197,10 +211,14 @@ public class TypeCreateModifyView implements Serializable {
 		
 		StatusVo comittedStartStatus = comittedStatuses.stream().filter(x -> x.getName().equals(startStatus.getName())).findFirst().get();
 		typevo.setStartEntity(comittedStartStatus);
-		
 		typevo.setCompany(user.getCompany());
 		
-		typeService.save(typevo, user.getUsername());
+		if (typevo.getId() == null) {
+			typeService.save(typevo, user.getUsername());
+		}
+		else {
+			typeService.update(typevo, user.getUsername());
+		}
 		
 		logCurrentStatus();
 		
