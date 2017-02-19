@@ -21,11 +21,16 @@ public class CurrentTicketView {
 
     private Long currentTicketId;
     private TicketVo currentTicket;
+    private Long id;
 
     @PostConstruct
     public void init() {
-        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        currentTicketId = Long.valueOf(req.getParameter("id"));
+//        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        currentTicketId = Long.valueOf(req.getParameter("id"));
         currentTicket = ticketService.findById(currentTicketId);
+    }
+
+    public void goToTicketDetails() {
+        currentTicketId = id;
     }
 }
