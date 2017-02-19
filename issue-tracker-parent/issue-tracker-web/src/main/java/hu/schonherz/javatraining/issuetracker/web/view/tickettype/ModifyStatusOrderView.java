@@ -38,6 +38,7 @@ public class ModifyStatusOrderView implements Serializable {
 
 	private DefaultDiagramModel model;
 	private List<StatusOrderViewModel> statusOrders;
+	private List<StatusOrderViewModel> oldStatusOrders;
 	
 	public void init() {
 		model = new DefaultDiagramModel();
@@ -48,6 +49,7 @@ public class ModifyStatusOrderView implements Serializable {
 		connector.setHoverPaintStyle(String.format("{fillStyle:'%s'}", ICON_HOVER_COLOR));
 		model.setDefaultConnector(connector);
 		statusOrders = new ArrayList<>();
+		oldStatusOrders = new ArrayList<>();
 	}
 	
 	public void generateDiagram(List<StatusVo> statuses, List<StatusOrderViewModel> statusOrders) {
@@ -120,9 +122,19 @@ public class ModifyStatusOrderView implements Serializable {
 		String from = (String)event.getSourceElement().getData();
 		String to = (String)event.getTargetElement().getData();
 		log.debug("Connected from " + from + " to " + to);
+		
+		for (StatusOrderViewModel statusOrderViewModel : oldStatusOrders) {
+			if (statusOrderViewModel.getFrom().equals(from) && statusOrderViewModel.getTo().equals(to)) {
+				statusOrders.add(statusOrderViewModel);
+				oldStatusOrders.remove(statusOrderViewModel);
+				return;
+			}
+		}
+		
 		statusOrders.add(StatusOrderViewModel.builder()
 				.from(from)
 				.to(to)
+				.isOriginal(false)
 				.build());
 	}
 
@@ -130,7 +142,11 @@ public class ModifyStatusOrderView implements Serializable {
 		String from = (String)event.getSourceElement().getData();
 		String to = (String)event.getTargetElement().getData();
 		log.debug("Disconnected from " + from + " to " + to);
-		statusOrders.removeIf(x -> from.equals(x.getFrom()) && to.equals(x.getTo()) );
+		StatusOrderViewModel statusOrderViewModel = statusOrders.stream().filter(x -> x.getFrom().equals(from) && x.getTo().equals(to)).findFirst().get();
+		if (statusOrderViewModel.isOriginal()) {
+			oldStatusOrders.add(statusOrderViewModel);
+		}
+		statusOrders.remove(statusOrderViewModel);
 	}
 
 	private EndPoint createDotEndPoint(EndPointAnchor anchor) {

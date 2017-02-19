@@ -1,5 +1,7 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
+import java.util.List;
+
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 
@@ -52,7 +54,7 @@ public class TestStatusOrderService {
 	public void test2FindByFromStatusId() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				StatusOrderVo vo = serviceLocal.findByFromStatusId(0L);
+				StatusOrderVo vo = serviceLocal.findByFromStatusId(0L).get(0);
 				Assert.assertEquals(vo.getFromStatusId().longValue(), 0L);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -65,7 +67,7 @@ public class TestStatusOrderService {
 	public void test3FindByToStatusId() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				StatusOrderVo vo = serviceLocal.findByToStatusId(1L);
+				StatusOrderVo vo = serviceLocal.findByToStatusId(1L).get(0);
 				Assert.assertEquals(vo.getToStatusId().longValue(), 1L);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -78,7 +80,7 @@ public class TestStatusOrderService {
 	public void test4Update() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				StatusOrderVo vo = serviceLocal.findByFromStatusId(0L);
+				StatusOrderVo vo = serviceLocal.findByFromStatusId(0L).get(0);
 				vo.setFromStatusId(2L);
 				serviceLocal.update(vo, "testUser");
 			} catch (Exception e) {
@@ -92,7 +94,7 @@ public class TestStatusOrderService {
 	public void test5FindByFromStatusIdAfterUpdate() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				StatusOrderVo vo = serviceLocal.findByFromStatusId(2L);
+				StatusOrderVo vo = serviceLocal.findByFromStatusId(2L).get(0);
 				Assert.assertEquals(vo.getFromStatusId().longValue(), 2L);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -100,4 +102,31 @@ public class TestStatusOrderService {
 			return null;
 		});
 	}
+	
+	@Test
+	public void test6FindByFromStatusIdAndToStatusId() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				StatusOrderVo vo = serviceLocal.findByFromStatusIdAndToStatusId(2L, 1L);
+				Assert.assertNotEquals(vo, null);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		});
+	}
+	
+	@Test
+	public void test7Delete() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				StatusOrderVo vo = serviceLocal.findByFromStatusIdAndToStatusId(2L, 1L);
+				serviceLocal.deleteById(vo.getId());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		});
+	}
+	
 }

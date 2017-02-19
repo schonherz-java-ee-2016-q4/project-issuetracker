@@ -8,4 +8,5 @@ import lombok.Data;
 public class StatusOrderViewModel {
 	private String from;
 	private String to;
+	private boolean isOriginal;
 }
