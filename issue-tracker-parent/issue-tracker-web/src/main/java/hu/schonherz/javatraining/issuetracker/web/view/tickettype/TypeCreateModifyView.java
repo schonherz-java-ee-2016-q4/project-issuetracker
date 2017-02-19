@@ -28,6 +28,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
 
@@ -68,6 +69,9 @@ public class TypeCreateModifyView implements Serializable {
 
 	@ManagedProperty(value = "#{modifyStatusOrderView}")
 	private ModifyStatusOrderView modifyStatusOrderView;
+	
+	@ManagedProperty("#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 	
 	@PostConstruct
 	public void init() {
@@ -174,13 +178,8 @@ public class TypeCreateModifyView implements Serializable {
 			return;
 		}
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserVo user = userService.findByUsername(auth.getName());
-		log.debug("user: " + user.getUsername());
-		log.debug("user comapny: " + user.getCompany());
-		
 		if (typevo.getId() == null) {
-			TypeVo typeWithSameName = typeService.findByNameAndCompany(typevo.getName(), user.getCompany());
+			TypeVo typeWithSameName = typeService.findByNameAndCompany(typevo.getName(), userSessionBean.getCurrentUser().getCompany());
 			if (typeWithSameName != null) {
 				context.addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_alreadyinuser")));
@@ -191,9 +190,9 @@ public class TypeCreateModifyView implements Serializable {
 		List<StatusVo> comittedStatuses = new ArrayList<>();
 		for (StatusVo statusVo : statuses) {
 			if (statusVo.getId() == null) {
-				statusVo = statusService.save(statusVo, user.getUsername());
+				statusVo = statusService.save(statusVo, userSessionBean.getUserName());
 			} else {
-				statusVo = statusService.update(statusVo, user.getUsername());
+				statusVo = statusService.update(statusVo, userSessionBean.getUserName());
 			}
 			
 			comittedStatuses.add(statusVo);
@@ -214,7 +213,7 @@ public class TypeCreateModifyView implements Serializable {
 			if (typevo.getId() != null) {
 				StatusOrderVo statusOrderVo = statusOrderService.findByFromStatusIdAndToStatusId(fromStatusVo.getId(), toStatusVo.getId());
 				if (statusOrderVo != null) {
-					statusOrderService.update(statusOrderVo, user.getUsername());
+					statusOrderService.update(statusOrderVo, userSessionBean.getUserName());
 					continue;
 				}
 			}
@@ -223,18 +222,18 @@ public class TypeCreateModifyView implements Serializable {
 					.fromStatusId(fromStatusVo.getId())
 					.toStatusId(toStatusVo.getId())
 					.build();
-			statusOrderService.save(newOrderVo, user.getUsername());
+			statusOrderService.save(newOrderVo, userSessionBean.getUserName());
 		}
 		
 		StatusVo comittedStartStatus = comittedStatuses.stream().filter(x -> x.getName().equals(startStatus.getName())).findFirst().get();
 		typevo.setStartEntity(comittedStartStatus);
-		typevo.setCompany(user.getCompany());
+		typevo.setCompany(userSessionBean.getCurrentUser().getCompany());
 		
 		if (typevo.getId() == null) {
-			typeService.save(typevo, user.getUsername());
+			typeService.save(typevo, userSessionBean.getUserName());
 		}
 		else {
-			typeService.update(typevo, user.getUsername());
+			typeService.update(typevo, userSessionBean.getUserName());
 		}
 		
 		logCurrentStatus();
