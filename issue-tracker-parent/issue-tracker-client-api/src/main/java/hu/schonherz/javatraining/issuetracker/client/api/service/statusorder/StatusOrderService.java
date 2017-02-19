@@ -13,4 +13,6 @@ public interface StatusOrderService {
 	//rákövetkezők módosításának engedélyezése
 	StatusOrderVo update(StatusOrderVo statusOrder, String username);
 	//törlést nem engedélyezzük, esetleg később
+	
+	void deleteById(Long id);
 }

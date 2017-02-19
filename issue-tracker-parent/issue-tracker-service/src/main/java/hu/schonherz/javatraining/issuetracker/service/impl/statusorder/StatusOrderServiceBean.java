@@ -59,4 +59,8 @@ public class StatusOrderServiceBean implements StatusOrderServiceLocal, StatusOr
         return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
 	}
 
+	@Override
+	public void deleteById(Long id) {
+		statusOrderDao.delete(id);
+	}
 }

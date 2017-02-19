@@ -107,6 +107,7 @@ public class TypeCreateModifyView implements Serializable {
 				StatusOrderViewModel newOrder = StatusOrderViewModel.builder()
 						.from(status.getName())
 						.to(to.getName())
+						.isOriginal(true)
 						.build();
 				back.add(newOrder);
 			}
@@ -188,6 +189,13 @@ public class TypeCreateModifyView implements Serializable {
 			
 			comittedStatuses.add(statusVo);
 			log.debug("commited status: " + statusVo.getName() + " id: " + statusVo.getId());
+		}
+		
+		for (StatusOrderViewModel model : modifyStatusOrderView.getOldStatusOrders()) {
+			StatusVo fromStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getFrom())).findFirst().get();
+			StatusVo toStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getTo())).findFirst().get();
+			StatusOrderVo statusOrderVo = statusOrderService.findByFromStatusIdAndToStatusId(fromStatusVo.getId(), toStatusVo.getId());
+			statusOrderService.deleteById(statusOrderVo.getId());
 		}
 		
 		for (StatusOrderViewModel model : modifyStatusOrderView.getStatusOrders()) {

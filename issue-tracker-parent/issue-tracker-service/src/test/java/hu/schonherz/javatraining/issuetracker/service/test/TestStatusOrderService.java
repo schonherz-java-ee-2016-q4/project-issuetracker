@@ -115,4 +115,18 @@ public class TestStatusOrderService {
 			return null;
 		});
 	}
+	
+	@Test
+	public void test7Delete() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				StatusOrderVo vo = serviceLocal.findByFromStatusIdAndToStatusId(2L, 1L);
+				serviceLocal.deleteById(vo.getId());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		});
+	}
+	
 }
