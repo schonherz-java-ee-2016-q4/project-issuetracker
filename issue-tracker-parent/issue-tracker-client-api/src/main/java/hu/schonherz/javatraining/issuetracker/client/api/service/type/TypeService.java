@@ -7,7 +7,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 
 public interface TypeService {
 	TypeVo findById(Long id);
-	TypeVo findByName(String name);
+	TypeVo findByNameAndCompany(String name, CompanyVo company);
 	List<TypeVo> findByCompany(CompanyVo company);
 	TypeVo save(TypeVo type, String username);
 	TypeVo update(TypeVo type, String username);

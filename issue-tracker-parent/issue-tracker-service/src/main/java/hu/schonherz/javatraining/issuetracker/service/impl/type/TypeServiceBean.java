@@ -9,9 +9,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
-import hu.schonherz.javatraining.issuetracker.core.dao.CompanyDao;
-import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
-import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -20,6 +17,8 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServic
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.TypeDao;
+import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
+import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
 @Stateless(mappedName = "TypeService")
@@ -32,17 +31,15 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	@Autowired
 	private TypeDao typeDao;
 
-	@Autowired
-	private CompanyDao companyDao;
-
 	@Override
 	public TypeVo findById(Long id) {
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.findById(id));
 	}
 
 	@Override
-	public TypeVo findByName(String name) {
-        return GenericVoMappers.typeVoMapper.toVo(typeDao.findByName(name));
+	public TypeVo findByNameAndCompany(String name, CompanyVo company) {
+		CompanyEntity companyEntity = GenericVoMappers.companyVoMapper.toEntity(company);
+        return GenericVoMappers.typeVoMapper.toVo(typeDao.findByNameAndCompany(name, companyEntity));
 	}
 
 	@Override

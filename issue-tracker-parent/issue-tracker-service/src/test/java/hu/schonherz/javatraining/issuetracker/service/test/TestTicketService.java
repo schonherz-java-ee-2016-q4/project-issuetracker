@@ -58,7 +58,7 @@ public class TestTicketService {
                 statusVo.setDescription("test");
 
                 
-                TypeVo typeVo = typeService.findByName("testType");
+                TypeVo typeVo = typeService.findByNameAndCompany("testType", companyVo);
                 
 
                 UserVo userVO = new UserVo();

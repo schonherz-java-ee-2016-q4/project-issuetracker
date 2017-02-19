@@ -178,7 +178,16 @@ public class TypeCreateModifyView implements Serializable {
 		UserVo user = userService.findByUsername(auth.getName());
 		log.debug("user: " + user.getUsername());
 		log.debug("user comapny: " + user.getCompany());
-
+		
+		if (typevo.getId() == null) {
+			TypeVo typeWithSameName = typeService.findByNameAndCompany(typevo.getName(), user.getCompany());
+			if (typeWithSameName != null) {
+				context.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_alreadyinuser")));
+				return;
+			}
+		}
+		
 		List<StatusVo> comittedStatuses = new ArrayList<>();
 		for (StatusVo statusVo : statuses) {
 			if (statusVo.getId() == null) {
