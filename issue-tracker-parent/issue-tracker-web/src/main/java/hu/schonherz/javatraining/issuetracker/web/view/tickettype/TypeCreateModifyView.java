@@ -15,19 +15,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
