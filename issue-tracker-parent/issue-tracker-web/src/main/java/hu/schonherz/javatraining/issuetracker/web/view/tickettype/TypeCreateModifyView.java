@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
@@ -70,14 +71,72 @@ public class TypeCreateModifyView implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		
 		typevo = new TypeVo();
-
 		statuses = new ArrayList<>();
 		List<StatusOrderViewModel> statusOrders = new ArrayList<>();
 		
+		Map<String, String> params =FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap();
+		String typevo_id = params.get("id");
+		log.debug("passed paramter: " + typevo_id);
+		
+		if (typevo_id != null) {
+			typevo = typeService.findById(Long.parseLong(typevo_id));
+			StatusVo startVo = typevo.getStartEntity();
+			statuses.add(startVo);
+			getStatusesFrom(startVo);
+			
+			statusOrders = getStatusOrder();
+		}
+		
+		
 		modifyStatusOrderView.init();
 		modifyStatusOrderView.generateDiagram(statuses, statusOrders);
+	}
+	
+	private List<StatusOrderViewModel> getStatusOrder() {
+		List<StatusOrderViewModel> back = new ArrayList<>();
+		
+		for (StatusVo status : statuses) {
+			List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
+			
+			for (StatusOrderVo statusOrder : fromStatuses) {
+				
+				StatusVo to = statuses.stream().filter(x -> x.getId() == statusOrder.getToStatusId()).findFirst().get();
+				
+				StatusOrderViewModel newOrder = StatusOrderViewModel.builder()
+						.from(status.getName())
+						.to(to.getName())
+						.build();
+				back.add(newOrder);
+			}
+		}
+		
+		return back;
+	}
+	
+	private void getStatusesFrom(StatusVo status) {
+		List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
+		boolean isNew;
+		
+		for (StatusOrderVo statusOrder : fromStatuses) {
+			isNew = true;
+			
+			//check if already in our scope
+			for (StatusVo statusInStatuses : statuses) {
+				if (statusInStatuses.getId() == statusOrder.getToStatusId()) {
+					isNew = false;
+					break;
+				}
+			}
+			
+			if (isNew) {
+				StatusVo newStatus = statusService.findById(statusOrder.getToStatusId());
+				statuses.add(newStatus);
+				getStatusesFrom(newStatus);
+			}
+		}
+		
 	}
 
 	public void save() {
