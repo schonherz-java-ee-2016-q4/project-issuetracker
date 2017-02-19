@@ -1,5 +1,7 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.statusorder;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -28,14 +30,14 @@ public class StatusOrderServiceBean implements StatusOrderServiceLocal, StatusOr
 	private StatusOrderDao statusOrderDao;
 	
 	@Override
-	public StatusOrderVo findByFromStatusId(Long id) {
-		StatusOrderEntity statusOrder = statusOrderDao.findByFromStatusId(id);
+	public List<StatusOrderVo> findByFromStatusId(Long id) {
+		List<StatusOrderEntity> statusOrder = statusOrderDao.findByFromStatusId(id);
         return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
 	}
 
 	@Override
-	public StatusOrderVo findByToStatusId(Long id) {
-		StatusOrderEntity statusOrder = statusOrderDao.findByToStatusId(id);
+	public List<StatusOrderVo> findByToStatusId(Long id) {
+		List<StatusOrderEntity> statusOrder = statusOrderDao.findByToStatusId(id);
         return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
 	}
 
