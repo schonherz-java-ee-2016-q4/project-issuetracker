@@ -1,6 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
@@ -149,6 +149,20 @@ public class TestTypeService {
 				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
 				TypeVo vo = serviceLocal.findByNameAndCompany("testType_updated", companyVo);
 				Assert.assertEquals("testType_updated", vo.getName());
+			} catch (Exception e) {
+				log.error("Error in findbyname after update", e);
+			}
+			return null;
+		});
+	}
+	
+	@Test
+	public void test7FindByCompany() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				List<TypeVo> findByCompany = serviceLocal.findByCompany(companyVo);
+				Assert.assertEquals(findByCompany.size(), 1);
 			} catch (Exception e) {
 				log.error("Error in findbyname after update", e);
 			}

@@ -1,7 +1,5 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import java.util.List;
-
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 
