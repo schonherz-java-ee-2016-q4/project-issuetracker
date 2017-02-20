@@ -44,6 +44,12 @@
                     <p:column headerText="#{mes.user}" sortBy="#{ticket.user.username}">
                         <h:outputText value="#{ticket.user.username}" />
                     </p:column>
+
+                    <p:column headerText="#{mes.details}">
+                        <p:button outcome="ticketdetails" value="Details" icon="ui-icon-star">
+                            <f:param name="currentTicketId" value="#{ticket.id}" />
+                        </p:button>
+                    </p:column>
                 </p:dataTable>
 
             </h:form>

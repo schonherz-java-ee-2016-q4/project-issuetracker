@@ -1,40 +1,24 @@
-package hu.schonherz.javatraining.issuetracker.web.view;
+package hu.schonherz.javatraining.issuetracker.web.beans;
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
-import java.util.List;
 
-@ManagedBean(name = "userTicketsView")
-@ViewScoped
-public class UserTicketsView implements Serializable {
+@SessionScoped
+@ManagedBean(name = "userSessionBean")
+public class UserSessionBean {
 
     @EJB
     private UserServiceRemote userService;
 
-    @EJB
-    private TicketServiceRemote ticketService;
-
-    private String userName;
     private UserVo currentUser;
-    private List<TicketVo> tickets;
-
-    public List<TicketVo> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<TicketVo> tickets) {
-        this.tickets = tickets;
-    }
+    private String userName;
 
     @PostConstruct
     public void init() {
@@ -42,8 +26,34 @@ public class UserTicketsView implements Serializable {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         userName = request.getUserPrincipal().getName();
         currentUser = userService.findByUsername(userName);
-        tickets = ticketService.findByUser(currentUser);
     }
+
+    public UserServiceRemote getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserServiceRemote userService) {
+        this.userService = userService;
+    }
+
+    public UserVo getCurrentUser() {
+        init();
+        return currentUser;
+    }
+
+    public void setCurrentUser(UserVo currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
 
 
 }

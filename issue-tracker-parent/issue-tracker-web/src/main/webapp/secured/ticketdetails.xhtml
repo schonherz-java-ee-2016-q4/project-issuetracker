@@ -9,6 +9,10 @@
 
     <ui:define name="customHead">
 
+        <f:metadata>
+            <f:viewParam name="currentTicketId" value="#{currentTicketView.currentTicketId}" />
+        </f:metadata>
+
     </ui:define>
 
     <ui:define name="customBody">
@@ -60,10 +64,14 @@
 
                 <div class="container">
 
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
                     <div class="form-group col-md-8 col-md-offset-2">
-                        <label for="comment">Comment:</label>
-                        <textarea class="form-control" rows="5" id="comment"></textarea>
-                        <input type="submit" value="#{mes.send}" class="btn btn-primary"></input>
+                        <h:form>
+                        <label for="commentText">Comment:</label>
+                        <p:inputTextarea rows="6" cols="33" id="commentText" />
+                        <p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="comment" />
+                        </h:form>
                     </div>
 
                 </div>

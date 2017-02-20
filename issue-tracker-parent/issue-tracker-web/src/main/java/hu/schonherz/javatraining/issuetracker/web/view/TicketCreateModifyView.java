@@ -1,16 +1,17 @@
 package hu.schonherz.javatraining.issuetracker.web.view;
 
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
+import lombok.extern.log4j.Log4j;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,49 +19,65 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
+
 
 import static hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum.CREATED;
 
 @ManagedBean(name = "ticketCreateModifyView")
 @ViewScoped
+@Log4j
 public class TicketCreateModifyView implements Serializable{
 
-    @ManagedProperty("#{mes}")
-    private ResourceBundle bundle;
+
+
     private String recUserName;
     private String uid;
     private String threeLetterCompanyID;
     private String title;
     private String description;
     private String clientMail;
+
+
     private String companyName;
     private String statusName;
+    private String typeName;
 
-    private TypeVo type;
     private UserVo user;
     private List<CommentVo> comments;
     private List<HistoryVo> history;
     private TicketVo ticketVo;
 
 
+
+    private List<CompanyVo> companies;
+    private List<TypeVo> types;
+    private List<StatusVo> statuses;
+
+
     @EJB
-    private TicketServiceLocal ticketServiceLocal;
+    private TicketServiceRemote ticketServiceRemote;
     @EJB
-    private CompanyServiceLocal companyServiceLocal;
+    private CompanyServiceRemote companyServiceRemote;
     @EJB
-    private StatusServiceLocal statusServiceLocal;
+    private StatusServiceRemote statusServiceRemote;
+    @EJB
+    private TypeServiceRemote typeServiceRemote;
+
 
 
     @PostConstruct
     public void init() {
-       ticketVo = new TicketVo();
+        ticketVo = new TicketVo();
+
+        setCompanies(companyServiceRemote.findAll());
+        setTypes(typeServiceRemote.findAll());
+        setStatuses(statusServiceRemote.findAll());
 
         history = new ArrayList<>();
         history.add(HistoryVo.builder().ticket(ticketVo).modStatus(CREATED).build());
 
         comments = new ArrayList<>();
-        comments.add(CommentVo.builder().commentText(bundle.getString("ticket_no_comment")));
+        comments.add(CommentVo.builder().commentText("ticket_no_comment").build());
 
     }
 
@@ -69,9 +86,10 @@ public class TicketCreateModifyView implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         log.debug("mentes");
 
-        threeLetterCompanyID=CompanyVo.getName().substring(0,2);
-        threeLetterCompanyID.toUpperCase();
-        uid=threeLetterCompanyID+String.valueOf(user.getId());
+
+
+        threeLetterCompanyID=getCompanyName().substring(0,2);
+        uid=threeLetterCompanyID+String.valueOf(ticketVo.getId());
 
         if ("".equals(uid)) {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "longerroruid");
@@ -95,28 +113,28 @@ public class TicketCreateModifyView implements Serializable{
         }
 
         ticketVo.builder()
-                .uid(getUid())
-                .title(getTitle())
-                .description(getDescription())
-                .clientMail(getClientMail())
-                .companyVo(companyServiceLocal.findByName(companyName))
-                .type(getType())
-                .currentStatus(statusServiceLocal.findByName(statusName))
-                .commets(getComments())
-                .history(getHistory())
+                .uid(this.getUid())
+                .title(this.getTitle())
+                .description(this.getDescription())
+                .clientMail(this.getClientMail())
+                .company(companyServiceRemote.findByName(this.getCompanyName()))
+                .type(typeServiceRemote.findByName(this.getTypeName()))
+                .currentStatus(statusServiceRemote.findByName(this.getStatusName()))
+                .comments(this.getComments())
+                .history(this.getHistory())
                 .build();
 
         try{
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             recUserName = request.getUserPrincipal().getName();
-            ticketServiceLocal.save(ticketVo, recUserName);
+            ticketServiceRemote.save(ticketVo, recUserName);
         }
         catch (Exception e)
         {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "ticketerror!");
             context.addMessage(null, facesMessage);
             return;
-            log.error("Nem sikerült menteni a ticketet",e.printStackTrace());
+
         }
     }
 
@@ -152,14 +170,6 @@ public class TicketCreateModifyView implements Serializable{
         this.clientMail = clientMail;
     }
 
-    public TypeVo getType() {
-        return type;
-    }
-
-    public void setType(TypeVo type) {
-        this.type = type;
-    }
-
     public UserVo getUser() {
         return user;
     }
@@ -168,13 +178,6 @@ public class TicketCreateModifyView implements Serializable{
         this.user = user;
     }
 
-    public StatusVo getCurrentStatus() {
-        return currentStatus;
-    }
-
-    public void setCurrentStatus(StatusVo currentStatus) {
-        this.currentStatus = currentStatus;
-    }
 
     public List<CommentVo> getComments() {
         return comments;
@@ -192,20 +195,62 @@ public class TicketCreateModifyView implements Serializable{
         this.history = history;
     }
 
-    public TicketServiceLocal getTicketServiceLocal() {
-        return ticketServiceLocal;
+    public TicketServiceRemote getTicketServiceRemote() {
+        return ticketServiceRemote;
     }
 
-    public void setTicketServiceLocal(TicketServiceLocal ticketServiceLocal) {
-        this.ticketServiceLocal = ticketServiceLocal;
+    public void setTicketServiceRemote(TicketServiceRemote ticketServiceRemote) {
+        this.ticketServiceRemote = ticketServiceRemote;
     }
 
-    public CompanyVo getCompanyVo() {
-        return companyVo;
+
+    public List<CompanyVo> getCompanies() {
+        return companies;
     }
 
-    public void setCompanyVo(CompanyVo companyVo) {
-        this.companyVo = companyVo;
+    public void setCompanies(List<CompanyVo> companies) {
+        this.companies = companies;
     }
+
+    public List<TypeVo> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<TypeVo> types) {
+        this.types = types;
+    }
+
+    public List<StatusVo> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<StatusVo> statuses) {
+        this.statuses = statuses;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+
 
 }

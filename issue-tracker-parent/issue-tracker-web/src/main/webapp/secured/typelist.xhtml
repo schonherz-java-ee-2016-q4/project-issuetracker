@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/issueTrackerMasterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="customTitle">IssueTracker - #{mes.tickettype_title}</ui:define>
+
+	<ui:define name="customHead">
+	</ui:define>
+
+	<ui:define name="customBody">
+		<h:form id="typelist">
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>#{mes.tickettypes}</h3>
+				</div>
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+				<div class="panel-body">
+					<div class="panel panel-default">
+						<div class="panel-heading">#{mes.tickettype_details_title}</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-2"><p:outputLabel value="#{mes.tickettype_list_select}" for="dd" /></div>
+								<div class="col-md-10">
+									<p:autoComplete id="dd" dropdown="true" value="#{typeListView.selected}"
+										completeMethod="#{typeListView.completeText}">
+										<p:ajax event="itemSelect" listener="#{typeListView.onItemSelect}" />
+									</p:autoComplete>
+									<p:commandButton action="#{typeListView.submit()}" value="#{mes.tickettype_list_modify}" update="typelist" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-offset-2 col-md-10"><p:button outcome="tickettype" value="#{mes.tickettype_list_create}" /></div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

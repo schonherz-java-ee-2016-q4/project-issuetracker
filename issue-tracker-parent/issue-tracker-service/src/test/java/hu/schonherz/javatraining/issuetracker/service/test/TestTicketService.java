@@ -1,7 +1,10 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
+import java.util.List;
+
+import javax.annotation.ManagedBean;
+import javax.ejb.EJB;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -10,11 +13,13 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import javax.annotation.ManagedBean;
-import javax.ejb.EJB;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ManagedBean
@@ -26,6 +31,12 @@ public class TestTicketService {
 
     @EJB
     private TestUserService.Caller transactionalCaller;
+    
+    @EJB
+    TypeServiceLocal typeService;
+    
+    @EJB
+    CompanyServiceLocal companyService;
 
     @Before
     public void startTheContainer() throws Exception {
@@ -40,41 +51,11 @@ public class TestTicketService {
     public void test1Save() throws Exception {
         transactionalCaller.call(() -> {
             try {
-                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-
-                CompanyVo companyVo = new CompanyVo();
-                companyVo.setId(1L);
-                companyVo.setRecUserName("test");
-                companyVo.setModUserName("test");
-                companyVo.setRecUserId(2L);
-                companyVo.setModUserId(3L);
-                companyVo.setRecDate(fmt.parse("2017-02-13"));
-                companyVo.setModDate(fmt.parse("2017-02-13"));
-                companyVo.setName("testCompany");
-
-                StatusVo statusVo = new StatusVo();
-                statusVo.setId(1L);
-                statusVo.setRecUserName("test");
-                statusVo.setModUserName("test");
-                statusVo.setRecDate(fmt.parse("2017-02-13"));
-                statusVo.setModDate(fmt.parse("2017-02-13"));
-                statusVo.setName("test");
-                statusVo.setDescription("test");
-
-                TypeVo typeVo = new TypeVo();
-                typeVo.setName("testStatus");
-                typeVo.setDescription("testDescription");
-                typeVo.setCompany(companyVo);
-                typeVo.setStartEntity(statusVo);
-
+                CompanyVo companyVo = companyService.findByName("testCompany");
+                TypeVo typeVo = typeService.findByNameAndCompany("testType", companyVo);
 
                 UserVo userVO = new UserVo();
                 userVO.setUsername("TestUser");
-
-                CommentVo commentVo = new CommentVo();
-                commentVo.setCommentText("TestCommentText");
-                List<CommentVo> commentVoList = new ArrayList<>();
-                commentVoList.add(commentVo);
 
                 TicketVo ticketVo = new TicketVo();
                 ticketVo.setUid("TestUid");
@@ -82,17 +63,8 @@ public class TestTicketService {
                 ticketVo.setDescription("TestDescription");
                 ticketVo.setClientMail("TestClientMail");
                 ticketVo.setType(typeVo);
-                ticketVo.setCurrentStatus(statusVo);
+                ticketVo.setCurrentStatus(typeVo.getStartEntity());
                 ticketVo.setUser(userVO);
-                ticketVo.setComments(commentVoList);
-
-                HistoryVo historyVo = new HistoryVo();
-                historyVo.setTicket(null);
-                historyVo.setModStatus(HistoryEnum.CREATED);
-                List<HistoryVo> historyVoList = new ArrayList<>();
-                historyVoList.add(historyVo);
-
-                ticketVo.setHistory(historyVoList);
 
                 serviceLocal.save(ticketVo, "TestUser");
 

@@ -17,6 +17,8 @@ import hu.schonherz.javatraining.issuetracker.core.dao.CompanyDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
+import java.util.List;
+
 @Stateless(mappedName = "CompanyService")
 @Local(CompanyServiceLocal.class)
 @Remote(CompanyServiceRemote.class)
@@ -38,7 +40,7 @@ public class CompanyServiceBean implements CompanyServiceLocal, CompanyServiceRe
         CompanyEntity company = companyDao.findByName(name);
         return GenericVoMappers.companyVoMapper.toVo(company);
     }
-    
+
     @Override
     public CompanyVo save(CompanyVo company, String username) {
         company.setRecUserName(username);
@@ -50,4 +52,11 @@ public class CompanyServiceBean implements CompanyServiceLocal, CompanyServiceRe
         company.setModUserName(username);
         return GenericVoMappers.companyVoMapper.toVo(companyDao.save(GenericVoMappers.companyVoMapper.toEntity(company)));
     }
+
+    @Override
+    public List<CompanyVo> findAll() {
+        return GenericVoMappers.companyVoMapper.toVo(companyDao.findAll());
+    }
 }
+
+
