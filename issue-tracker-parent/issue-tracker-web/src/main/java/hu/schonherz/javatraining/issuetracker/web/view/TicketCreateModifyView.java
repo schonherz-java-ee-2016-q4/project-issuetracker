@@ -40,8 +40,8 @@ public class TicketCreateModifyView implements Serializable{
 
     private String companyName;
     private String statusName;
+    private String typeName;
 
-    private TypeVo type;
     private UserVo user;
     private List<CommentVo> comments;
     private List<HistoryVo> history;
@@ -52,8 +52,6 @@ public class TicketCreateModifyView implements Serializable{
     private List<CompanyVo> companies;
     private List<TypeVo> types;
     private List<StatusVo> statuses;
-
-
 
 
     @EJB
@@ -69,10 +67,10 @@ public class TicketCreateModifyView implements Serializable{
 
     @PostConstruct
     public void init() {
-       ticketVo = new TicketVo();
+        ticketVo = new TicketVo();
 
-        setCompanies( companyServiceRemote.findAll());
-        setTypes( typeServiceRemote.findAll());
+        setCompanies(companyServiceRemote.findAll());
+        setTypes(typeServiceRemote.findAll());
         setStatuses(statusServiceRemote.findAll());
 
         history = new ArrayList<>();
@@ -88,8 +86,9 @@ public class TicketCreateModifyView implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         log.debug("mentes");
 
+
+
         threeLetterCompanyID=getCompanyName().substring(0,2);
-        threeLetterCompanyID.toUpperCase();
         uid=threeLetterCompanyID+String.valueOf(ticketVo.getId());
 
         if ("".equals(uid)) {
@@ -114,15 +113,15 @@ public class TicketCreateModifyView implements Serializable{
         }
 
         ticketVo.builder()
-                .uid(getUid())
-                .title(getTitle())
-                .description(getDescription())
-                .clientMail(getClientMail())
-                .company(companyServiceRemote.findByName(companyName))
-                .type(getType())
-                .currentStatus(statusServiceRemote.findByName(statusName))
-                .comments(getComments())
-                .history(getHistory())
+                .uid(this.getUid())
+                .title(this.getTitle())
+                .description(this.getDescription())
+                .clientMail(this.getClientMail())
+                .company(companyServiceRemote.findByName(this.getCompanyName()))
+                .type(typeServiceRemote.findByName(this.getTypeName()))
+                .currentStatus(statusServiceRemote.findByName(this.getStatusName()))
+                .comments(this.getComments())
+                .history(this.getHistory())
                 .build();
 
         try{
@@ -169,14 +168,6 @@ public class TicketCreateModifyView implements Serializable{
 
     public void setClientMail(String clientMail) {
         this.clientMail = clientMail;
-    }
-
-    public TypeVo getType() {
-        return type;
-    }
-
-    public void setType(TypeVo type) {
-        this.type = type;
     }
 
     public UserVo getUser() {
@@ -252,6 +243,14 @@ public class TicketCreateModifyView implements Serializable{
     public void setStatusName(String statusName) {
         this.statusName = statusName;
     }
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
 
 
 }

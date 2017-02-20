@@ -2,14 +2,13 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:pm="http://primefaces.org/mobile"
+                xmlns:p="http://primefaces.org/ui"
                 template="/templates/issueTrackerMasterLayout.xhtml">
 
     <ui:define name="customTitle">IssueTracker - #{mes.editor}</ui:define>
 
-    <ui:define name="customHead">
 
-    </ui:define>
+
 
     <ui:define name="customBody">
 
@@ -17,45 +16,51 @@
 
 
         <h:form>
+            <p:growl id="msgs" showDetail="true" />
+
             <p:panel id="panel" header="New Ticket">
 
                
 
-                    <p:inputText id="title" value="#{TicketCreateModifyView.title}" required="true" label="Title">
+                    <p:inputText id="title" value="#{ticketCreateModifyView.title}" required="true" label="Title">
                         <f:validateLength minimum="4" />
                     </p:inputText>
 
 
-                <p:inputText id="description" value="#{TicketCreateModifyView.description}" required="true" label="Description">
-                    <f:validateLength minimum="4" />
-                </p:inputText>
-
-                <p:selectOneMenu id="type" value="#{TicketCreateModifyView.type.name}" style="width:150px">
-                    <f:selectItem itemLabel="type" itemValue="type" noSelectionOption="true" />
-                    <f:selectItems value="#{TicketCreateModifyView.types.name}" />
-                </p:selectOneMenu>
-
-                <p:selectOneMenu id="company" value="#{TicketCreateModifyView.companyName}" style="width:150px">
-                    <f:selectItem itemLabel="company" itemValue="company" noSelectionOption="true" />
-                    <f:selectItems value="#{TicketCreateModifyView.companies}" />
-                </p:selectOneMenu>
-
-                <p:selectOneMenu id="status" value="#{TicketCreateModifyView.status}" style="width:150px">
-                    <f:selectItem itemLabel="status" itemValue="status" noSelectionOption="true" />
-                    <f:selectItems value="#{TicketCreateModifyView.statuses}" />
-                </p:selectOneMenu>
-
-                <p:inputText id="clientMail" value="#{TicketCreateModifyView.clientMail}" required="true" label="Title">
+                <p:inputText id="description" value="#{ticketCreateModifyView.description}" required="true" label="Description">
                     <f:validateLength minimum="4" />
                 </p:inputText>
 
 
+                <p:selectOneMenu id="type" value="#{ticketCreateModifyView.typeName}" style="width:150px">
+                    <f:selectItems value="#{ticketCreateModifyView.types}"
+                                   var="type"
+                                   itemLabel="#{type.name}" itemValue="#{type.name}"/>
+                </p:selectOneMenu>
+
+                <p:selectOneMenu id="companyName" value="#{ticketCreateModifyView.companyName}" style="width:150px">
+                    <f:selectItems value="#{ticketCreateModifyView.companies}"
+                                   var="company"
+                                   itemLabel="#{company.name}" itemValue="#{company.name}"/>
+                </p:selectOneMenu>
+
+                <p:selectOneMenu id="statusName" value="#{ticketCreateModifyView.statusName}" style="width:150px">
+                    <f:selectItems value="#{ticketCreateModifyView.statuses}"
+                                   var="status"
+                                   itemLabel="#{status.name}" itemValue="#{status.name}"/>
+                </p:selectOneMenu>
+
+                <p:inputText id="clientMail" value="#{ticketCreateModifyView.clientMail}" required="true" label="Title">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
 
 
-                <p:commandButton value="Save" update="panel" actionListener="#{TicketCreateModifyView.save}" icon="ui-icon-check" />
-            </p:panel>
+                <p:commandButton value="Save" update="panel" actionListener="#{ticketCreateModifyView.addTicket}" icon="ui-icon-check" />
+
+                    </p:panel>
         </h:form>
         </div>
+
     </ui:define>
 
 </ui:composition>
