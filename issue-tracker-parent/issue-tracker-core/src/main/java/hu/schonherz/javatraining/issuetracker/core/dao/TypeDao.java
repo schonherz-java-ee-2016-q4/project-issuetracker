@@ -12,6 +12,5 @@ public interface TypeDao extends JpaRepository<TypeEntity, Long> {
 	TypeEntity findByName(String name);
 	List<TypeEntity> findAll();
 	TypeEntity findByNameAndCompany(String name, CompanyEntity company);
-	List<TypeEntity> findAll();
 	List<TypeEntity> findByCompany(CompanyEntity company);
 }

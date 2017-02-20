@@ -5,7 +5,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.Sta
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.web.view.tickettype.TypeCreateModifyView;
 import lombok.Data;
 import org.primefaces.model.chart.PieChartModel;
@@ -20,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-@ManagedBean(name = "typesByStatusView")
+@ManagedBean(name = "statusesByTypeView")
 @ViewScoped
 @Data
-public class TypesByStatusView {
+public class StatusesByTypeView {
 
     @EJB
     private TypeServiceRemote typeService;
@@ -37,22 +36,22 @@ public class TypesByStatusView {
     @ManagedProperty("#{mes}")
     private ResourceBundle bundle;
 
-
     @ManagedProperty(value = "#{typeCreateModifyView}")
     private TypeCreateModifyView typeCreateModifyView;
 
+    @ManagedProperty(value = "#{typeSelectorView}")
+    private TypeSelectorView typeSelectorView;
+
     private PieChartModel chart;
 
-    private List<TypeVo> allTypes;
-    private Long typeId;
+
     private StatusVo startStatus;
     private List<StatusVo> statuses;
 
     @PostConstruct
     public void init() {
         chart = new PieChartModel();
-        allTypes = typeService.findAll();
-        startStatus = typeService.findById(typeId).getStartEntity();
+        startStatus = typeService.findById(typeSelectorView.getTypeId()).getStartEntity();
         getStatusesFrom(startStatus);
 
         Map<String, Number> chartData = new HashMap<>();
