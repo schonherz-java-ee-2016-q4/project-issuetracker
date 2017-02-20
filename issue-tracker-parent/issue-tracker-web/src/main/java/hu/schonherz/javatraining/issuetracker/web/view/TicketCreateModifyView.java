@@ -6,12 +6,14 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusSe
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
+import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.extern.log4j.Log4j;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -65,6 +67,11 @@ public class TicketCreateModifyView implements Serializable{
 
 
 
+    @ManagedProperty("#{userSessionBean}")
+    private UserSessionBean userSessionBean;
+
+
+
     @PostConstruct
     public void init() {
         ticketVo = new TicketVo();
@@ -73,11 +80,7 @@ public class TicketCreateModifyView implements Serializable{
         setTypes(typeServiceRemote.findAll());
         setStatuses(statusServiceRemote.findAll());
 
-        history = new ArrayList<>();
-        history.add(HistoryVo.builder().ticket(ticketVo).modStatus(CREATED).build());
 
-        comments = new ArrayList<>();
-        comments.add(CommentVo.builder().commentText("ticket_no_comment").build());
 
     }
 
@@ -91,42 +94,23 @@ public class TicketCreateModifyView implements Serializable{
         threeLetterCompanyID=getCompanyName().substring(0,2);
         uid=threeLetterCompanyID+String.valueOf(ticketVo.getId());
 
-        if ("".equals(uid)) {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "longerroruid");
-            context.addMessage(null, facesMessage);
-            return;
-        }
-
-        if("".equals(companyName))
-        {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "companyerror");
-            context.addMessage(null, facesMessage);
-            return;
-        }
 
 
-        if("".equals(statusName))
-        {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "statuserror");
-            context.addMessage(null, facesMessage);
-            return;
-        }
-
-        ticketVo.builder()
-                .uid(uid)
-                .title(title)
-                .description(description)
-                .clientMail(clientMail)
-                .company(companyServiceRemote.findByName(companyName))
-                .type(typeServiceRemote.findByName(typeName))
-                .currentStatus(statusServiceRemote.findByName(statusName))
-                .comments(comments)
-                .history(history)
+        ticketVo=ticketVo.builder()
+                .uid(this.getUid())
+                .title(this.getTitle())
+                .description(this.getDescription())
+                .clientMail(this.getClientMail())
+                .company(companyServiceRemote.findByName(this.getCompanyName()))
+                .type(typeServiceRemote.findByName(this.getTypeName()))
+                .currentStatus(statusServiceRemote.findByName(this.getStatusName()))
+                .comments(this.getComments())
+                .history(this.getHistory())
                 .build();
 
         try{
-            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-            recUserName = request.getUserPrincipal().getName();
+
+            recUserName = userSessionBean.getUserName();
             ticketServiceRemote.save(ticketVo, recUserName);
         }
         catch (Exception e)
@@ -251,6 +235,13 @@ public class TicketCreateModifyView implements Serializable{
         this.typeName = typeName;
     }
 
+    public UserSessionBean getUserSessionBean() {
+        return userSessionBean;
+    }
+
+    public void setUserSessionBean(UserSessionBean userSessionBean) {
+        this.userSessionBean = userSessionBean;
+    }
 
 
 }
