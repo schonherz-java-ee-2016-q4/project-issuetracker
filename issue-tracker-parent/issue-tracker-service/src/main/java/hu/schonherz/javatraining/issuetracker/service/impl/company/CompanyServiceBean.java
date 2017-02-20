@@ -40,7 +40,7 @@ public class CompanyServiceBean implements CompanyServiceLocal, CompanyServiceRe
         CompanyEntity company = companyDao.findByName(name);
         return GenericVoMappers.companyVoMapper.toVo(company);
     }
-    
+
     @Override
     public CompanyVo save(CompanyVo company, String username) {
         company.setRecUserName(username);
@@ -54,7 +54,9 @@ public class CompanyServiceBean implements CompanyServiceLocal, CompanyServiceRe
     }
 
     @Override
-    public List<CompanyVo> findAll(){
+    public List<CompanyVo> findAll() {
         return GenericVoMappers.companyVoMapper.toVo(companyDao.findAll());
     }
 }
+
+
