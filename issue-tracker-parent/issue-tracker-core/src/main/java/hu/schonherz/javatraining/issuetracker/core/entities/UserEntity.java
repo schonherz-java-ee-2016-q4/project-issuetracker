@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +28,9 @@ public class UserEntity extends BaseEntity implements Serializable {
 
 	private String username;
 	private String password;
+	
+	@ManyToOne
+	private CompanyEntity company;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	private List<RoleEntity> roles;

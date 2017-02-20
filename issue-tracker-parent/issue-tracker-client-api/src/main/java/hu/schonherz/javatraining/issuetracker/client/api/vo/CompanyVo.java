@@ -1,9 +1,12 @@
 package hu.schonherz.javatraining.issuetracker.client.api.vo;
 
-import lombok.*;
-
 import java.io.Serializable;
-import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -14,7 +17,5 @@ public class CompanyVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long recUserId;
-    private long modUserId;
     private String name;
 }

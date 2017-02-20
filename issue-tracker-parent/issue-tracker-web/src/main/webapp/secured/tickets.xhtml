@@ -30,7 +30,7 @@
                     </f:facet>
 
                     <p:column headerText="#{mes.id}" sortBy="#{ticket.id}">
-                        <h:outputText value="#{ticket.id}" />
+                        <p:link href="/secured/ticketdetails.xhtml" actionListener="#{currentTicketView.goToTicketDetails}">#{ticket.id}</p:link>
                     </p:column>
 
                     <p:column headerText="#{mes.type}" sortBy="#{ticket.type.name}">
