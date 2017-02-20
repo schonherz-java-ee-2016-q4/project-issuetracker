@@ -17,15 +17,15 @@
                 <h:panelGrid columns="1" cellpadding="10">
                     <h:outputText value="Please select a type!" />
                     <p:selectOneMenu id="typeName" value="#{typeSelectorView.typeId}" style="width:150px">
-                        <f:selectItems value="#{typeSelectorView.allTypes}" var="type" itemLabel="#{type.name}" itemValue="#{type.id}"/>
-                        
+                        <f:selectItems value="#{typeSelectorView.allTypes}" var="type" itemLabel="#{type.name}" itemValue="#{type.id}" />
+                        <f:ajax event="change" render="chartDisplay" />
                     </p:selectOneMenu>
                 </h:panelGrid>
             </p:panel>
 
-        <p:panel id="chartDisplay" header="Chart" style="margin-top: 2em" styleClass="col-md-8" rendered="#{statusesByTypeView.chart.data.keySet().size() != 0}">
-            <h:panelGrid columns="1" cellpadding="10">
-                <p:chart type="pie" model="#{statusesByTypeView.chart}" style="width:400px;height:300px" />
+        <p:panel id="chartDisplay" header="Chart" style="margin-top: 2em" styleClass="col-md-8" rendered="#{typeSelectorView.typeId != null}">
+            <h:panelGrid columns="1" cellpadding="10" >
+                <p:chart  type="pie" model="#{statusesByTypeView.chart}" style="width:400px;height:300px" />
             </h:panelGrid>
         </p:panel>
 
