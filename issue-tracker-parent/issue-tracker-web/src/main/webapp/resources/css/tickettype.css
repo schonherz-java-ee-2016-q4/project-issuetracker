@@ -1,0 +1,12 @@
+.ui-diagram-element {
+    border:0.1em dotted #E5E4E2; 
+    background-color: #EFEEEC;
+    width:10em; 
+    height:4em;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+}
+
+.ui-diagram-element:hover {
+    background-color: #C7C6C4;
+}

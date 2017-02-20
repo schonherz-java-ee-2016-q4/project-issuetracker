@@ -1,0 +1,15 @@
+.locale-en {
+    background-image: url("#{resource['images/flag-en.png']}") !important;
+    margin: 8px;
+    height: 19px;
+    width: 28px;
+    border-top-left-radius: 6px !important;
+}
+
+.locale-hu {
+    background-image: url("#{resource['images/flag-hu.png']}") !important;
+    margin: 8px;
+    height: 19px;
+    width: 28px;
+    border-bottom-right-radius: 6px !important;
+}
