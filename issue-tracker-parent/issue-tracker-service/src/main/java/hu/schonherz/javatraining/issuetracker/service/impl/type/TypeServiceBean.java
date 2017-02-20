@@ -42,7 +42,13 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
         return GenericVoMappers.typeVoMapper.toVo(typeDao.findByNameAndCompany(name, companyEntity));
 	}
 
-	@Override
+    @Override
+    public TypeVo findByName(String name) {
+        return GenericVoMappers.typeVoMapper.toVo(typeDao.findByName(name));
+    }
+
+
+    @Override
 	public List<TypeVo> findByCompany(CompanyVo company) {
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
 	}
