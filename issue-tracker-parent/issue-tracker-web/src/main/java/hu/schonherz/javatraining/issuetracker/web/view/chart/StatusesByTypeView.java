@@ -7,6 +7,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.web.view.tickettype.TypeCreateModifyView;
 import lombok.Data;
+import lombok.extern.log4j.Log4j;
 import org.primefaces.model.chart.PieChartModel;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,8 @@ import java.util.ResourceBundle;
 @ManagedBean(name = "statusesByTypeView")
 @ViewScoped
 @Data
-public class StatusesByTypeView {
+@Log4j
+public class StatusesByTypeView implements Serializable {
 
     @EJB
     private TypeServiceRemote typeService;
@@ -44,7 +47,6 @@ public class StatusesByTypeView {
 
     private PieChartModel chart;
 
-
     private StatusVo startStatus;
     private List<StatusVo> statuses;
 
@@ -52,6 +54,7 @@ public class StatusesByTypeView {
     public void init() {
         chart = new PieChartModel();
         startStatus = typeService.findById(typeSelectorView.getTypeId()).getStartEntity();
+        log.debug(startStatus.getId());
         getStatusesFrom(startStatus);
 
         Map<String, Number> chartData = new HashMap<>();
