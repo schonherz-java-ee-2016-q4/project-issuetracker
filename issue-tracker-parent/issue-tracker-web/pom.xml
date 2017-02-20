@@ -10,9 +10,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+	<name>Issue Tracker - Web</name>
     <artifactId>issue-tracker-web</artifactId>
     <packaging>war</packaging>
-    <name>issue-tracker-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
