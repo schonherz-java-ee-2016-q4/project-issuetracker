@@ -113,15 +113,15 @@ public class TicketCreateModifyView implements Serializable{
         }
 
         ticketVo.builder()
-                .uid(this.getUid())
-                .title(this.getTitle())
-                .description(this.getDescription())
-                .clientMail(this.getClientMail())
-                .company(companyServiceRemote.findByName(this.getCompanyName()))
-                .type(typeServiceRemote.findByName(this.getTypeName()))
-                .currentStatus(statusServiceRemote.findByName(this.getStatusName()))
-                .comments(this.getComments())
-                .history(this.getHistory())
+                .uid(uid)
+                .title(title)
+                .description(description)
+                .clientMail(clientMail)
+                .company(companyServiceRemote.findByName(companyName))
+                .type(typeServiceRemote.findByName(typeName))
+                .currentStatus(statusServiceRemote.findByName(statusName))
+                .comments(comments)
+                .history(history)
                 .build();
 
         try{
