@@ -13,7 +13,6 @@
 	<name>Issue Tracker - Web</name>
     <artifactId>issue-tracker-web</artifactId>
     <packaging>war</packaging>
-    <url>http://maven.apache.org</url>
 
     <dependencies>
 
