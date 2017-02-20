@@ -54,6 +54,11 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	}
 
 	@Override
+	public List<TypeVo> findAll() {
+	    return GenericVoMappers.typeVoMapper.toVo(typeDao.findAll());
+    }
+
+	@Override
 	public TypeVo save(TypeVo type, String username) {
 		type.setRecUserName(username);
 		TypeEntity typeEntity= GenericVoMappers.typeVoMapper.toEntity(type);
@@ -64,10 +69,6 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	public TypeVo update(TypeVo type, String username) {
 		type.setModUserName(username);
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
-	}
-	@Override
-	public List<TypeVo> findAll(){
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.findAll());
 	}
 
 }
