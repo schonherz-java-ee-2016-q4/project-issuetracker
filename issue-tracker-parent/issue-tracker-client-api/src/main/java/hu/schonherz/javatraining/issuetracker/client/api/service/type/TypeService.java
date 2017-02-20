@@ -11,6 +11,7 @@ public interface TypeService {
 	TypeVo findByNameAndCompany(String name, CompanyVo company);
 	List<TypeVo> findAll();
 	List<TypeVo> findByCompany(CompanyVo company);
+	List<TypeVo> findAll();
 	TypeVo save(TypeVo type, String username);
 	TypeVo update(TypeVo type, String username);
 }

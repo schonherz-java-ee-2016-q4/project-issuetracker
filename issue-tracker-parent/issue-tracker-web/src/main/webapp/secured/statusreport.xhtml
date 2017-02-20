@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/issueTrackerMasterLayout.xhtml"
+                xmlns:sec="http://www.springframework.org/security/tags">
+
+    <ui:define name="pageTitle">IssueTracker</ui:define>
+
+    <ui:define name="customHead">
+    </ui:define>
+
+    <ui:define name="customBody">
+
+            <p:panel id="typeSelector" header="Type" style="margin-top: 2em" styleClass="col-md-4 col-md-offset-1">
+                <h:panelGrid columns="1" cellpadding="10">
+                    <h:outputText value="Please select a type!" />
+                    <p:selectOneMenu id="typeName" value="#{typesByStatusView.typeId}" style="width:150px">
+                        <f:selectItems value="#{typesByStatusView.allTypes}" var="type" itemLabel="#{type.name}" itemValue="#{type.id}"/>
+                        
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+
+    <ui:insert name="typeByStatusChart"/>
+
+    </ui:define>
+</ui:composition>
