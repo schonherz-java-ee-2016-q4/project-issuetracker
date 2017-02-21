@@ -23,6 +23,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 public class StartUpConfig implements ServletContextListener {
 
 	private static final String ROLE_USER = "ROLE_USER";
+	private static final String ROLE_MANAGER = "ROLE_MANAGER";
 	private static final String ROLE_ADMIN = "ROLE_ADMIN";
 	
 	@EJB
@@ -45,6 +46,13 @@ public class StartUpConfig implements ServletContextListener {
 			adminRole = roleServiceRemote.save(adminRole);
 		}
 		
+		RoleVo managerRole = roleServiceRemote.findByName(ROLE_MANAGER);
+		if (managerRole == null) {
+			managerRole = new RoleVo();
+			managerRole.setName(ROLE_MANAGER);
+			managerRole = roleServiceRemote.save(managerRole);
+		}
+		
 		RoleVo userRole = roleServiceRemote.findByName(ROLE_USER);
 		if (userRole == null) {
 			userRole = new RoleVo();
@@ -59,9 +67,7 @@ public class StartUpConfig implements ServletContextListener {
 			testCompany = companyServiceRemote.save(companyVo, "admin");
 		}
 
-
 		log.debug("User role id: " + userRole.getId());
-		System.out.println("User role id: " + userRole.getId());
 		
 		if (userServiceRemote.findByUsername("admin") == null) {
 			UserVo adminUser = new UserVo();
@@ -71,10 +77,25 @@ public class StartUpConfig implements ServletContextListener {
 			
 			List<RoleVo> adminRoles = new ArrayList<RoleVo>();
 			adminRoles.add(userRole);
+			adminRoles.add(managerRole);
 			adminRoles.add(adminRole);
 			
 			adminUser.setRoles(adminRoles);
 			userServiceRemote.save(adminUser);
+		}
+		
+		if (userServiceRemote.findByUsername("manager") == null) {
+			UserVo managerUser = new UserVo();
+			managerUser.setUsername("manager");
+			managerUser.setPassword(bCryptPasswordEncoder.encode("manager"));
+			managerUser.setCompany(testCompany);
+			
+			List<RoleVo> managerRoles = new ArrayList<RoleVo>();
+			managerRoles.add(userRole);
+			managerRoles.add(managerRole);
+			
+			managerUser.setRoles(managerRoles);
+			userServiceRemote.save(managerUser);
 		}
 		
 		if (userServiceRemote.findByUsername("user") == null) {
