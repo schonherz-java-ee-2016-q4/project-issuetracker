@@ -33,8 +33,6 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class TypeCreateModifyView implements Serializable {
 
-	private final String SUCCESS_PAGE = "tickettype_succes.xhtml";
-	
 	@EJB
 	private StatusServiceRemote statusService;
 	
@@ -70,24 +68,32 @@ public class TypeCreateModifyView implements Serializable {
 	
 	@PostConstruct
 	public void init() {
+		Map<String, String> params =FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap();
+		String param = params.get("id");
+		log.debug("passed paramter: " + param);
+		
+		if (param != null) {
+			load(Long.parseLong(params.get("id")));
+		}
+		else {
+			load(null);
+		}
+	}
+	
+	private void load(Long id) {
 		typevo = new TypeVo();
 		statuses = new ArrayList<>();
 		List<StatusOrderViewModel> statusOrders = new ArrayList<>();
 		
-		Map<String, String> params =FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap();
-		String typevo_id = params.get("id");
-		log.debug("passed paramter: " + typevo_id);
-		
-		if (typevo_id != null) {
-			typevo = typeService.findById(Long.parseLong(typevo_id));
+		if (id != null) {
+			typevo = typeService.findById(id);
 			StatusVo startVo = typevo.getStartEntity();
 			statuses.add(startVo);
-			getStatusesFrom(startVo);
+			statuses = typeService.getStatuses(typevo);
 			
 			statusOrders = getStatusOrder();
 		}
-		
 		
 		modifyStatusOrderView.init();
 		modifyStatusOrderView.generateDiagram(statuses, statusOrders);
@@ -113,30 +119,6 @@ public class TypeCreateModifyView implements Serializable {
 		}
 		
 		return back;
-	}
-	
-	private void getStatusesFrom(StatusVo status) {
-		List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
-		boolean isNew;
-		
-		for (StatusOrderVo statusOrder : fromStatuses) {
-			isNew = true;
-			
-			//check if already in our scope
-			for (StatusVo statusInStatuses : statuses) {
-				if (statusInStatuses.getId() == statusOrder.getToStatusId()) {
-					isNew = false;
-					break;
-				}
-			}
-			
-			if (isNew) {
-				StatusVo newStatus = statusService.findById(statusOrder.getToStatusId());
-				statuses.add(newStatus);
-				getStatusesFrom(newStatus);
-			}
-		}
-		
 	}
 
 	public void save() {
@@ -225,19 +207,17 @@ public class TypeCreateModifyView implements Serializable {
 		typevo.setCompany(userSessionBean.getCurrentUser().getCompany());
 		
 		if (typevo.getId() == null) {
-			typeService.save(typevo, userSessionBean.getUserName());
+			typevo = typeService.save(typevo, userSessionBean.getUserName());
 		}
 		else {
-			typeService.update(typevo, userSessionBean.getUserName());
+			typevo = typeService.update(typevo, userSessionBean.getUserName());
 		}
 		
 		logCurrentStatus();
 		
-		try {
-			context.getExternalContext().redirect(String.format("%s?name=%s", SUCCESS_PAGE, typevo.getName()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		load(typevo.getId());
+		context.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "", bundle.getString("tickettype_succes")));
 	}
 	
 	private boolean isFullyConnected() {

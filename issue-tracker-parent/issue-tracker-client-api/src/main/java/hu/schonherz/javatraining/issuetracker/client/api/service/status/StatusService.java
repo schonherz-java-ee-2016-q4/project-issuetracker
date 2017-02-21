@@ -13,4 +13,5 @@ public interface StatusService {
 	//rákövetkezők módosításának engedélyezése
 	StatusVo update(StatusVo status, String username);
 	//törlést nem engedélyezzük, esetleg később
+	void delete(StatusVo statusVo);
 }

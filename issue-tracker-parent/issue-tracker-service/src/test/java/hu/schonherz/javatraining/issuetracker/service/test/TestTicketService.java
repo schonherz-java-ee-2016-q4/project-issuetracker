@@ -16,6 +16,7 @@ import org.junit.runners.MethodSorters;
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
@@ -37,6 +38,9 @@ public class TestTicketService {
     
     @EJB
     CompanyServiceLocal companyService;
+    
+    @EJB
+    UserServiceLocal userService;
 
     @Before
     public void startTheContainer() throws Exception {
@@ -52,10 +56,11 @@ public class TestTicketService {
         transactionalCaller.call(() -> {
             try {
                 CompanyVo companyVo = companyService.findByName("testCompany");
-                TypeVo typeVo = typeService.findByNameAndCompany("testType", companyVo);
-
-                UserVo userVO = new UserVo();
-                userVO.setUsername("TestUser");
+                TypeVo typeVo = typeService.findByNameAndCompany("testType_updated", companyVo);
+                UserVo userVo = userService.findByUsername("test2");
+                log.debug("MYN");
+                log.debug(companyVo);
+                log.debug(typeVo);
 
                 TicketVo ticketVo = new TicketVo();
                 ticketVo.setUid("TestUid");
@@ -64,7 +69,7 @@ public class TestTicketService {
                 ticketVo.setClientMail("TestClientMail");
                 ticketVo.setType(typeVo);
                 ticketVo.setCurrentStatus(typeVo.getStartEntity());
-                ticketVo.setUser(userVO);
+                ticketVo.setUser(userVo);
 
                 serviceLocal.save(ticketVo, "TestUser");
 
@@ -120,9 +125,25 @@ public class TestTicketService {
             return null;
         });
     }
+    
+    @Test
+    public void test5FindByType() throws Exception {
+        transactionalCaller.call(() -> {
+            try {
+            	CompanyVo companyVo = companyService.findByName("testCompany");
+                TypeVo typeVo = typeService.findByNameAndCompany("testType_updated", companyVo);
+
+                List<TicketVo> tickets = serviceLocal.findByType(typeVo);
+                Assert.assertNotEquals(tickets.size(), 0);
+            } catch (Exception e) {
+                log.error("Error in findByUser", e);
+            }
+            return null;
+        });
+    }
 
     @Test
-    public void test5Update() throws Exception {
+    public void test6Update() throws Exception {
         transactionalCaller.call(() -> {
             try {
                 TicketVo vo = serviceLocal.findByUid("TestUid");

@@ -29,13 +29,11 @@ public class UserTicketsView implements Serializable {
     @EJB
     private TicketServiceRemote ticketService;
 
-    private String userName;
-
     private UserVo currentUser;
     private List<TicketVo> tickets;
 
     @PostConstruct
     public void init() {
-        tickets = ticketService.findByUser(userSessionBean.getCurrentUser());
+        tickets = ticketService.findAll();
     }
 }

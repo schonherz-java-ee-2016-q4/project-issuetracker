@@ -1,5 +1,7 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.status;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -7,7 +9,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
-import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -17,8 +18,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.StatusDao;
 import hu.schonherz.javatraining.issuetracker.core.entities.StatusEntity;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
-
-import java.util.List;
 
 @Stateless(mappedName = "StatusService")
 @Local(StatusServiceLocal.class)
@@ -59,6 +58,9 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
 		return GenericVoMappers.statusVoMapper.toVo(statusDao.findAll());
 	}
 
-	
+	@Override
+	public void delete(StatusVo statusVo) {
+		statusDao.delete(GenericVoMappers.statusVoMapper.toEntity(statusVo));
+	}
 
 }

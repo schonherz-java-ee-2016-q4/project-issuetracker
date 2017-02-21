@@ -65,13 +65,6 @@
         <module name="OperatorWrap" />
         <module name="ParenPad" />
         <module name="TypecastParenPad" />
-        <module name="WhitespaceAfter">
-            <property name="severity" value="error" />
-        </module>
-        <module name="WhitespaceAround">
-            <property name="allowEmptyConstructors" value="true" />
-            <property name="allowEmptyMethods" value="true" />
-        </module>
         <module name="ModifierOrder">
             <property name="severity" value="error" />
         </module>
@@ -84,14 +77,7 @@
             <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity"
                 value="inherit" />
         </module>
-        <module name="LeftCurly">
-            <property name="severity" value="error" />
-            <property name="maxLineLength" value="130" />
-        </module>
         <module name="NeedBraces">
-            <property name="severity" value="error" />
-        </module>
-        <module name="RightCurly">
             <property name="severity" value="error" />
         </module>
         <module name="EmptyStatement">
@@ -126,7 +112,6 @@
         <module name="InterfaceIsType" />
         <module name="VisibilityModifier" />
         <module name="ArrayTypeStyle" />
-        <module name="FinalParameters" />
         <module name="TodoComment">
             <property name="severity" value="info" />
         </module>

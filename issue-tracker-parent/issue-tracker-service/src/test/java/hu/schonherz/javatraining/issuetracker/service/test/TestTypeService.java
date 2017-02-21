@@ -126,9 +126,25 @@ public class TestTypeService {
 			return null;
 		});
 	}
+	
+	@Test
+	public void test5getStatuses() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType", companyVo);
+				List<StatusVo> statuses = serviceLocal.getStatuses(vo);
+				
+				Assert.assertNotEquals(statuses.size(), 0);
+			} catch (Exception e) {
+				log.error("Error in findbyname", e);
+			}
+			return null;
+		});
+	}
 
 	@Test
-	public void test5Update() throws Exception {
+	public void test6Update() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
 				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
@@ -143,7 +159,7 @@ public class TestTypeService {
 	}
 
 	@Test
-	public void test6FindByNameAfterUpdate() throws Exception {
+	public void test7FindByNameAfterUpdate() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
 				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
@@ -157,7 +173,7 @@ public class TestTypeService {
 	}
 	
 	@Test
-	public void test7FindByCompany() throws Exception {
+	public void test8FindByCompany() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
 				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
