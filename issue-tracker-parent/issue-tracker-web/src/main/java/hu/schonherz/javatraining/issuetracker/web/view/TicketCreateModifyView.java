@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -19,16 +20,17 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 import java.util.List;
-
+import java.util.ResourceBundle;
 
 
 @ManagedBean(name = "ticketCreateModifyView")
 @ViewScoped
 @Log4j
-public class TicketCreateModifyView implements Serializable{
+public class TicketCreateModifyView implements Serializable {
 
 
-    private static final String SUCCESS_PAGE = "tickets.xhtml";
+
+    private static final String TICKETS_PAGE = "tickets.xhtml";
     private String recUserName;
     private String uid;
     private String threeLetterCompanyID;
@@ -42,7 +44,6 @@ public class TicketCreateModifyView implements Serializable{
     private List<CommentVo> comments;
     private List<HistoryVo> history;
     private TicketVo ticketVo;
-
 
 
     private List<CompanyVo> companies;
@@ -60,9 +61,12 @@ public class TicketCreateModifyView implements Serializable{
     private TypeServiceRemote typeServiceRemote;
 
 
-
     @ManagedProperty("#{userSessionBean}")
     private UserSessionBean userSessionBean;
+
+
+    @ManagedProperty("#{mes}")
+    private ResourceBundle bundle;
 
 
 
@@ -71,24 +75,19 @@ public class TicketCreateModifyView implements Serializable{
         ticketVo = new TicketVo();
 
         companies = companyServiceRemote.findAll();
-        types=typeServiceRemote.findAll();
-
-
-
+        types = typeServiceRemote.findAll();
 
     }
 
-    public void addTicket()
-    {
+    public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        threeLetterCompanyID=companyName.substring(0,3);
-        threeLetterCompanyID=threeLetterCompanyID.toUpperCase();
-        uid=threeLetterCompanyID;
+        threeLetterCompanyID = companyName.substring(0, 3);
+        threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
+        uid = threeLetterCompanyID;
 
 
-
-        ticketVo=ticketVo.builder()
+        ticketVo = ticketVo.builder()
                 .uid(uid)
                 .clientMail(clientMail)
                 .description(description)
@@ -97,18 +96,21 @@ public class TicketCreateModifyView implements Serializable{
                 .type(typeServiceRemote.findByName(typeName))
                 .build();
 
-        try{
+        try {
 
             recUserName = userSessionBean.getUserName();
             ticketVo.setCurrentStatus(ticketVo.getType().getStartEntity());
 
             ticketServiceRemote.save(ticketVo, recUserName);
 
-        }
-        catch (Exception e)
-        {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", bundle.getString("ticketcreate_savesucces")));
+            log.info("success to save ticket");
+        } catch (Exception e) {
 
-         log.error("error to save", e);
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
+                log.error("error to save ticket",e);
 
         }
 
@@ -283,6 +285,13 @@ public class TicketCreateModifyView implements Serializable{
         this.clientMail = clientMail;
     }
 
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
 
 
 }
