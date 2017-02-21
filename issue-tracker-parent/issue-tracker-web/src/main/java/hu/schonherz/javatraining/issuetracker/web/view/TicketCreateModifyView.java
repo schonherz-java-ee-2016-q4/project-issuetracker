@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -36,12 +35,9 @@ public class TicketCreateModifyView implements Serializable{
     private String title;
     private String description;
     private String clientMail;
-
-
     private String companyName;
     private String statusName;
     private String typeName;
-
     private UserVo user;
     private List<CommentVo> comments;
     private List<HistoryVo> history;
@@ -74,9 +70,9 @@ public class TicketCreateModifyView implements Serializable{
     public void init() {
         ticketVo = new TicketVo();
 
-        setCompanies(companyServiceRemote.findAll());
-        setTypes(typeServiceRemote.findAll());
-        setStatuses(statusServiceRemote.findAll());
+        companies = companyServiceRemote.findAll();
+        types=typeServiceRemote.findAll();
+
 
 
 
@@ -86,41 +82,44 @@ public class TicketCreateModifyView implements Serializable{
     {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        threeLetterCompanyID=this.getCompanyName().substring(0,2);
+        threeLetterCompanyID=companyName.substring(0,3);
         threeLetterCompanyID=threeLetterCompanyID.toUpperCase();
         uid=threeLetterCompanyID;
 
 
 
         ticketVo=ticketVo.builder()
-                .uid(this.getUid())
-                .title(this.getTitle())
-                .description(this.getDescription())
-                .clientMail(this.getClientMail())
-                .company(companyServiceRemote.findByName(this.getCompanyName()))
-                .type(typeServiceRemote.findByName(this.getTypeName()))
-                .currentStatus(statusServiceRemote.findByName(this.getStatusName()))
-                .comments(this.getComments())
-                .history(this.getHistory())
+                .uid(uid)
+                .clientMail(clientMail)
+                .description(description)
+                .title(title)
+                .company(companyServiceRemote.findByName(companyName))
+                .type(typeServiceRemote.findByName(typeName))
                 .build();
 
         try{
 
             recUserName = userSessionBean.getUserName();
+            ticketVo.setCurrentStatus(ticketVo.getType().getStartEntity());
+
             ticketServiceRemote.save(ticketVo, recUserName);
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "yeah", "ticket added"));
-
-            context.getExternalContext().redirect( SUCCESS_PAGE);
         }
         catch (Exception e)
         {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "ticketerror!");
-            context.addMessage(null, facesMessage);
-            return;
+
+         log.error("error to save", e);
 
         }
 
+    }
+
+    public String getRecUserName() {
+        return recUserName;
+    }
+
+    public void setRecUserName(String recUserName) {
+        this.recUserName = recUserName;
     }
 
     public String getUid() {
@@ -131,28 +130,36 @@ public class TicketCreateModifyView implements Serializable{
         this.uid = uid;
     }
 
-    public String getTitle() {
-        return title;
+    public String getThreeLetterCompanyID() {
+        return threeLetterCompanyID;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setThreeLetterCompanyID(String threeLetterCompanyID) {
+        this.threeLetterCompanyID = threeLetterCompanyID;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getClientMail() {
-        return clientMail;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setClientMail(String clientMail) {
-        this.clientMail = clientMail;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public UserVo getUser() {
@@ -162,7 +169,6 @@ public class TicketCreateModifyView implements Serializable{
     public void setUser(UserVo user) {
         this.user = user;
     }
-
 
     public List<CommentVo> getComments() {
         return comments;
@@ -180,14 +186,13 @@ public class TicketCreateModifyView implements Serializable{
         this.history = history;
     }
 
-    public TicketServiceRemote getTicketServiceRemote() {
-        return ticketServiceRemote;
+    public TicketVo getTicketVo() {
+        return ticketVo;
     }
 
-    public void setTicketServiceRemote(TicketServiceRemote ticketServiceRemote) {
-        this.ticketServiceRemote = ticketServiceRemote;
+    public void setTicketVo(TicketVo ticketVo) {
+        this.ticketVo = ticketVo;
     }
-
 
     public List<CompanyVo> getCompanies() {
         return companies;
@@ -213,27 +218,36 @@ public class TicketCreateModifyView implements Serializable{
         this.statuses = statuses;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public TicketServiceRemote getTicketServiceRemote() {
+        return ticketServiceRemote;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setTicketServiceRemote(TicketServiceRemote ticketServiceRemote) {
+        this.ticketServiceRemote = ticketServiceRemote;
     }
 
-    public String getStatusName() {
-        return statusName;
+    public CompanyServiceRemote getCompanyServiceRemote() {
+        return companyServiceRemote;
     }
 
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
-    }
-    public String getTypeName() {
-        return typeName;
+    public void setCompanyServiceRemote(CompanyServiceRemote companyServiceRemote) {
+        this.companyServiceRemote = companyServiceRemote;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public StatusServiceRemote getStatusServiceRemote() {
+        return statusServiceRemote;
+    }
+
+    public void setStatusServiceRemote(StatusServiceRemote statusServiceRemote) {
+        this.statusServiceRemote = statusServiceRemote;
+    }
+
+    public TypeServiceRemote getTypeServiceRemote() {
+        return typeServiceRemote;
+    }
+
+    public void setTypeServiceRemote(TypeServiceRemote typeServiceRemote) {
+        this.typeServiceRemote = typeServiceRemote;
     }
 
     public UserSessionBean getUserSessionBean() {
@@ -243,6 +257,32 @@ public class TicketCreateModifyView implements Serializable{
     public void setUserSessionBean(UserSessionBean userSessionBean) {
         this.userSessionBean = userSessionBean;
     }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getClientMail() {
+        return clientMail;
+    }
+
+    public void setClientMail(String clientMail) {
+        this.clientMail = clientMail;
+    }
+
 
 
 }

@@ -20,16 +20,17 @@
 
             <p:panel id="panel" header="New Ticket">
 
-               
 
+                    <label for="title">title:</label>
                     <p:inputText id="title" value="#{ticketCreateModifyView.title}" required="true" label="Title">
                         <f:validateLength minimum="4" />
                     </p:inputText>
 
 
-                <p:inputText id="description" value="#{ticketCreateModifyView.description}" required="true" label="Description">
+                <label for="description">Description:</label>
+                <p:inputTextarea rows="6" cols="33" id="description" value="#{ticketCreateModifyView.description}" required="true" label="Description">
                     <f:validateLength minimum="4" />
-                </p:inputText>
+                </p:inputTextarea>
 
 
                 <p:selectOneMenu id="type" value="#{ticketCreateModifyView.typeName}" style="width:150px">
@@ -44,12 +45,7 @@
                                    itemLabel="#{company.name}" itemValue="#{company.name}"/>
                 </p:selectOneMenu>
 
-                <p:selectOneMenu id="statusName" value="#{ticketCreateModifyView.statusName}" style="width:150px">
-                    <f:selectItems value="#{ticketCreateModifyView.statuses}"
-                                   var="status"
-                                   itemLabel="#{status.name}" itemValue="#{status.name}"/>
-                </p:selectOneMenu>
-
+                <label for="clientMail">Client E-mail:</label>
                 <p:inputText id="clientMail" value="#{ticketCreateModifyView.clientMail}" required="true" label="Title">
                     <f:validateLength minimum="4" />
                 </p:inputText>
