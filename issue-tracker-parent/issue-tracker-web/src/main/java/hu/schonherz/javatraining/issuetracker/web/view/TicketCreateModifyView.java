@@ -16,14 +16,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.List;
 
 
-import static hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum.CREATED;
 
 @ManagedBean(name = "ticketCreateModifyView")
 @ViewScoped
@@ -31,7 +29,7 @@ import static hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum.C
 public class TicketCreateModifyView implements Serializable{
 
 
-
+    private static final String SUCCESS_PAGE = "tickets.xhtml";
     private String recUserName;
     private String uid;
     private String threeLetterCompanyID;
@@ -87,12 +85,10 @@ public class TicketCreateModifyView implements Serializable{
     public void addTicket()
     {
         FacesContext context = FacesContext.getCurrentInstance();
-        log.debug("mentes");
 
-
-
-        threeLetterCompanyID=getCompanyName().substring(0,2);
-        uid=threeLetterCompanyID+String.valueOf(ticketVo.getId());
+        threeLetterCompanyID=this.getCompanyName().substring(0,2);
+        threeLetterCompanyID=threeLetterCompanyID.toUpperCase();
+        uid=threeLetterCompanyID;
 
 
 
@@ -112,6 +108,10 @@ public class TicketCreateModifyView implements Serializable{
 
             recUserName = userSessionBean.getUserName();
             ticketServiceRemote.save(ticketVo, recUserName);
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "yeah", "ticket added"));
+
+            context.getExternalContext().redirect( SUCCESS_PAGE);
         }
         catch (Exception e)
         {
@@ -120,6 +120,7 @@ public class TicketCreateModifyView implements Serializable{
             return;
 
         }
+
     }
 
     public String getUid() {
