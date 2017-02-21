@@ -1,11 +1,10 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
+import java.text.SimpleDateFormat;
+
+import javax.annotation.ManagedBean;
+import javax.ejb.EJB;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -14,9 +13,12 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import javax.annotation.ManagedBean;
-import javax.ejb.EJB;
-import java.text.SimpleDateFormat;
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ManagedBean
@@ -84,7 +86,7 @@ public class TestTypeService {
                 TypeVo typeVo = new TypeVo();
 
 
-                typeVo.setName("testStatus");
+                typeVo.setName("testType");
                 typeVo.setDescription("testDescription");
 
                 typeVo.setStartEntity(statusServiceLocal.findByName("test"));

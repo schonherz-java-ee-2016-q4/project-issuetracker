@@ -1,6 +1,8 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -26,6 +28,12 @@ public class TestTicketService {
 
     @EJB
     private TestUserService.Caller transactionalCaller;
+    
+    @EJB
+    TypeServiceLocal typeService;
+    
+    @EJB
+    CompanyServiceLocal companyService;
 
     @Before
     public void startTheContainer() throws Exception {
@@ -42,29 +50,16 @@ public class TestTicketService {
             try {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
-                CompanyVo companyVo = new CompanyVo();
-                companyVo.setId(1L);
-                companyVo.setRecUserName("test");
-                companyVo.setModUserName("test");
-                companyVo.setRecDate(fmt.parse("2017-02-13"));
-                companyVo.setModDate(fmt.parse("2017-02-13"));
-                companyVo.setName("testCompany");
+                CompanyVo companyVo = companyService.findByName("testCompany");
 
                 StatusVo statusVo = new StatusVo();
                 statusVo.setId(1L);
-                statusVo.setRecUserName("test");
-                statusVo.setModUserName("test");
-                statusVo.setRecDate(fmt.parse("2017-02-13"));
-                statusVo.setModDate(fmt.parse("2017-02-13"));
                 statusVo.setName("test");
                 statusVo.setDescription("test");
 
-                TypeVo typeVo = new TypeVo();
-                typeVo.setName("testStatus");
-                typeVo.setDescription("testDescription");
-                typeVo.setCompany(companyVo);
-                typeVo.setStartEntity(statusVo);
-
+                
+                TypeVo typeVo = typeService.findByName("testType");
+                
 
                 UserVo userVO = new UserVo();
                 userVO.setUsername("TestUser");

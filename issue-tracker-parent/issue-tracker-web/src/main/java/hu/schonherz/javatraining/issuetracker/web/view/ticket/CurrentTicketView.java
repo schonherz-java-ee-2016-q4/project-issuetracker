@@ -1,4 +1,4 @@
-package hu.schonherz.javatraining.issuetracker.web.view.tickettype;
+package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
@@ -21,11 +21,16 @@ public class CurrentTicketView {
 
     private Long currentTicketId;
     private TicketVo currentTicket;
+    private Long id;
 
     @PostConstruct
     public void init() {
-        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        currentTicketId = Long.valueOf(req.getParameter("id"));
+//        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        currentTicketId = Long.valueOf(req.getParameter("id"));
         currentTicket = ticketService.findById(currentTicketId);
+    }
+
+    public void goToTicketDetails() {
+        currentTicketId = id;
     }
 }
