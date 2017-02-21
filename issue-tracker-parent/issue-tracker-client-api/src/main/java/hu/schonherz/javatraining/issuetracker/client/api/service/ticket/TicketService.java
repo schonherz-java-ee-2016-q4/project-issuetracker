@@ -10,6 +10,7 @@ public interface TicketService {
 	TicketVo findById(Long id);
 	TicketVo findByUid(String uid);
 	List<TicketVo> findByUser(UserVo user);
+	List<TicketVo> findAll();
 	TicketVo save(TicketVo ticket, String username);
 	TicketVo update(TicketVo ticket, String username);
 	List<TicketVo> findByType(TypeVo type);
