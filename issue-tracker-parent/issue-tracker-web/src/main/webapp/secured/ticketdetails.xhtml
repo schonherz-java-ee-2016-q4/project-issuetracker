@@ -25,10 +25,10 @@
 
                     <div class="container">
                         <div class="col-md-3">
-                            <h4>#{mes.id}: <i>#{currentTicketView.currentTicket.id}</i></h4>
-                            <h4>#{mes.type}: <i>#{currentTicketView.currentTicket.type.name}</i></h4>
-                            <h4>#{mes.user}: <i>#{currentTicketView.currentTicket.user.username}</i></h4>
-                            <h4>#{mes.status}: <i>#{currentTicketView.currentTicket.currentStatus.name}</i></h4>
+                            <h4><b>#{mes.id}:</b> <i>#{currentTicketView.currentTicket.id}</i></h4>
+                            <h4><b>#{mes.type}:</b> <i>#{currentTicketView.currentTicket.type.name}</i></h4>
+                            <h4><b>#{mes.user}:</b> <i>#{currentTicketView.currentTicket.user.username == null ? mes.nouser : currentTicketView.currentTicket.user.username}</i></h4>
+                            <h4><b>#{mes.status}:</b> <i>#{currentTicketView.currentTicket.currentStatus.name}</i></h4>
                         </div>
 
                         <p:tabView styleClass="col-md-7 col-md-offset-1">
@@ -40,8 +40,10 @@
                             </p:tab>
 
                             <p:tab title="#{mes.comments}">
-                                <h:panelGrid columns="1" cellpadding="10" rendered="#{currentTicketView.currentTicket.comments != null}">
-                                    <p:dataScroller value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10">
+
+                                <h:panelGrid columns="1" cellpadding="10" style="margin-bottom: 1em;">
+                                    <h:outputText value="#{mes.ticket_no_comments}" rendered="#{currentTicketView.currentTicket.comments.size() == 0}"/>
+                                    <p:dataScroller value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10" rendered="#{currentTicketView.currentTicket.comments.size() != 0}">
                                         <h:panelGrid columns="1" style="width:100%" columnClasses="detail">
                                             <p:outputPanel>
                                                 <h:panelGrid columns="2" cellpadding="5">

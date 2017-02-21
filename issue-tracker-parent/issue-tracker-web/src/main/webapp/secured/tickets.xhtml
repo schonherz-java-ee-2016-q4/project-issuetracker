@@ -33,6 +33,10 @@
                         <h:outputText value="#{ticket.id}" />
                     </p:column>
 
+                    <p:column headerText="#{mes.title}" sortBy="#{ticket.title}" style="text-align: center">
+                        <h:outputText value="#{ticket.title}" />
+                    </p:column>
+
                     <p:column headerText="#{mes.type}" sortBy="#{ticket.type.name}" style="text-align: center">
                         <h:outputText value="#{ticket.type.name}" />
                     </p:column>
@@ -42,11 +46,11 @@
                     </p:column>
 
                     <p:column headerText="#{mes.user}" sortBy="#{ticket.user.username}" style="text-align: center">
-                        <h:outputText value="#{ticket.user.username}" />
+                        <h:outputText value="#{ticket.user.username == null ? mes.nouser : ticket.user.username}" />
                     </p:column>
 
                     <p:column headerText="#{mes.details}" style="text-align: center">
-                        <p:button outcome="ticketdetails" value="Details" >
+                        <p:button outcome="ticketdetails" icon="fa fa-info" >
                             <f:param name="currentTicketId" value="#{ticket.id}" />
                         </p:button>
                     </p:column>
