@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsf/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/issueTrackerMasterLayout.xhtml">
+	<!-- Ha külön oldalon lesz egy ticket history-ja. -->
+	<ui:define name="customTitle">IssuTracker - #{mes.ticket_history}</ui:define>
+
+	<ui:define name="customHead">
+
+	</ui:define>
+
+	<ui:define name="customBody">
+		<h:form id="onetickethistory">
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>#{mes.ticket_history}</h3>
+					</div>
+					<div class="panel-body">
+						<div class="panel panel-default">
+							<div class="panel-heading">#{mes.search}</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-2">
+										<h:outputLabel for="ticketid"
+											value="#{mes.ticket_history_search}" />
+									</div>
+									<div class="col-md-10">
+										<p:inputText value="#{searchTicketHistoryView.id}"
+											id="ticketid" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-10 col-md-offset-2">
+										<p:commandButton action="#{ticketHistoryView.init()}"
+											value="#{mes.ticket_history_choose}"
+											update="onetickethistory" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel panel-default">
+						<div class="panel-body">
+							<p:dataTable var="history" value="#{ticketHistoryView.ticketHistory}"
+								 emptyMessage="#{mes.notfound}" >
+								<p:column headerText="#{mes.id}"> 
+									<h:outputText  value="#{history.id}" />
+								</p:column>
+<!-- 								<p:column headerText="#{mes.id}">  -->
+<!-- 									<h:outputText  value="#{historys.modStatus}" /> -->
+<!-- 								</p:column> -->
+								<p:column headerText="#{mes.title}">
+									<h:outputText value="#{history.title}" />
+								</p:column>
+								<p:column headerText="#{mes.type}">
+									<h:outputText value="#{history.type.name}" />
+								</p:column>
+								<p:column headerText="#{mes.status}">
+									<h:outputText value="#{history.currentStatus.name}" />
+								</p:column>
+								<p:column headerText="#{mes.description}">
+									<h:outputText value="#{history.description}" />
+								</p:column>
+							
+<!--  								Ha nincs, akkor a létrehozó neve.  -->
+								<p:column headerText="#{mes.ticket_history_mod_user}">
+									<h:outputText value="#{history.modUserName != null ? history.modUserName : history.recUserName}" />
+								</p:column>
+								<p:column headerText="#{mes.ticket_history_comments_number}">
+									<h:outputText value="#{history.comments.size()}" />
+								</p:column>
+<!--  								Ha nincs akkor a létrehozás dátuma.  -->
+								<p:column headerText="#{mes.ticket_history_last_modify_date}">
+									<h:outputText value="#{history.modDate != null ? history.modDate : history.recDate}" />
+								</p:column>
+								<p:column headerText="#{mes.clientmail}"> 
+									<h:outputText value="#{history.clientmail}" /> 
+							</p:column>
+							</p:dataTable>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
