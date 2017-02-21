@@ -76,6 +76,11 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 		TypeEntity typeEntity = GenericVoMappers.typeVoMapper.toEntity(type);
 		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(typeEntity));
 	}
+	
+	@Override
+	public void delete(TypeVo type) {
+		typeDao.delete(GenericVoMappers.typeVoMapper.toEntity(type));
+	}
 
 	@Override
 	public TypeVo update(TypeVo type, String username) {

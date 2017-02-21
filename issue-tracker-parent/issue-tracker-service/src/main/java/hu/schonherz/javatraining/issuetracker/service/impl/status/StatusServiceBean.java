@@ -58,6 +58,9 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
 		return GenericVoMappers.statusVoMapper.toVo(statusDao.findAll());
 	}
 
-	
+	@Override
+	public void delete(StatusVo statusVo) {
+		statusDao.delete(GenericVoMappers.statusVoMapper.toEntity(statusVo));
+	}
 
 }

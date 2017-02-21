@@ -15,4 +15,5 @@ public interface TypeService {
 	TypeVo save(TypeVo type, String username);
 	TypeVo update(TypeVo type, String username);
 	List<StatusVo> getStatuses(TypeVo type);
+	void delete(TypeVo type);
 }

@@ -14,8 +14,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
@@ -45,6 +49,11 @@ public class TypeListView implements Serializable {
 	@ManagedProperty("#{mes}")
 	private ResourceBundle bundle;
 	
+	@EJB
+	private StatusOrderServiceRemote statusOrderService;
+	
+	@EJB
+	private StatusServiceRemote statusService;
 	
 	@PostConstruct
 	public void init() {
@@ -122,7 +131,33 @@ public class TypeListView implements Serializable {
 		List<TicketVo> findByType = ticketService.findByType(selectedType);
 		if (findByType.size() != 0) {
 			context.addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_invalid")));
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_typeinuse")));
 		}
+		
+		deleteType(selectedType);
+		selected = "";
+		context.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_delete_succes")));
+	}
+	
+	private void deleteType(TypeVo type) {
+		List<StatusVo> statuses = typeService.getStatuses(type);
+		
+		for (StatusVo status : statuses) {
+			List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
+			
+			for (StatusOrderVo statusOrder : fromStatuses) {
+				statusOrderService.deleteById(statusOrder.getId());
+			}
+		}
+		
+		typeService.delete(type);
+		
+		for (StatusVo status : statuses) {
+			statusService.delete(status);
+		}
+		
+		allType.remove(type);
+		
 	}
 }
