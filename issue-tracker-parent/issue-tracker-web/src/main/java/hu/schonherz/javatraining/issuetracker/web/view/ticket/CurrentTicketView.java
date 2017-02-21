@@ -29,25 +29,25 @@ public class CurrentTicketView {
     @EJB
     private CommentServiceRemote commentService;
 
+    private Long currentTicketId;
+    private TicketVo currentTicket;
+    private Long id;
+
     @ManagedProperty(value = "#{addCommentView}")
     private AddCommentView addCommentView;
 
     @ManagedProperty("#{userSessionBean}")
     private UserSessionBean userSessionBean;
 
-    private Long currentTicketId;
-    private TicketVo currentTicket;
-    private Long id;
-    private List<CommentVo> comments;
-
     @PostConstruct
     public void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        currentTicketId = Long.valueOf(context.getExternalContext().getRequestParameterMap().get("currentTicketId"));
         currentTicket = ticketService.findById(currentTicketId);
-        comments = new ArrayList<>();
-        comments = currentTicket.getComments();
     }
 
     public void addNewComment() {
+        List<CommentVo> comments = currentTicket.getComments();
         comments.add(CommentVo.builder().commentText(addCommentView.getCommentText()).build());
         currentTicket.setComments(comments);
         ticketService.update(currentTicket, userSessionBean.getUserName());
