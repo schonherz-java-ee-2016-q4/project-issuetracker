@@ -36,6 +36,7 @@ public class UserTicketsView implements Serializable {
 
     @PostConstruct
     public void init() {
-        tickets = ticketService.findByUser(userSessionBean.getCurrentUser());
+        //tickets = ticketService.findByUser(userSessionBean.getCurrentUser());
+        tickets = ticketService.findAll();
     }
 }
