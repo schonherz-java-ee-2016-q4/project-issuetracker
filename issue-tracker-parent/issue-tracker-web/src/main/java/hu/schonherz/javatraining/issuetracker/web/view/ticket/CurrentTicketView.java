@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.comment.CommentService;
 import hu.schonherz.javatraining.issuetracker.client.api.service.comment.CommentServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CommentVo;
@@ -10,6 +11,7 @@ import lombok.Data;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -32,6 +34,8 @@ public class CurrentTicketView {
     private Long currentTicketId;
     private TicketVo currentTicket;
     private Long id;
+    private List<CommentVo> comments;
+    private CommentVo newComment;
 
     @ManagedProperty(value = "#{addCommentView}")
     private AddCommentView addCommentView;
@@ -47,9 +51,32 @@ public class CurrentTicketView {
     }
 
     public void addNewComment() {
-        List<CommentVo> comments = currentTicket.getComments();
-        comments.add(CommentVo.builder().commentText(addCommentView.getCommentText()).build());
+        FacesContext context = FacesContext.getCurrentInstance();
+        String recUserName;
+
+        comments = currentTicket.getComments();
+        newComment = CommentVo.builder()
+                .commentText(addCommentView.getCommentText())
+                .build();
+
+        try {
+            recUserName = userSessionBean.getUserName();
+            commentService.save(newComment, recUserName);
+        } catch (Exception e) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Error in saving comment!");
+            context.addMessage(null, facesMessage);
+            return;
+        }
+
+        comments.add(newComment);
         currentTicket.setComments(comments);
-        ticketService.update(currentTicket, userSessionBean.getUserName());
+
+        try {
+            ticketService.update(currentTicket, recUserName);
+        } catch (Exception e) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Error in saving ticket!");
+            context.addMessage(null, facesMessage);
+            return;
+        }
     }
 }

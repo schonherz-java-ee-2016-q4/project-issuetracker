@@ -70,8 +70,8 @@
                     <div class="form-group col-md-8 col-md-offset-2" >
                         <h:form>
                         <label for="commentText">Comment:</label>
-                        <p:inputTextarea rows="6" cols="33" id="commentText" />
-                        <p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="comment"/>
+                        <p:inputTextarea rows="6" cols="33" id="commentText" value="#{addCommentView.commentText}" required="true"/>
+                        <p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}"/>
                         </h:form>
                     </div>
 
