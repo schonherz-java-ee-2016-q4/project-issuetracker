@@ -27,9 +27,9 @@
 								<div class="col-md-10">
 									<p:autoComplete id="dd" dropdown="true" value="#{typeListView.selected}"
 										completeMethod="#{typeListView.completeText}">
-										<p:ajax event="itemSelect" listener="#{typeListView.onItemSelect}" />
 									</p:autoComplete>
 									<p:commandButton action="#{typeListView.submit()}" value="#{mes.tickettype_list_modify}" update="typelist" />
+									<p:commandButton action="#{typeListView.delete()}" value="#{mes.tickettype_list_delete}" update="typelist" />
 								</div>
 							</div>
 							<div class="row">

@@ -14,9 +14,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.event.SelectEvent;
-
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.Data;
@@ -35,6 +35,9 @@ public class TypeListView implements Serializable {
 	
 	@EJB
 	private TypeServiceRemote typeService;
+	
+	@EJB
+	private TicketServiceRemote ticketService;
 	
 	@ManagedProperty("#{userSessionBean}")
 	private UserSessionBean userSessionBean;
@@ -60,10 +63,6 @@ public class TypeListView implements Serializable {
 			}
 		}
 		return filteredTypes;
-	}
-
-	public void onItemSelect(SelectEvent event) {
-		submit();
 	}
 	
 	public void submit() {
@@ -94,6 +93,36 @@ public class TypeListView implements Serializable {
 			context.getExternalContext().redirect(String.format("%s?id=%s", MODIFY_TYPE_PAGE, selectedType.getId()));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void delete() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		if (selected == null) {
+			context.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_invalid")));
+			return;
+		}
+		
+		TypeVo selectedType = null;
+		for (TypeVo type : allType) {
+			if (type.getName().contains(selected)) {
+				selectedType = type;
+				break;
+			}
+		}
+		
+		if (selectedType == null) {
+			context.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_invalid")));
+			return;
+		}
+		
+		List<TicketVo> findByType = ticketService.findByType(selectedType);
+		if (findByType.size() != 0) {
+			context.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_invalid")));
 		}
 	}
 }
