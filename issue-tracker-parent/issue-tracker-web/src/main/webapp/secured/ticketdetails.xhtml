@@ -24,53 +24,45 @@
                 <div class="panel-body">
 
                     <div class="container">
-                        <div class="col-md-3"><h5>#{mes.id}:#{currentTicketView.currentTicket.id}</h5></div>
-                        <div class="col-md-3"><h5>#{mes.type}:#{currentTicketView.currentTicket.type.name}</h5></div>
-                        <div class="col-md-3"><h5>#{mes.user}:#{currentTicketView.currentTicket.user.username}</h5>
-                        </div>
                         <div class="col-md-3">
-                            <h5>#{mes.status}:#{currentTicketView.currentTicket.currentStatus.name}</h5></div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">#{mes.description}</div>
-                        <div class="panel-body">#{currentTicketView.currentTicket.description}</div>
-                    </div>
-
-                    <div class="panel panel-default col-md-10 col-md-offset-1">
-                        <div class="panel-heading">#{mes.comments}</div>
-                        <div class="panel-body">
-
-                            <p:dataScroller rendered="#{currentTicketView.currentTicket.comments != null}"
-                            	value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10">
-                                <f:facet name="header">
-                                    Comments
-                                </f:facet>
-
-                                <h:panelGrid columns="1" style="width:100%" columnClasses="detail">
-
-                                    <p:outputPanel>
-                                        <h:panelGrid columns="1" cellpadding="5">
-                                            <h:outputText value="#{comment.recUserName}:" style="font-weight: bold"/>
-                                            <h:outputText value="#{comment.commentText}"/>
-                                        </h:panelGrid>
-                                    </p:outputPanel>
-                                </h:panelGrid>
-                            </p:dataScroller>
-
+                            <h4>#{mes.id}: <i>#{currentTicketView.currentTicket.id}</i></h4>
+                            <h4>#{mes.type}: <i>#{currentTicketView.currentTicket.type.name}</i></h4>
+                            <h4>#{mes.user}: <i>#{currentTicketView.currentTicket.user.username}</i></h4>
+                            <h4>#{mes.status}: <i>#{currentTicketView.currentTicket.currentStatus.name}</i></h4>
                         </div>
-                    </div>
 
-                </div>
+                        <p:tabView styleClass="col-md-7 col-md-offset-1">
 
-                <div class="container">
+                            <p:tab title="#{mes.description}">
+                                <h:panelGrid columns="1" cellpadding="10">
+                                    <h:outputText value="#{currentTicketView.currentTicket.description}"/>
+                                </h:panelGrid>
+                            </p:tab>
 
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                            <p:tab title="#{mes.comments}">
+                                <h:panelGrid columns="1" cellpadding="10" rendered="#{currentTicketView.currentTicket.comments != null}">
+                                    <p:dataScroller value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10">
+                                        <h:panelGrid columns="1" style="width:100%" columnClasses="detail">
+                                            <p:outputPanel>
+                                                <h:panelGrid columns="2" cellpadding="5">
+                                                    <h:outputText value="#{comment.recUserName}:" style="font-weight: bold"/>
+                                                    <h:outputText value="#{comment.commentText}"/>
+                                                </h:panelGrid>
+                                            </p:outputPanel>
+                                        </h:panelGrid>
+                                    </p:dataScroller>
+                                </h:panelGrid>
 
-                    <div class="form-group col-md-8 col-md-offset-2" >
-                        <label for="commentText">Comment:</label>
-                        <p:inputTextarea rows="6" cols="33" id="commentText" value="#{addCommentView.commentText}" required="true"/>
-                        <p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="ticketdetails"/>
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                                    <p:inputTextarea cols="40" id="commentText" value="#{addCommentView.commentText}" required="true"/>
+                                    <div><p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="ticketdetails"/></div>
+
+                            </p:tab>
+
+                        </p:tabView>
+
+
                     </div>
 
                 </div>
@@ -78,7 +70,7 @@
             </div>
 
         </div>
-        </h:form>
+		</h:form>
 
 
     </ui:define>
