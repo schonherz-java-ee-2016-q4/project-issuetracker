@@ -16,7 +16,7 @@
     </ui:define>
 
     <ui:define name="customBody">
-
+		<h:form id="ticketdetails">
         <div class="container">
 
             <div class="panel panel-default" style="margin-top: 2em;">
@@ -41,8 +41,8 @@
                         <div class="panel-heading">#{mes.comments}</div>
                         <div class="panel-body">
 
-                            <p:dataScroller value="#{commentView.comments}" var="comment" chunkSize="10"
-                                            rendered="#{currentTicketView.currentTicket.comments != null}">
+                            <p:dataScroller rendered="#{currentTicketView.currentTicket.comments != null}"
+                            	value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10">
                                 <f:facet name="header">
                                     Comments
                                 </f:facet>
@@ -68,11 +68,9 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
                     <div class="form-group col-md-8 col-md-offset-2" >
-                        <h:form>
                         <label for="commentText">Comment:</label>
                         <p:inputTextarea rows="6" cols="33" id="commentText" value="#{addCommentView.commentText}" required="true"/>
-                        <p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}"/>
-                        </h:form>
+                        <p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="ticketdetails"/>
                     </div>
 
                 </div>
@@ -80,6 +78,7 @@
             </div>
 
         </div>
+        </h:form>
 
 
     </ui:define>
