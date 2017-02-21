@@ -43,6 +43,10 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	public List<TicketVo> findByUser(UserVo user) {
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByUser(GenericVoMappers.userVoMapper.toEntity(user)));
 	}
+	@Override
+	public List<TicketVo> findAll() {
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findAll());
+	}
 
 	@Override
 	public TicketVo save(TicketVo ticket, String username) {

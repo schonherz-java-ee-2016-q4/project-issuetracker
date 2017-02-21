@@ -20,6 +20,7 @@
 					<h3>#{mes.index}</h3>
 				</div>
 				<div class="panel-body">
+					<p:panelGrid rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0}">
 					<div class="panel panel-default">
 						<div class="panel-heading">#{mes.home_ticketsbystatus_chart_title}</div>
 						<div class="panel-body">
@@ -28,7 +29,7 @@
 							</div>
 						</div>
 					</div>
-					
+					</p:panelGrid>
 					
 					
 				</div>

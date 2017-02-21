@@ -8,6 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+	<name>Issue Tracker - Core</name>
     <artifactId>issue-tracker-core</artifactId>
 
     <dependencies>
