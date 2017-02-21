@@ -5,6 +5,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.Sta
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.web.view.tickettype.TypeCreateModifyView;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
@@ -30,32 +31,19 @@ public class StatusesByTypeView implements Serializable {
     @EJB
     private TypeServiceRemote typeService;
 
-    @EJB
-    private StatusOrderServiceRemote statusOrderService;
-
-    @EJB
-    private StatusServiceRemote statusService;
-
     @ManagedProperty("#{mes}")
     private ResourceBundle bundle;
-
-    @ManagedProperty(value = "#{typeCreateModifyView}")
-    private TypeCreateModifyView typeCreateModifyView;
 
     @ManagedProperty(value = "#{typeSelectorView}")
     private TypeSelectorView typeSelectorView;
 
     private PieChartModel chart;
 
-    private StatusVo startStatus;
-    private List<StatusVo> statuses;
-
     @PostConstruct
     public void init() {
         chart = new PieChartModel();
-        startStatus = typeService.findById(typeSelectorView.getTypeId()).getStartEntity();
-        log.debug(startStatus.getId());
-        getStatusesFrom(startStatus);
+        TypeVo typeVo = typeService.findById(typeSelectorView.getTypeId());
+        List<StatusVo> statuses = typeService.getStatuses(typeVo);
 
         Map<String, Number> chartData = new HashMap<>();
 
@@ -74,29 +62,5 @@ public class StatusesByTypeView implements Serializable {
         chart.setData(chartData);
         chart.setTitle(bundle.getString("typesbystatus_chart_title"));
         chart.setLegendPosition("w");
-    }
-
-    private void getStatusesFrom(StatusVo status) {
-        List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
-        boolean isNew;
-
-        for (StatusOrderVo statusOrder : fromStatuses) {
-            isNew = true;
-
-            //check if already in our scope
-            for (StatusVo statusInStatuses : statuses) {
-                if (statusInStatuses.getId() == statusOrder.getToStatusId()) {
-                    isNew = false;
-                    break;
-                }
-            }
-
-            if (isNew) {
-                StatusVo newStatus = statusService.findById(statusOrder.getToStatusId());
-                statuses.add(newStatus);
-                getStatusesFrom(newStatus);
-            }
-        }
-
     }
 }

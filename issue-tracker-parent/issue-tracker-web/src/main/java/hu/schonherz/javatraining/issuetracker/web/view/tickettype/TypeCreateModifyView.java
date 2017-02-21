@@ -83,7 +83,7 @@ public class TypeCreateModifyView implements Serializable {
 			typevo = typeService.findById(Long.parseLong(typevo_id));
 			StatusVo startVo = typevo.getStartEntity();
 			statuses.add(startVo);
-			getStatusesFrom(startVo);
+			statuses = typeService.getStatuses(typevo);
 			
 			statusOrders = getStatusOrder();
 		}
@@ -113,30 +113,6 @@ public class TypeCreateModifyView implements Serializable {
 		}
 		
 		return back;
-	}
-	
-	private void getStatusesFrom(StatusVo status) {
-		List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
-		boolean isNew;
-		
-		for (StatusOrderVo statusOrder : fromStatuses) {
-			isNew = true;
-			
-			//check if already in our scope
-			for (StatusVo statusInStatuses : statuses) {
-				if (statusInStatuses.getId() == statusOrder.getToStatusId()) {
-					isNew = false;
-					break;
-				}
-			}
-			
-			if (isNew) {
-				StatusVo newStatus = statusService.findById(statusOrder.getToStatusId());
-				statuses.add(newStatus);
-				getStatusesFrom(newStatus);
-			}
-		}
-		
 	}
 
 	public void save() {
