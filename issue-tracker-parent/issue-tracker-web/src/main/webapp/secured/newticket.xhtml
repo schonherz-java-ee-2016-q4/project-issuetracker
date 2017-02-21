@@ -20,42 +20,41 @@
 
             <p:panel id="panel" header="New Ticket">
 
-               
-
-                    <p:inputText id="title" value="#{ticketCreateModifyView.title}" required="true" label="Title">
-                        <f:validateLength minimum="4" />
-                    </p:inputText>
-
-
-                <p:inputText id="description" value="#{ticketCreateModifyView.description}" required="true" label="Description">
+                <p:outputLabel for="title" value="#{mes.ticketcreate_tilte}:" />
+                <p:inputText id="title" value="#{ticketCreateModifyView.title}" required="true" label="Title">
                     <f:validateLength minimum="4" />
                 </p:inputText>
 
+                <p:outputLabel for="description" value="#{mes.ticketcreate_description}:" />
+                <p:inputTextarea rows="6" cols="33" id="description" value="#{ticketCreateModifyView.description}" required="true" label="Description">
+                    <f:validateLength minimum="4" />
+                </p:inputTextarea>
 
+                <p:outputLabel for="clientMail" value="#{mes.ticketcreate_clientmail}:" />
+                <p:inputText id="clientMail" value="#{ticketCreateModifyView.clientMail}" required="true" label="Title">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
+
+                <p:outputLabel for="type" value="#{mes.ticketcreate_type}:" />
                 <p:selectOneMenu id="type" value="#{ticketCreateModifyView.typeName}" style="width:150px">
+                    <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue=""/>
                     <f:selectItems value="#{ticketCreateModifyView.types}"
                                    var="type"
                                    itemLabel="#{type.name}" itemValue="#{type.name}"/>
                 </p:selectOneMenu>
 
-                <p:selectOneMenu id="companyName" value="#{ticketCreateModifyView.companyName}" style="width:150px">
+                <p:outputLabel for="companyName" value="#{mes.ticketcreate_companyname}:" />
+                <p:selectOneMenu id="companyName" value="#{ticketCreateModifyView.companyName}" style="width:125px">
+                    <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue=""/>
                     <f:selectItems value="#{ticketCreateModifyView.companies}"
                                    var="company"
                                    itemLabel="#{company.name}" itemValue="#{company.name}"/>
                 </p:selectOneMenu>
 
-                <p:selectOneMenu id="statusName" value="#{ticketCreateModifyView.statusName}" style="width:150px">
-                    <f:selectItems value="#{ticketCreateModifyView.statuses}"
-                                   var="status"
-                                   itemLabel="#{status.name}" itemValue="#{status.name}"/>
-                </p:selectOneMenu>
-
-                <p:inputText id="clientMail" value="#{ticketCreateModifyView.clientMail}" required="true" label="Title">
-                    <f:validateLength minimum="4" />
-                </p:inputText>
 
 
-                <p:commandButton value="Save" update="panel" actionListener="#{ticketCreateModifyView.addTicket}" icon="ui-icon-check" />
+
+                <p:commandButton value="#{mes.ticketcreate_save}" update="panel" actionListener="#{ticketCreateModifyView.addTicket}" icon="ui-icon-check" />
 
                     </p:panel>
         </h:form>
