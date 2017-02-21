@@ -48,6 +48,8 @@ public class CurrentTicketView {
         FacesContext context = FacesContext.getCurrentInstance();
         currentTicketId = Long.valueOf(context.getExternalContext().getRequestParameterMap().get("currentTicketId"));
         currentTicket = ticketService.findById(currentTicketId);
+        newComment = new CommentVo();
+        comments = new ArrayList<>();
     }
 
     public void addNewComment() {
@@ -55,12 +57,10 @@ public class CurrentTicketView {
         String recUserName;
 
         comments = currentTicket.getComments();
-        newComment = CommentVo.builder()
-                .commentText(addCommentView.getCommentText())
-                .build();
+        newComment.setCommentText(addCommentView.getCommentText());
+        recUserName = userSessionBean.getUserName();
 
         try {
-            recUserName = userSessionBean.getUserName();
             commentService.save(newComment, recUserName);
         } catch (Exception e) {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Error in saving comment!");
@@ -72,7 +72,7 @@ public class CurrentTicketView {
         currentTicket.setComments(comments);
 
         try {
-            ticketService.update(currentTicket, recUserName);
+            ticketService.save(currentTicket, recUserName);
         } catch (Exception e) {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Error in saving ticket!");
             context.addMessage(null, facesMessage);
