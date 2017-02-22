@@ -13,7 +13,28 @@
     </ui:define>
 
     <ui:define name="customBody">
-
-
+		<h:form id="typelist">
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>#{mes.index}</h3>
+				</div>
+				<div class="panel-body">
+					<p:panelGrid rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0}">
+					<div class="panel panel-default">
+						<div class="panel-heading">#{mes.home_ticketsbystatus_chart_title}</div>
+						<div class="panel-body">
+							<div class="row">
+								<p:chart type="pie" model="#{ticketsByStatusView.chart}" style="width:400px;height:300px" />
+							</div>
+						</div>
+					</div>
+					</p:panelGrid>
+					
+					
+				</div>
+			</div>
+		</div>
+		</h:form>
     </ui:define>
 </ui:composition>

@@ -14,8 +14,15 @@
             </c:when>
         </c:choose>
     </ui:define>
-    
     <ui:define name="customLink2">
+        <c:choose>
+            <c:when test="#{p:userPrincipal().name!=null}">
+                <p:link href="/secured/newticket.xhtml">#{mes.newticket}</p:link>
+            </c:when>
+        </c:choose>
+    </ui:define>
+    
+    <ui:define name="customLink3">
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
                 <p:link href="/secured/tickets.xhtml">#{mes.tickets}</p:link>
@@ -23,10 +30,10 @@
         </c:choose>
     </ui:define>
 
-    <ui:define name="customLink3">
+    <ui:define name="customLink4">
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
-                <p:link href="/secured/tickettype.xhtml">#{mes.tickettype_create}</p:link>
+                <p:link href="/secured/typelist.xhtml">#{mes.tickettypes}</p:link>
             </c:when>
         </c:choose>
     </ui:define>

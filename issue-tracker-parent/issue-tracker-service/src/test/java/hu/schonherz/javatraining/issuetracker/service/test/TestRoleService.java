@@ -1,10 +1,9 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleService;
-import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceLocal;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
+import javax.annotation.ManagedBean;
+import javax.ejb.EJB;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -13,8 +12,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import javax.annotation.ManagedBean;
-import javax.ejb.EJB;
+import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 
     @FixMethodOrder(MethodSorters.NAME_ASCENDING)
     @ManagedBean

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
@@ -14,19 +15,15 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
 
@@ -36,8 +33,6 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class TypeCreateModifyView implements Serializable {
 
-	private final String SUCCESS_PAGE = "tickettype_succes.xhtml";
-	
 	@EJB
 	private StatusServiceRemote statusService;
 	
@@ -68,16 +63,62 @@ public class TypeCreateModifyView implements Serializable {
 	@ManagedProperty(value = "#{modifyStatusOrderView}")
 	private ModifyStatusOrderView modifyStatusOrderView;
 	
+	@ManagedProperty("#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+	
 	@PostConstruct
 	public void init() {
+		Map<String, String> params =FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap();
+		String param = params.get("id");
+		log.debug("passed paramter: " + param);
 		
+		if (param != null) {
+			load(Long.parseLong(params.get("id")));
+		}
+		else {
+			load(null);
+		}
+	}
+	
+	private void load(Long id) {
 		typevo = new TypeVo();
-
 		statuses = new ArrayList<>();
 		List<StatusOrderViewModel> statusOrders = new ArrayList<>();
 		
+		if (id != null) {
+			typevo = typeService.findById(id);
+			StatusVo startVo = typevo.getStartEntity();
+			statuses.add(startVo);
+			statuses = typeService.getStatuses(typevo);
+			
+			statusOrders = getStatusOrder();
+		}
+		
 		modifyStatusOrderView.init();
 		modifyStatusOrderView.generateDiagram(statuses, statusOrders);
+	}
+	
+	private List<StatusOrderViewModel> getStatusOrder() {
+		List<StatusOrderViewModel> back = new ArrayList<>();
+		
+		for (StatusVo status : statuses) {
+			List<StatusOrderVo> fromStatuses = statusOrderService.findByFromStatusId(status.getId());
+			
+			for (StatusOrderVo statusOrder : fromStatuses) {
+				
+				StatusVo to = statuses.stream().filter(x -> x.getId() == statusOrder.getToStatusId()).findFirst().get();
+				
+				StatusOrderViewModel newOrder = StatusOrderViewModel.builder()
+						.from(status.getName())
+						.to(to.getName())
+						.isOriginal(true)
+						.build();
+				back.add(newOrder);
+			}
+		}
+		
+		return back;
 	}
 
 	public void save() {
@@ -95,6 +136,12 @@ public class TypeCreateModifyView implements Serializable {
 			return;
 		}
 		
+		if (statuses.size() < 2) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_order_min")));
+			return;
+		}
+		
 		if (!isFullyConnected()) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_status_order_noconnect")));
@@ -108,42 +155,69 @@ public class TypeCreateModifyView implements Serializable {
 			return;
 		}
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserVo user = userService.findByUsername(auth.getName());
-		log.debug("user: " + user.getUsername());
-		log.debug("user comapny: " + user.getCompany());
-
+		if (typevo.getId() == null) {
+			TypeVo typeWithSameName = typeService.findByNameAndCompany(typevo.getName(), userSessionBean.getCurrentUser().getCompany());
+			if (typeWithSameName != null) {
+				context.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_alreadyinuser")));
+				return;
+			}
+		}
+		
 		List<StatusVo> comittedStatuses = new ArrayList<>();
 		for (StatusVo statusVo : statuses) {
-			statusVo = statusService.save(statusVo, user.getUsername());
+			if (statusVo.getId() == null) {
+				statusVo = statusService.save(statusVo, userSessionBean.getUserName());
+			} else {
+				statusVo = statusService.update(statusVo, userSessionBean.getUserName());
+			}
+			
 			comittedStatuses.add(statusVo);
 			log.debug("commited status: " + statusVo.getName() + " id: " + statusVo.getId());
+		}
+		
+		for (StatusOrderViewModel model : modifyStatusOrderView.getOldStatusOrders()) {
+			StatusVo fromStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getFrom())).findFirst().get();
+			StatusVo toStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getTo())).findFirst().get();
+			StatusOrderVo statusOrderVo = statusOrderService.findByFromStatusIdAndToStatusId(fromStatusVo.getId(), toStatusVo.getId());
+			statusOrderService.deleteById(statusOrderVo.getId());
 		}
 		
 		for (StatusOrderViewModel model : modifyStatusOrderView.getStatusOrders()) {
 			StatusVo fromStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getFrom())).findFirst().get();
 			StatusVo toStatusVo = comittedStatuses.stream().filter(x -> x.getName().equals(model.getTo())).findFirst().get();
+			
+			if (typevo.getId() != null) {
+				StatusOrderVo statusOrderVo = statusOrderService.findByFromStatusIdAndToStatusId(fromStatusVo.getId(), toStatusVo.getId());
+				if (statusOrderVo != null) {
+					statusOrderService.update(statusOrderVo, userSessionBean.getUserName());
+					continue;
+				}
+			}
+			
 			StatusOrderVo newOrderVo = StatusOrderVo.builder()
 					.fromStatusId(fromStatusVo.getId())
 					.toStatusId(toStatusVo.getId())
 					.build();
-			statusOrderService.save(newOrderVo, user.getUsername());
+			statusOrderService.save(newOrderVo, userSessionBean.getUserName());
 		}
 		
 		StatusVo comittedStartStatus = comittedStatuses.stream().filter(x -> x.getName().equals(startStatus.getName())).findFirst().get();
 		typevo.setStartEntity(comittedStartStatus);
+		typevo.setCompany(userSessionBean.getCurrentUser().getCompany());
 		
-		typevo.setCompany(user.getCompany());
-		
-		typeService.save(typevo, user.getUsername());
+		if (typevo.getId() == null) {
+			typevo = typeService.save(typevo, userSessionBean.getUserName());
+		}
+		else {
+			typevo = typeService.update(typevo, userSessionBean.getUserName());
+		}
 		
 		logCurrentStatus();
 		
-		try {
-			context.getExternalContext().redirect(String.format("%s?name=%s", SUCCESS_PAGE, typevo.getName()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		load(typevo.getId());
+		context.addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "", bundle.getString("tickettype_succes")));
 	}
 	
 	private boolean isFullyConnected() {

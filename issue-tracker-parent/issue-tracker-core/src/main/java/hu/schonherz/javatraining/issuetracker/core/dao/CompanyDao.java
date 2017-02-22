@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
 
+import java.util.List;
+
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface CompanyDao extends JpaRepository<CompanyEntity, Long> {
 
     CompanyEntity findById(Long id);
     CompanyEntity findByName(String name);
+    List<CompanyEntity> findAll();
 }

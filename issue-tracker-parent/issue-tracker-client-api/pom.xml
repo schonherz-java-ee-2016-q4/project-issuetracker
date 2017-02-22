@@ -8,6 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+	<name>Issue Tracker - Client-API</name>
     <artifactId>issue-tracker-client-api</artifactId>
 
     <dependencies>

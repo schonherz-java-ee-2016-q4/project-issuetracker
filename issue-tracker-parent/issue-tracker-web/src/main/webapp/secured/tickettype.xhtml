@@ -58,7 +58,8 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-4">
-									<p:dataList value="#{typeCreateModifyView.statuses}" var="status" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+									<p:dataList value="#{typeCreateModifyView.statuses}" var="status" type="unordered"
+										emptyMessage="#{mes.tickettype_status_add_listempty}" itemType="none" paginator="true" rows="10" styleClass="paginated">
 								        <p:commandLink update="tickettype" value="#{status.name}">
 								            <f:setPropertyActionListener value="#{status}" target="#{modifyStatusView.selectedStatus}" />
 								        </p:commandLink>
@@ -78,7 +79,9 @@
 										<div class="row">
 											<div class="col-md-10 col-md-offset-2">
 												<p:commandButton action="#{typeCreateModifyView.modifyStatus()}" value="#{mes.tickettype_status_modify_save}" update="tickettype" />
-												<p:commandButton action="#{typeCreateModifyView.deleteStatus()}" value="#{mes.tickettype_status_modify_delete}" update="tickettype" />
+												<h:panelGroup rendered="#{modifyStatusView.selectedStatus.id == null}">
+													<p:commandButton action="#{typeCreateModifyView.deleteStatus()}" value="#{mes.tickettype_status_modify_delete}" update="tickettype" />
+												</h:panelGroup>
 												<p:commandButton action="#{typeCreateModifyView.cancelModifyingStatus()}" value="#{mes.tickettype_status_modify_cancel}" update="tickettype" />
 											</div>
 										</div>

@@ -1,5 +1,7 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.status;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -51,6 +53,14 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
         return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
 	}
 
-	
+	@Override
+	public List<StatusVo> findAll(){
+		return GenericVoMappers.statusVoMapper.toVo(statusDao.findAll());
+	}
+
+	@Override
+	public void delete(StatusVo statusVo) {
+		statusDao.delete(GenericVoMappers.statusVoMapper.toEntity(statusVo));
+	}
 
 }

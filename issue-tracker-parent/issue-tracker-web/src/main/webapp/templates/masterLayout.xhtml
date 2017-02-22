@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+
+<f:view locale="#{languageBean.locale}">
+
+    <h:head>
+
+
+        <title><ui:insert name="customTitle"></ui:insert></title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="shortcut icon" type="image/x-icon" href="/resources/img/logoplanmicro.png"/>
+        <h:outputStylesheet library="css" name="layout.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+
+        <h:outputStylesheet library="css" name="bootstrap-theme.min.css"/>
+        <h:outputStylesheet library="css" name="helpdek-platform.css"/>
+
+        <h:outputScript library="primefaces" name="jquery/jquery.js"/>
+        <ui:insert name="customHead"/>
+
+    </h:head>
+
+    <h:body>
+        <div class="custom_body">
+            <div class=" customrow">
+                <div class="smallnav">
+                    <span class="menu" onclick="openNav()">
+                        <h2>&#9776;</h2>
+                    </span>
+                    <h:graphicImage library="img" name="logoplanbig.png" styleClass="smallnav_icon"/>
+                </div>
+                <span class="largenav menu">
+                    <h:graphicImage library="img" name="logoplanbig.png" styleClass="largenav-icon">
+
+                       <ui:insert name="brandPictureLink"></ui:insert>
+
+                    </h:graphicImage>
+
+                </span>
+                <div class="menu-item-row">
+                    <div class="navbar-button"><ui:insert name="customLink1"></ui:insert></div>
+                    <div class="navbar-button"><ui:insert name="customLink2"></ui:insert></div>
+                    <div class="navbar-button"><ui:insert name="customLink3"></ui:insert></div>
+                    <div class="navbar-button"><ui:insert name="customLink4"></ui:insert></div>
+                    <div class="navbar-button"><ui:insert name="customLink5"></ui:insert></div>
+                    <div class="navbar-button navbar-login"><ui:insert name="customLogin"></ui:insert></div>
+                    <div>
+                        <h:form>
+                            <p:commandButton action="#{languageBean.setLanguage('en')}" id="lang1" value=""
+                                             styleClass="locale-en" update="@all"/>
+                        </h:form>
+                    </div>
+                    <div>
+                        <h:form>
+                            <p:commandButton action="#{languageBean.setLanguage('hu')}" value=""
+                                             styleClass="locale-hu" update="@all"/>
+                        </h:form>
+                    </div>
+
+                </div>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <div class="container sidenav-heading">
+                    <span>Helpdesk</span>
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                </div>
+                <ui:insert name="customLink1"></ui:insert>
+                <ui:insert name="customLink2"></ui:insert>
+                <ui:insert name="customLink3"></ui:insert>
+                <ui:insert name="customLink4"></ui:insert>
+                <ui:insert name="customLink5"></ui:insert>
+                <ui:insert name="customLogin"></ui:insert>
+            </div>
+
+            <ui:insert name="customBody" class="custom_body"></ui:insert>
+            <div class="push"></div>
+        </div>
+
+        <div class="footer">
+            <div class="custom_footer_text">
+                <ui:insert name="customFooter"></ui:insert>
+            </div>
+            <div class="footer_content">
+                <div class="footer_text">&copy; 2017 Schönherz Academy</div>
+                <h:graphicImage library="img" name="schonherzlogo.png" styleClass="schonherz-logo"/>
+            </div>
+        </div>
+        <!--<h:outputScript library="js" name="jquery.js"/>-->
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+        <h:outputScript library="js" name="helpdesk-platform.js"/>
+        <ui:insert name="customScripts"></ui:insert>
+    </h:body>
+
+</f:view>
+</html>

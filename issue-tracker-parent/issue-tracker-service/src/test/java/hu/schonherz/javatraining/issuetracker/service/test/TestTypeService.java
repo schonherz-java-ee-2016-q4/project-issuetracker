@@ -1,6 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
@@ -23,151 +23,166 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ManagedBean
 public class TestTypeService {
-    static final Logger log = LogManager.getLogger(TestTypeService.class.getName());
+	static final Logger log = LogManager.getLogger(TestTypeService.class.getName());
 
-        @EJB
-        TypeServiceLocal serviceLocal;
+	@EJB
+	TypeServiceLocal serviceLocal;
 
-        @EJB
-        CompanyServiceLocal companyServiceLocal;
+	@EJB
+	CompanyServiceLocal companyServiceLocal;
 
-        @EJB
-    StatusServiceLocal statusServiceLocal;
+	@EJB
+	StatusServiceLocal statusServiceLocal;
 
-        @EJB
-        private TestUserService.Caller transactionalCaller;
+	@EJB
+	private TestUserService.Caller transactionalCaller;
 
-        @Before
-        public void startTheContainer() throws Exception {
-            try {
-                CreateContext.ejbContainer.getContext().bind("inject", this);
-            } catch (Throwable e) {
-                log.error("Error startContainer",e);
-            }
-        }
+	@Before
+	public void startTheContainer() throws Exception {
+		try {
+			CreateContext.ejbContainer.getContext().bind("inject", this);
+		} catch (Throwable e) {
+			log.error("Error startContainer", e);
+		}
+	}
 
-    @Test
-    public void test0Save() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+	@Test
+	public void test0Save() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = new CompanyVo();
+				companyVo.setName("testCompany");
+				companyVo = companyServiceLocal.save(companyVo, "username");
 
-                CompanyVo companyVo = new CompanyVo();
-                companyVo.setRecUserName("test");
-                companyVo.setModUserName("test");
-                companyVo.setRecDate(fmt.parse("2013-05-06"));
-                companyVo.setModDate(fmt.parse("2013-05-06"));
-                companyVo.setName("testCompany");
+				StatusVo statusVo = new StatusVo();
+				statusVo.setName("test");
+				statusVo.setDescription("test");
+				statusVo = statusServiceLocal.save(statusVo, "username");
+			} catch (Exception e) {
+				log.error("Error to save a typevo", e);
+			}
+			return null;
+		});
+	}
 
-                StatusVo statusVo = new StatusVo();
-                statusVo.setRecUserName("test");
-                statusVo.setModUserName("test");
-                statusVo.setRecDate(fmt.parse("2013-05-06"));
-                statusVo.setModDate(fmt.parse("2013-05-06"));
-                statusVo.setName("test");
-                statusVo.setDescription("test");
+	@Test
+	public void test1Save() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				TypeVo typeVo = new TypeVo();
 
-                statusVo = statusServiceLocal.save(statusVo,"username");
-                companyVo = companyServiceLocal.save(companyVo,"username");
-            } catch (Exception e) {
-                log.error("Error to save a typevo",e);
+				typeVo.setName("testType");
+				typeVo.setDescription("testDescription");
+				typeVo.setStartEntity(statusServiceLocal.findByName("test"));
+				typeVo.setCompany(companyServiceLocal.findByName("testCompany"));
+				serviceLocal.save(typeVo, "testUser");
+			} catch (Exception e) {
+				log.error("Error to save a typevo", e);
 
-            }
-            return null;
-        });
-    }
+			}
+			return null;
+		});
+	}
 
-     @Test
-    public void test1Save() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+	@Test
+	public void test2FindByName() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType", companyVo);
+				Assert.assertEquals("testType", vo.getName());
+			} catch (Exception e) {
+				log.error("Error in findbyname", e);
+			}
+			return null;
+		});
+	}
 
-                TypeVo typeVo = new TypeVo();
+	@Test
+	public void test3FindByName2() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType", companyVo);
+				Assert.assertEquals("testDescription", vo.getDescription());
+			} catch (Exception e) {
+				log.error("Error in findbyname", e);
+			}
+			return null;
+		});
+	}
 
+	@Test
+	public void test4FindById() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType", companyVo);
+				TypeVo voById = serviceLocal.findById(vo.getId());
+				Assert.assertEquals(vo, voById);
+			} catch (Exception e) {
+				log.error("Error in findbyname", e);
+			}
+			return null;
+		});
+	}
+	
+	@Test
+	public void test5getStatuses() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType", companyVo);
+				List<StatusVo> statuses = serviceLocal.getStatuses(vo);
+				
+				Assert.assertNotEquals(statuses.size(), 0);
+			} catch (Exception e) {
+				log.error("Error in findbyname", e);
+			}
+			return null;
+		});
+	}
 
-                typeVo.setName("testType");
-                typeVo.setDescription("testDescription");
+	@Test
+	public void test6Update() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType", companyVo);
+				vo.setName("testType_updated");
+				serviceLocal.update(vo, "modUser");
+			} catch (Exception e) {
+				log.error("Error to update vo", e);
+			}
+			return null;
+		});
+	}
 
-                typeVo.setStartEntity(statusServiceLocal.findByName("test"));
-
-                CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
-                typeVo.setCompany(companyVo);
-                serviceLocal.save(typeVo, "testUser");
-            } catch (Exception e) {
-                log.error("Error to save a typevo",e);
-
-            }
-            return null;
-        });
-    }
-
-        @Test
-        public void test2FindByName() throws Exception {
-            transactionalCaller.call(() -> {
-                try {
-                    TypeVo vo = serviceLocal.findByName("testStatus");
-                    Assert.assertEquals("testStatus", vo.getName());
-                } catch (Exception e) {
-                    log.error("Error in findbyname",e);
-                }
-                return null;
-            });
-        }
-
-        @Test
-        public void test3FindByName2() throws Exception {
-            transactionalCaller.call(() -> {
-                try {
-                    TypeVo vo = serviceLocal.findByName("testStatus");
-                    Assert.assertEquals("testDescription", vo.getDescription());
-                } catch (Exception e) {
-                    log.error("Error in findbyname",e);
-                }
-                return null;
-            });
-        }
-
-        @Test
-        public void test4FindById() throws Exception {
-            transactionalCaller.call(() -> {
-                try {
-                    TypeVo vo = serviceLocal.findByName("testStatus");
-                    TypeVo voById = serviceLocal.findById(vo.getId());
-                    Assert.assertEquals(vo, voById);
-                } catch (Exception e) {
-                    log.error("Error in findbyname",e);
-                }
-                return null;
-            });
-        }
-
-        @Test
-        public void test5Update() throws Exception {
-            transactionalCaller.call(() -> {
-                try {
-                    TypeVo vo = serviceLocal.findByName("testStatus");
-                    vo.setName("testStatus_updated");
-                    serviceLocal.update(vo, "modUser");
-                } catch (Exception e) {
-                    log.error("Error to update vo",e);
-                }
-                return null;
-            });
-        }
-
-        @Test
-        public void test6FindByNameAfterUpdate() throws Exception {
-            transactionalCaller.call(() -> {
-                try {
-                    TypeVo vo = serviceLocal.findByName("testStatus_updated");
-                    Assert.assertEquals("testStatus_updated", vo.getName());
-                } catch (Exception e) {
-                    log.error("Error in findbyname after update",e);
-                }
-                return null;
-            });
-        }
-    }
-
-
+	@Test
+	public void test7FindByNameAfterUpdate() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				TypeVo vo = serviceLocal.findByNameAndCompany("testType_updated", companyVo);
+				Assert.assertEquals("testType_updated", vo.getName());
+			} catch (Exception e) {
+				log.error("Error in findbyname after update", e);
+			}
+			return null;
+		});
+	}
+	
+	@Test
+	public void test8FindByCompany() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				CompanyVo companyVo = companyServiceLocal.findByName("testCompany");
+				List<TypeVo> findByCompany = serviceLocal.findByCompany(companyVo);
+				Assert.assertEquals(findByCompany.size(), 1);
+			} catch (Exception e) {
+				log.error("Error in findbyname after update", e);
+			}
+			return null;
+		});
+	}
+}

@@ -20,14 +20,15 @@ public class TicketEntity extends BaseEntity implements Serializable {
     private String title;
     private String description;
     private String clientMail;
+    private CompanyEntity company;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private TypeEntity type;
 
     @ManyToOne
     private StatusEntity currentStatus;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private UserEntity user;
 
     @ManyToMany
