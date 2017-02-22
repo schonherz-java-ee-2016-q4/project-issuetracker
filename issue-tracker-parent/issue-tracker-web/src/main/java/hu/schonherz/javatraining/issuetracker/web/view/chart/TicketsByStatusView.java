@@ -49,7 +49,7 @@ public class TicketsByStatusView implements Serializable {
 			String status = ticket.getCurrentStatus().getName().toLowerCase();
 			Number value = map.get(status);
 			if (value == null) {
-				map.put(status, 0);
+				map.put(status, 1);
 			}
 			else {
 				value = value.longValue() + 1;
