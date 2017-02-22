@@ -19,4 +19,5 @@ public class StatusVo extends BaseVo implements Serializable {
 
 	private String name;
 	private String description;
+	private Boolean isEndStatus;
 }

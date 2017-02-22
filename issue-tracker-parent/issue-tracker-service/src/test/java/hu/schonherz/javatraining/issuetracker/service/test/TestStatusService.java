@@ -39,6 +39,7 @@ public class TestStatusService {
 				StatusVo statusVo = new StatusVo();
 				statusVo.setName("testStatus");
 				statusVo.setDescription("testDescription");
+				statusVo.setIsEndStatus(true);
 				serviceLocal.save(statusVo, "testUser");
 			} catch (Exception e) {
 				throw new RuntimeException(e);

@@ -13,4 +13,5 @@ import lombok.Data;
 public class AddStatusView implements Serializable {
 	private String name;
 	private String description;
+	private boolean isEndStatus;
 }
