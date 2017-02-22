@@ -1,0 +1,243 @@
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+.custom_body {
+    background-color: #F5F5F5;
+    padding-top: 90px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+}
+
+.footer {
+    text-align: center;
+    border-top: 1px solid #212121;
+    background-color: #263238;
+    color: #ffffff;
+    font-family: sans-serif;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    -webkit-box-shadow: 4px 0px 18px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 4px 0px 18px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 4px 0px 18px 0px rgba(0, 0, 0, 0.75);
+}
+
+.footer_content {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer_text {
+    align-self: center;
+    font-size: 12px;
+}
+
+.custom_footer_text {
+    text-align: center;
+}
+
+.schonherz-logo {
+    align-self: center;
+    width: 140px;
+    height: 60px;
+    margin-right: 30px;
+}
+
+.customrow {
+    border-bottom: 1px solid #212121;
+    padding: 0;
+    margin: 0;
+    background-color: #263238;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999999999999999999999;
+    -webkit-box-shadow: 4px 5px 18px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 4px 5px 18px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 4px 5px 18px 0px rgba(0, 0, 0, 0.75);
+}
+
+.navbar-button {
+    font-family: sans-serif;
+    font-size: 18px;
+    background-color: #EEEEEE;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    cursor: pointer;
+    margin: 10px;;
+}
+
+.navbar-button:hover {
+    background-color: #9E9E9E;
+    color: #ffffff;
+    border: 5px #ffffff;
+    -webkit-box-shadow: 1px 1px 4px 0px #EEEEEE;
+    -moz-box-shadow: 1px 1px 4px 0px #EEEEEE;
+    box-shadow: 1px 1px 4px 0px #EEEEEE;
+}
+
+.navbar-button > a {
+    text-decoration: none;
+    color: #263238;
+    margin: 10px 20px;
+}
+
+.largenav-icon {
+    align-self: center;
+    margin: 10px;
+}
+
+.menu-item-row {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: auto;
+    padding-right: 10px;
+}
+
+.smallnav {
+    display: flex;
+    flex-direction: row;
+    /*justify-content: space-around;*/
+    padding: 10px;
+    color: #ffffff;
+}
+
+.brand_text {
+    color: #ffffff;
+}
+
+.smallnav_icon {
+    align-self: center;
+    justify-self: right;
+    width: 80%;
+    height: 100%;
+}
+
+.menu {
+    cursor: pointer;
+}
+
+.largenav {
+    font-size: 24px;
+    font-family: sans-serif;
+    color: #ffffff;
+}
+
+@media screen and (min-width: 992px) {
+    .navbar-login {
+        margin-left: 100px;
+    }
+
+    .navbar-button {
+        display: inline-block;
+    }
+
+    .largenav {
+        display: block;
+    }
+
+    .smallnav {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .navbar-login {
+        bottom: 0;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+
+    .largenav {
+        display: none;
+    }
+
+    .menu-item-row {
+        display: none;
+    }
+
+    .navbar-button {
+        display: none;
+    }
+}
+
+.sidenav {
+    z-index: 99999999999999999999999;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    box-shadow: 0 4px 8px -3px #555454;
+    padding-top: 0px;
+}
+
+.sidenav > a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    color: #fff;
+}
+
+.sidenav-heading {
+    background-color: #263238;
+    padding-top: 10px;
+    font-size: 36px;
+    color: #fff;
+}
+
+.fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+.locale-en {
+	margin: 10; 
+	background-image: url("#{resource['img/flag-en.png']}");
+    height: 19px;
+    width: 28px;
+    border-top-left-radius: 6px;
+}
+
+.locale-hu {
+	margin: 0; 
+    background-image: url("#{resource['img/flag-hu.png']}");
+    height: 19px;
+    width: 28px;
+    border-bottom-right-radius: 6px;
+}
