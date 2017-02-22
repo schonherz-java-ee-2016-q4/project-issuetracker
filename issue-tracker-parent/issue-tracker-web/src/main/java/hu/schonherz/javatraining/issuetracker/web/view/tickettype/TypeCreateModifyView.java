@@ -97,6 +97,7 @@ public class TypeCreateModifyView implements Serializable {
 		
 		modifyStatusOrderView.init();
 		modifyStatusOrderView.generateDiagram(statuses, statusOrders);
+		log.debug(String.format("loaded back: %s", id));
 	}
 	
 	private List<StatusOrderViewModel> getStatusOrder() {
