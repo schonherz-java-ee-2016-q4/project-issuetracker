@@ -36,6 +36,11 @@ public class ModifyStatusOrderView implements Serializable {
 	private static final String ICON_HOVER_COLOR = "#5C738B";
 	private static final int LINE_WIDTH = 3;
 
+	private static final int DIAGRAM_MARGIN = 2;
+	private static final int DIAGRAM_MAX = 30;
+	private static final int DIAGRAM_CHANGEY = 6;
+	private static final int DIAGRAM_CHANGEX = 12;
+	
 	private DefaultDiagramModel model;
 	private List<StatusOrderViewModel> statusOrders;
 	private List<StatusOrderViewModel> oldStatusOrders;
@@ -65,7 +70,22 @@ public class ModifyStatusOrderView implements Serializable {
 	}
 	
 	public void addStatus(String status) {
-		Element newElement = new Element(status);
+		
+		List<Element> statuses = model.getElements();
+		int x = DIAGRAM_MARGIN;
+		int y = DIAGRAM_MARGIN;
+		for (Element e : statuses) {
+			e.setX(String.format("%sem", x));
+			e.setY(String.format("%sem", y));
+			if (y > DIAGRAM_MAX) {
+				y = DIAGRAM_MARGIN;
+				x += DIAGRAM_CHANGEX;
+			} else {
+				y += DIAGRAM_CHANGEY;
+			}
+		}
+		
+		Element newElement = new Element(status, String.format("%sem", x), String.format("%sem", y));
 		
 		EndPoint outPoint = createRectangleEndPoint(EndPointAnchor.BOTTOM);
 		outPoint.setSource(true);
