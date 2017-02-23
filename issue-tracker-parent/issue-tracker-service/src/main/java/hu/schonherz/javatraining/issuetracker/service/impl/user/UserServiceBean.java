@@ -7,6 +7,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -15,6 +16,8 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServic
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.UserDao;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
+
+import java.util.List;
 
 
 @Stateless(mappedName = "UserService")
@@ -26,7 +29,25 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
 	@Autowired
 	private UserDao userDao;
-	
+
+	@Override
+	public List<UserVo> findAll(){
+
+        return GenericVoMappers.userVoMapper.toVo(userDao.findAll());
+
+	}
+
+	@Override
+	public List<UserVo> findAllByCompany(CompanyVo companyVo){
+        return GenericVoMappers.userVoMapper.toVo(userDao.findAllByCompany(GenericVoMappers.companyVoMapper.toEntity(companyVo)));
+
+	}
+
+	@Override
+	public UserVo findById(Long id)
+	{
+		return GenericVoMappers.userVoMapper.toVo(userDao.findById(id));
+	}
 
 	@Override
 	public UserVo findByUsername(String username) {
