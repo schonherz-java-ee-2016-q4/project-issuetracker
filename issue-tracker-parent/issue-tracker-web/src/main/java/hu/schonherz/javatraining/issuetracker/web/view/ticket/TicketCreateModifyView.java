@@ -2,6 +2,7 @@ package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
@@ -19,6 +20,7 @@ import javax.faces.context.FacesContext;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -44,6 +46,7 @@ public class TicketCreateModifyView implements Serializable {
     private List<CommentVo> comments;
     private List<HistoryVo> history;
     private TicketVo ticketVo;
+    private HistoryVo startHistory;
 
 
     private List<CompanyVo> companies;
@@ -59,6 +62,8 @@ public class TicketCreateModifyView implements Serializable {
     private StatusServiceRemote statusServiceRemote;
     @EJB
     private TypeServiceRemote typeServiceRemote;
+    @EJB
+    private HistoryServiceRemote historyServiceRemote;
 
 
     @ManagedProperty("#{userSessionBean}")
@@ -73,6 +78,7 @@ public class TicketCreateModifyView implements Serializable {
     @PostConstruct
     public void init() {
         ticketVo = new TicketVo();
+        history = new ArrayList<>();
 
         companies = companyServiceRemote.findAll();
         types = typeServiceRemote.findAll();
@@ -85,7 +91,12 @@ public class TicketCreateModifyView implements Serializable {
         threeLetterCompanyID = companyName.substring(0, 3);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
         uid = threeLetterCompanyID;
+        startHistory = startHistory.builder()
+                .modStatus(HistoryEnum.CREATED)
+                .build();
 
+        startHistory = historyServiceRemote.save(startHistory, userSessionBean.getUserName());
+        history.add(startHistory);
 
         ticketVo = ticketVo.builder()
                 .uid(uid)
@@ -94,6 +105,7 @@ public class TicketCreateModifyView implements Serializable {
                 .title(title)
                 .company(companyServiceRemote.findByName(companyName))
                 .type(typeServiceRemote.findByName(typeName))
+                .history(history)
                 .build();
 
         try {

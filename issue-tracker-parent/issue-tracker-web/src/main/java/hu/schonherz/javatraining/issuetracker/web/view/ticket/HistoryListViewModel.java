@@ -1,4 +1,4 @@
-package hu.schonherz.javatraining.issuetracker.web.view.tickettype;
+package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 import java.util.Date;
 

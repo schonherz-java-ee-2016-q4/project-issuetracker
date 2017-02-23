@@ -36,7 +36,7 @@
                             <h:panelGrid columns="1" cellpadding="10"><h:outputText value="#{currentTicketView.currentTicket.description}"/></h:panelGrid>
                         </p:panel>
 
-                        <p:panel styleClass="col-md-11" header="#{mes.comments}">
+                        <p:panel styleClass="col-md-11" header="#{mes.comments}" style="margin-bottom: 1em;">
                             <h:panelGrid columns="1" cellpadding="10" style="margin-bottom: 1em;">
                                 <h:outputText value="#{mes.ticket_no_comments}" rendered="#{currentTicketView.currentTicket.comments.size() == 0}"/>
                                 <p:dataScroller value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10" rendered="#{currentTicketView.currentTicket.comments.size() != 0}">
@@ -56,6 +56,23 @@
 
                             <p:inputTextarea rows="6" cols="50" id="commentText" value="#{addCommentView.commentText}" required="true" autoResize="true"/>
                             <div><p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="ticketdetails"/></div>
+                        </p:panel>
+
+                        <p:panel styleClass="col-md-11" header="#{mes.ticket_history}">
+
+                            <p:dataScroller value="#{currentTicketView.historyList}" var="history" chunkSize="10">
+                                <h:panelGrid columns="2" style="width:100%">
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="#{history.change}" style="font-weight: bold"/>
+                                            <h:outputText value="#{history.recDate}">
+                                                <f:convertDateTime  timeStyle="short" type="both" dateStyle="full"/>
+                                            </h:outputText>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </h:panelGrid>
+                            </p:dataScroller>
+
                         </p:panel>
 
                     </div>

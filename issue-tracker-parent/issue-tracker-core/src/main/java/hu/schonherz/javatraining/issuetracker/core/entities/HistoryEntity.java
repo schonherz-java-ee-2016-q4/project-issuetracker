@@ -23,9 +23,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class HistoryEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = -7990882977612154982L;
-
-	@ManyToOne
-	private TicketEntity ticket;
 	
 	@Enumerated(EnumType.STRING)
 	private HistoryEnum modStatus;

@@ -48,7 +48,6 @@ public class TestHistoryService {
 			try {
 				TicketVo ticketVo = ticketServiceLocal.findByUid("TestUid");
 				HistoryVo historyVo = HistoryVo.builder()
-						.ticket(ticketVo)
 						.modStatus(HistoryEnum.CREATED)
 						.build();
 				
@@ -61,7 +60,7 @@ public class TestHistoryService {
 		});
 	}
 
-	@Test
+	/*@Test
 	public void test2findByTicket() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
@@ -106,5 +105,5 @@ public class TestHistoryService {
 			}
 			return null;
 		});
-	}
+	}*/
 }

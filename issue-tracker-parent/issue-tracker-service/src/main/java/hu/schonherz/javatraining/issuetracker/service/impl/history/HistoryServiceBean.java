@@ -34,10 +34,6 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 		return GenericVoMappers.historyVoMapper.toVo(historyDao.findById(id));
 	}
 
-	@Override
-	public List<HistoryVo> findByTicket(TicketVo ticket) {
-		return GenericVoMappers.historyVoMapper.toVo(historyDao.findByTicket(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
-	}
 
 	@Override
 	public HistoryVo save(HistoryVo history, String username) {

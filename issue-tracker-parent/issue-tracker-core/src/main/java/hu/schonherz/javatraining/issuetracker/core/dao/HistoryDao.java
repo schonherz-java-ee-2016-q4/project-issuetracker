@@ -9,5 +9,4 @@ import hu.schonherz.javatraining.issuetracker.core.entities.TicketEntity;
 
 public interface HistoryDao extends JpaRepository<HistoryEntity, Long> {
 	HistoryEntity findById(Long id);
-	List<HistoryEntity> findByTicket(TicketEntity ticket);
 }

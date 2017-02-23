@@ -16,6 +16,5 @@ import lombok.NoArgsConstructor;
 public class HistoryVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = -6005153463262386629L;
 
-	private TicketVo ticket;
 	private HistoryEnum modStatus;
 }
