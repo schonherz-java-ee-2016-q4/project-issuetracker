@@ -44,46 +44,66 @@
 						</div>
 
 						<div class="panel panel-default">
-						<div class="panel-body">
-							<p:dataTable var="history" value="#{ticketHistoryView.ticketHistory}"
-								 emptyMessage="#{mes.notfound}" >
-								<p:column headerText="#{mes.id}"> 
-									<h:outputText  value="#{history.id}" />
-								</p:column>
-<!-- 								<p:column headerText="#{mes.id}">  -->
-<!-- 									<h:outputText  value="#{historys.modStatus}" /> -->
-<!-- 								</p:column> -->
-								<p:column headerText="#{mes.title}">
-									<h:outputText value="#{history.title}" />
-								</p:column>
-								<p:column headerText="#{mes.type}">
-									<h:outputText value="#{history.type.name}" />
-								</p:column>
-								<p:column headerText="#{mes.status}">
-									<h:outputText value="#{history.currentStatus.name}" />
-								</p:column>
-								<p:column headerText="#{mes.description}">
-									<h:outputText value="#{history.description}" />
-								</p:column>
-							
-<!--  								Ha nincs, akkor a létrehozó neve.  -->
-								<p:column headerText="#{mes.ticket_history_mod_user}">
-									<h:outputText value="#{history.modUserName != null ? history.modUserName : history.recUserName}" />
-								</p:column>
-								<p:column headerText="#{mes.ticket_history_comments_number}">
-									<h:outputText value="#{history.comments.size()}" />
-								</p:column>
-<!--  								Ha nincs akkor a létrehozás dátuma.  -->
-								<p:column headerText="#{mes.ticket_history_last_modify_date}">
-									<h:outputText value="#{history.modDate != null ? history.modDate : history.recDate}" />
-								</p:column>
-								<p:column headerText="#{mes.clientmail}"> 
-									<h:outputText value="#{history.clientmail}" /> 
-							</p:column>
-							</p:dataTable>
+							<div class="panel-body">
+								<p:dataScroller value="#{ticketHistoryView.historyList}" var="history" chunkSize="10">
+							        <f:facet name="header">
+							            #{mes.ticket_history}
+							        </f:facet>
+							        <h:panelGrid columns="2" style="width:100%">
+							            <p:outputPanel>
+							                <h:panelGrid columns="2" cellpadding="5">
+							                    <h:outputText value="#{history.change}" style="font-weight: bold"/> 
+							                    <h:outputText value="#{history.recDate}">
+										            <f:convertDateTime locale="#{ticketHistoryView.locale}" timeStyle="short" type="both" dateStyle="full"/>
+										        </h:outputText>
+							                </h:panelGrid>
+							            </p:outputPanel>
+							        </h:panelGrid>
+							    </p:dataScroller>
 							
 							</div>
+						
 						</div>
+<!-- 						<div class="panel panel-default"> -->
+<!-- 						<div class="panel-body"> -->
+<!-- 							<p:dataTable var="history" value="#{ticketHistoryView.ticketHistory.history}" -->
+<!-- 								 emptyMessage="#{mes.notfound}" > -->
+<!-- 								<p:column headerText="#{mes.ticket_history_modstatus}">  -->
+<!-- 									<h:outputText  value="#{history.modStatus}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.id}">  -->
+<!-- 									<h:outputText  value="#{history.ticket.id}" /> -->
+<!-- 								</p:column> -->
+
+<!-- 								<p:column headerText="#{mes.title}"> -->
+<!-- 									<h:outputText value="#{history.ticket.title}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.type}"> -->
+<!-- 									<h:outputText value="#{history.ticket.type.name}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.status}"> -->
+<!-- 									<h:outputText value="#{history.ticket.currentStatus.name}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.description}"> -->
+<!-- 									<h:outputText value="#{history.ticket.description}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.clientmail}">  -->
+<!-- 									<h:outputText value="#{history.ticket.clientMail}" />  -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.ticket_history_mod_user}"> -->
+<!-- 									<h:outputText value="#{history.ticket.modUserName != null ? history.ticket.modUserName : history.ticket.recUserName}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.ticket_history_comments_number}"> -->
+<!-- 									<h:outputText value="#{history.ticket.comments.size()}" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="#{mes.ticket_history_last_modify_date}"> -->
+<!-- 									<h:outputText value="#{history.ticket.modDate != null ? history.ticket.modDate : history.ticket.recDate}" /> -->
+<!-- 								</p:column> -->
+								
+<!-- 							</p:dataTable> -->
+							
+<!-- 							</div> -->
+<!-- 						</div> -->
 					</div>
 				</div>
 			</div>
