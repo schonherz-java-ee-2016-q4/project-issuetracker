@@ -1,6 +1,5 @@
 package hu.schonherz.javatraining.issuetracker.web.view.tickettype;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusSe
 import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
@@ -50,6 +50,8 @@ public class TypeCreateModifyView implements Serializable {
 
 	private TypeVo typevo;
 	private List<StatusVo> statuses;
+	private String selectedCompany;
+	private List<String> companies;
 
 	@ManagedProperty("#{mes}")
 	private ResourceBundle bundle;
@@ -65,12 +67,16 @@ public class TypeCreateModifyView implements Serializable {
 
 	@ManagedProperty("#{userSessionBean}")
 	private UserSessionBean userSessionBean;
-
+	
 	@PostConstruct
 	public void init() {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String param = params.get("id");
 		log.debug("passed paramter: " + param);
+		
+		this.companies = new ArrayList<>();
+		List<CompanyVo> companies = companyService.findAll();
+		companies.forEach(x -> this.companies.add(x.getName()));
 
 		if (param != null) {
 			load(Long.parseLong(params.get("id")));
@@ -86,6 +92,8 @@ public class TypeCreateModifyView implements Serializable {
 
 		if (id != null) {
 			typevo = typeService.findById(id);
+			selectedCompany = typevo.getCompany().getName();
+			
 			StatusVo startVo = typevo.getStartEntity();
 			statuses.add(startVo);
 			statuses = typeService.getStatuses(typevo);
@@ -136,6 +144,12 @@ public class TypeCreateModifyView implements Serializable {
 		if ("".equals(typevo.getDescription())) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_empty_desc")));
+			return;
+		}
+		
+		if (selectedCompany == null || !companies.contains(selectedCompany)) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_empty_comp")));
 			return;
 		}
 
@@ -219,7 +233,7 @@ public class TypeCreateModifyView implements Serializable {
 		StatusVo comittedStartStatus = comittedStatuses.stream().filter(x -> x.getName().equals(startStatus.getName()))
 				.findFirst().get();
 		typevo.setStartEntity(comittedStartStatus);
-		typevo.setCompany(userSessionBean.getCurrentUser().getCompany());
+		typevo.setCompany(companyService.findByName(selectedCompany));
 
 		if (typevo.getId() == null) {
 			typevo = typeService.save(typevo, userSessionBean.getUserName());
@@ -348,6 +362,19 @@ public class TypeCreateModifyView implements Serializable {
 		log.debug("cancel modifying status");
 
 		modifyStatusView.setSelectedStatus(null);
+	}
+	
+	public List<String> completeText(String query) {
+		List<String> filtered = new ArrayList<>();
+		
+		String lowerQuery = query.toLowerCase();
+		
+		for (String company : companies) {
+			if (company.toLowerCase().contains(lowerQuery)) {
+				filtered.add(company);
+			}
+		}
+		return filtered;
 	}
 
 	private void logCurrentStatus() {
