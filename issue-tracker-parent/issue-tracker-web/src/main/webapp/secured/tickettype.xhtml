@@ -27,11 +27,16 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-2"><h:outputLabel for="typename" value="#{mes.tickettype_typename}" /></div>
-								<div class="col-md-10"><p:inputText value="#{typeCreateModifyView.typevo.name}" id="typename"/></div>
+								<div class="col-md-10"><p:inputText value="#{typeCreateModifyView.typevo.name}" id="typename" maxlength="255"/></div>
 							</div>
 							<div class="row">
 								<div class="col-md-2"><h:outputLabel for="typedec" value="#{mes.tickettype_typedec}" /></div>
-								<div class="col-md-10"><p:inputText value="#{typeCreateModifyView.typevo.description}" id="typedec"/></div>
+								<div class="col-md-10"><p:inputTextarea value="#{typeCreateModifyView.typevo.description}" id="typedec" maxlength="20000"/></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><h:outputLabel for="typecomp" value="#{mes.tickettype_typecompany}" /></div>
+								<div class="col-md-10"><p:autoComplete id="typecomp" dropdown="true" value="#{typeCreateModifyView.selectedCompany}"
+										completeMethod="#{typeCreateModifyView.completeText}" /></div>
 							</div>
 						</div>
 					</div>
@@ -40,12 +45,12 @@
 						<div class="panel-heading">#{mes.tickettype_status_add_title}</div>
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-md-2"><h:outputLabel for="statusaddname" value="#{mes.tickettype_status_add_name}" /></div>
-								<div class="col-md-10"><p:inputText value="#{addStatusView.name}" id="statusaddname"/></div>
+								<div class="col-md-2"><h:outputLabel for="statusaddname" value="#{mes.tickettype_status_add_name}"/></div>
+								<div class="col-md-10"><p:inputText value="#{addStatusView.name}" id="statusaddname" maxlength="50"/></div>
 							</div>
 							<div class="row">
-								<div class="col-md-2"><h:outputLabel for="statusadddesc" value="#{mes.tickettype_status_add_desc}" /></div>
-								<div class="col-md-10"><p:inputText value="#{addStatusView.description}" id="statusadddesc"/></div>
+								<div class="col-md-2"><h:outputLabel for="statusadddesc" value="#{mes.tickettype_status_add_desc}"/></div>
+								<div class="col-md-10"><p:inputText value="#{addStatusView.description}" id="statusadddesc" maxlength="255"/></div>
 							</div>
 							<div class="row">
 								<div class="col-md-2"><h:outputLabel for="statusaddend" value="#{mes.tickettype_status_add_end}" /></div>
@@ -74,11 +79,11 @@
 										#{mes.tickettype_status_modify_this} #{modifyStatusView.selectedStatus.name}
 										<div class="row">
 											<div class="col-md-2"><h:outputLabel for="statmodname" value="#{mes.tickettype_status_modify_statname}" /></div>
-											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newName}" id="statmodname"/></div>
+											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newName}" id="statmodname" maxlength="50"/></div>
 										</div>
 										<div class="row">
 											<div class="col-md-2"><h:outputLabel for="statmoddesc" value="#{mes.tickettype_status_modify_statdesc}" /></div>
-											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newDescription}" id="statmoddesc"/></div>
+											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newDescription}" id="statmoddesc" maxlength="255"/></div>
 										</div>
 										<div class="row">
 											<div class="col-md-2"><h:outputLabel for="statusmodend" value="#{mes.tickettype_status_modify_end}" /></div>
@@ -114,7 +119,8 @@
 					
 					<div class="row">
 						<div class="col-md-10 col-md-offset-2">
-							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" update="tickettype" styleClass="pull-right" />
+							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" update="tickettype" styleClass="pull-right"
+								oncomplete="$('html').scrollTop(0);" />
 						</div>
 					</div>
 					
