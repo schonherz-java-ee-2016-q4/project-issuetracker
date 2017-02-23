@@ -38,13 +38,6 @@
         </c:choose>
     </ui:define>
 
-	<ui:define name="customLink4">
-        <c:choose>
-            <c:when test="#{p:userPrincipal().name!=null}">
-                <p:link href="/secured/tickethistory2.xhtml">#{mes.ticket_history}</p:link>
-            </c:when>
-        </c:choose>
-    </ui:define>
     <ui:define name="customLogin">
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
