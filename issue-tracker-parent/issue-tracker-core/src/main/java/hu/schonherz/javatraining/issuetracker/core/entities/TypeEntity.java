@@ -3,6 +3,7 @@ package hu.schonherz.javatraining.issuetracker.core.entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,6 +24,8 @@ public class TypeEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 7208968204790694623L;
 
 	private String name;
+	
+	@Lob
 	private String description;
 	
 	@ManyToOne
