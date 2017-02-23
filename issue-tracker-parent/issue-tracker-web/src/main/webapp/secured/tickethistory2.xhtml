@@ -1,7 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jsf/jstl/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	template="/templates/issueTrackerMasterLayout.xhtml">
@@ -19,6 +18,10 @@
 					<div class="panel-heading">
 						<h3>#{mes.ticket_history}</h3>
 					</div>
+					
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+<!-- Ez a rész csak nekem kellett, hogy tudjam tesztelni külön és ne kelljen a ticketdetailst piszkálnom. Mivel nem lesz külön felületen, -->
+<!-- ezért erre akkor nem is lesz szükség.					 -->
 					<div class="panel-body">
 						<div class="panel panel-default">
 							<div class="panel-heading">#{mes.search}</div>
@@ -42,7 +45,9 @@
 								</div>
 							</div>
 						</div>
-
+<!-- Ez listázza ki a TicketVo history mezőjében lévő adatok alapján a szöveget, ami a TicketHistoryView-ban van összevágva. Lehet egy kicsit bonyolultan van -->
+<!-- megoldva, de a dátum miatt. Így irattam ki a dátumot, aminek nyelvválasztás esetén választás esetén változik a formátuma. Ami nem változik a bundle-lel  -->
+<!-- meghatározott szöveg. A TicketHistoryView-ból jön és nyelvválasztásnál még nem változik.  -->
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<p:dataScroller value="#{ticketHistoryView.historyList}" var="history" chunkSize="10">
@@ -53,8 +58,8 @@
 							            <p:outputPanel>
 							                <h:panelGrid columns="2" cellpadding="5">
 							                    <h:outputText value="#{history.change}" style="font-weight: bold"/> 
-							                    <h:outputText value="#{history.recDate}">
-										            <f:convertDateTime locale="#{ticketHistoryView.locale}" timeStyle="short" type="both" dateStyle="full"/>
+							                    <h:outputText value="#{history.recDate}"> 
+										            <f:convertDateTime  timeStyle="short" type="both" dateStyle="full"/>
 										        </h:outputText>
 							                </h:panelGrid>
 							            </p:outputPanel>
@@ -64,6 +69,7 @@
 							</div>
 						
 						</div>
+<!-- Ez a rész is a HistoryVo ticket mezőjén alapul, de ha nincs rá szükség akkor vegyétek ki. -->
 <!-- 						<div class="panel panel-default"> -->
 <!-- 						<div class="panel-body"> -->
 <!-- 							<p:dataTable var="history" value="#{ticketHistoryView.ticketHistory.history}" -->
