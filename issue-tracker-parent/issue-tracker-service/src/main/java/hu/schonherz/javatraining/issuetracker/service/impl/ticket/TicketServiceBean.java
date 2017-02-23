@@ -31,7 +31,7 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	TicketDao ticketDao;
 	
 	@Override
-	public TicketVo findById(Long id) {
+	public TicketVo findById(Long id) { 
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findById(id));
 	}
 
