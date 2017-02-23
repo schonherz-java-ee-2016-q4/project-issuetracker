@@ -12,25 +12,24 @@
     </ui:define>
 
     <ui:define name="customBody">
-
-            <p:panel id="typeSelector" header="Type" style="margin-top: 2em" styleClass="col-md-4 col-md-offset-1">
+<h:form id="typeselect">
+            <p:panel header="#{mes.type}" style="margin-top: 2em; ;" styleClass="col-md-3 col-md-offset-1">
                 <h:panelGrid columns="1" cellpadding="10">
-                    <h:outputText value="Please select a type!" />
-                    <p:selectOneMenu id="typeName" value="#{statusesByTypeView.typeId}" style="width:150px">
-                        <f:selectItem itemLabel="Select One" itemValue="" />
+                    <h:outputText value="#{mes.tickettype_list_select}" />
+                    <p:selectOneMenu id="type" value="#{statusesByTypeView.typeId}" style="width:150px">
+                        <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue="" />
                         <f:selectItems value="#{statusesByTypeView.allTypes}" var="type" itemLabel="#{type.name}" itemValue="#{type.id}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
-                <p:commandButton value="Submit" action="#{statusesByTypeView.renderChart}" update="chart"/>
+                <p:commandButton value="#{mes.ticket_history_choose}" action="#{statusesByTypeView.renderChart}" update="typeselect" style="margin-top: 3px;"/>
             </p:panel>
 
 
-        <p:panel header="Chart" id="chart" style="margin-top: 2em" styleClass="col-md-8" rendered="#{statusesByTypeView.typeId != null}">
+        <p:panel header="#{mes.chart}" style="margin-top: 2em;" styleClass="col-md-6 col-md-offset-1" rendered="#{statusesByTypeView.typeId != null}">
             <h:panelGrid columns="1" cellpadding="10" >
-                <p:chart  type="pie" model="#{statusesByTypeView.chart}" style="width:400px;height:300px" />
-                <h:outputText value="asdasd"/>
+                <p:chart type="pie" model="#{statusesByTypeView.chart}" style="width:400px;height:300px;"/>
             </h:panelGrid>
         </p:panel>
-
+</h:form>
     </ui:define>
 </ui:composition>
