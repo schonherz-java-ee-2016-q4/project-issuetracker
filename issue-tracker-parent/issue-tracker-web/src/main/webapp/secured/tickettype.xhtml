@@ -48,6 +48,10 @@
 								<div class="col-md-10"><p:inputText value="#{addStatusView.description}" id="statusadddesc"/></div>
 							</div>
 							<div class="row">
+								<div class="col-md-2"><h:outputLabel for="statusaddend" value="#{mes.tickettype_status_add_end}" /></div>
+								<div class="col-md-10"><p:selectBooleanCheckbox value="#{addStatusView.endStatus}" id="statusaddend"/></div>
+							</div>
+							<div class="row">
 								<div class="col-md-10 col-md-offset-2"><p:commandButton action="#{typeCreateModifyView.addNewStatus()}" value="#{mes.tickettype_status_add_add}" update="tickettype" /></div>
 							</div>
 						</div>
@@ -75,6 +79,10 @@
 										<div class="row">
 											<div class="col-md-2"><h:outputLabel for="statmoddesc" value="#{mes.tickettype_status_modify_statdesc}" /></div>
 											<div class="col-md-10"><p:inputText value="#{modifyStatusView.newDescription}" id="statmoddesc"/></div>
+										</div>
+										<div class="row">
+											<div class="col-md-2"><h:outputLabel for="statusmodend" value="#{mes.tickettype_status_modify_end}" /></div>
+											<div class="col-md-10"><p:selectBooleanCheckbox value="#{modifyStatusView.endStatus}" id="statusmodend"/></div>
 										</div>
 										<div class="row">
 											<div class="col-md-10 col-md-offset-2">
@@ -106,7 +114,7 @@
 					
 					<div class="row">
 						<div class="col-md-10 col-md-offset-2">
-							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" styleClass="pull-right" />
+							<p:commandButton action="#{typeCreateModifyView.save()}" value="#{mes.tickettype_save}" update="tickettype" styleClass="pull-right" />
 						</div>
 					</div>
 					

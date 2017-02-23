@@ -132,12 +132,13 @@ public class TypeListView implements Serializable {
 		if (findByType.size() != 0) {
 			context.addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_typeinuse")));
+			return;
 		}
 		
 		deleteType(selectedType);
 		selected = "";
 		context.addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_list_delete_succes")));
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "", bundle.getString("tickettype_list_delete_succes")));
 	}
 	
 	private void deleteType(TypeVo type) {
