@@ -70,8 +70,7 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 			
 			ticketService.save(ticket , recUser.getUsername());
 			return true;
-		}
-		catch(Exception e) {
+		} catch(Exception e) {
 			log.error(e);
 			return false;
 		}
@@ -79,8 +78,19 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 	
 	@Override
 	public TicketsStatusReportData getTicketsStatusByuserReport(String userName) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			UserVo user = userService.findByUsername(userName);
+			TicketsStatusReportData back = new TicketsStatusReportData();
+			back.setClosedTickets(ticketService.getNumberOfClosedTicketsByUser(user));
+			back.setOpenedTickets(ticketService.getNumberOfOpenedTicketsByUser(user));
+			log.debug(String.format("getTicketsStatusByuserReport(%s)", userName));
+			log.debug(String.format("closed: %s", back.getClosedTickets()));
+			log.debug(String.format("opened: %s", back.getOpenedTickets()));
+			return back;
+		} catch(Exception e) {
+			log.error(e);
+			return null;
+		}
 	}
 
 	@Override
@@ -102,6 +112,8 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 			List<TypeVo> findByCompany = typeService.findByCompany(company);
 			List<String> back = new ArrayList<>();
 			findByCompany.forEach(x -> back.add(x.getName()));
+			log.debug(String.format("getTypesByCompany(%s)", companyName));
+			log.debug(back);
 			return back;
 		} catch (Exception e) {
 			log.error(e);

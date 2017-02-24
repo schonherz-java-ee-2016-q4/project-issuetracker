@@ -67,4 +67,14 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
 	}
 
+	@Override
+	public int getNumberOfClosedTicketsByUser(UserVo user) {
+		return ticketDao.getNumberOfClosedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+	}
+
+	@Override
+	public int getNumberOfOpenedTicketsByUser(UserVo user) {
+		return ticketDao.getNumberOfOpenedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+	}
+
 }

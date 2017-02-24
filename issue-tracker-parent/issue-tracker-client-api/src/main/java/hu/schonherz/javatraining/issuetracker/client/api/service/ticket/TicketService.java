@@ -14,4 +14,7 @@ public interface TicketService {
 	TicketVo save(TicketVo ticket, String username);
 	TicketVo update(TicketVo ticket, String username);
 	List<TicketVo> findByType(TypeVo type);
+	
+	int getNumberOfClosedTicketsByUser(UserVo user);
+	int getNumberOfOpenedTicketsByUser(UserVo user);
 }

@@ -25,7 +25,7 @@
 - `companyName` Name of the company.
 - `bindedUser` A username, who have to work on this ticket, can be nullable.
 - `recUser` A username, who creates this ticket.
-- `ticketType` Type of the ticket.
+- `ticketTypeName` Type of the ticket.
 - `clientMail` Mail of the client.
 
 **UserByTicketStatusReportData**:
@@ -39,4 +39,5 @@
 - `TicketsStatusReportData getTicketsStatusByuserReport(String userName)` Returns with `TicketsStatusReportData` which represents that how many openned and closed issue tickets binded to the given user. Returns `null`, if something went wrong.
 - `int getNumberOfCreatedTicketsByUser(String userName)` Returns with a number that represents how many tickets were created by the given user. Returns `null`, if something went wrong.
 - `int getNumberOfCreatedTicketsByUser(String userName, Date fromDate, Date untilDate)` Returns with a number that represents how many tickets were created by the given user between the given `fromDate` and `untilDate`. Returns `null`, if something went wrong.
+- `List<String> getTypesByCompany(String companyName)` Returns with a list that contains the available types for the given company. Returns `null`, if something went wrong.
 
