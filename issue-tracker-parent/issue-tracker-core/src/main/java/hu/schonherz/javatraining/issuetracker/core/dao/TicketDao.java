@@ -2,6 +2,7 @@ package hu.schonherz.javatraining.issuetracker.core.dao;
 
 import java.util.List;
 
+import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import hu.schonherz.javatraining.issuetracker.core.entities.TicketEntity;
@@ -13,4 +14,5 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	TicketEntity findByUid(String uid);
 	List<TicketEntity> findByUser(UserEntity user);
 	List<TicketEntity> findByType(TypeEntity type);
+	List<TicketEntity> findByCompany(CompanyEntity company);
 }

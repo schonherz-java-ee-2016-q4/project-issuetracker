@@ -2,6 +2,7 @@ package hu.schonherz.javatraining.issuetracker.client.api.service.ticket;
 
 import java.util.List;
 
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
@@ -14,4 +15,5 @@ public interface TicketService {
 	TicketVo save(TicketVo ticket, String username);
 	TicketVo update(TicketVo ticket, String username);
 	List<TicketVo> findByType(TypeVo type);
+	List<TicketVo> findByCompany(CompanyVo company);
 }

@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -48,6 +49,11 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	@Override
 	public List<TicketVo> findByType(TypeVo type) {
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByType(GenericVoMappers.typeVoMapper.toEntity(type)));
+	}
+
+	@Override
+	public List<TicketVo> findByCompany(CompanyVo company) {
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
 	}
 
 	@Override
