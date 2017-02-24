@@ -1,6 +1,8 @@
 # Help Desk Platform - Issue Tracker Shared API
 
-## For Admin
+## For Admin Service
+
+**JNDI**: `java:global/issue-tracker-ear-0.0.1-SNAPSHOT/issue-tracker-service-0.0.1-SNAPSHOT/ForAdminServiceBean!hu.schonherz.javatraining.issuetracker.shared.api.ForAdminServiceRemote`
 
 ### VOs
 
@@ -12,9 +14,13 @@
 
 ### APIs
 
-- `TicketCreationReportData getTicketCreationByCompanyReport(String companyName)` Returns with a `TicketCreationReportData` which represents how many tickets were created today, in this week, and in this month for the given company. Returns `null`, if something went wrong.
+- `TicketCreationReportData getTicketCreationByCompanyReport(String companyName)`<br />
+**Description**: Returns with a `TicketCreationReportData` which represents how many tickets were created today, in this week, and in this month for the given company. Returns `null`, if something went wrong.
 
-## For Helpdesk
+
+## For Helpdesk Service
+
+**JNDI**: `java:global/issue-tracker-ear-0.0.1-SNAPSHOT/issue-tracker-service-0.0.1-SNAPSHOT/ForHelpdeskServiceBean!hu.schonherz.javatraining.issuetracker.shared.api.ForHelpdeskServiceRemote`
 
 ### VOs
 
@@ -35,9 +41,14 @@
 
 ### APIs
 
-- `void registerNewTicket(TicketData ticketData)` Registers the passed `TicketData` in the Issue Tracker platform. Returns with `false`, if the save failed.
-- `TicketsStatusReportData getTicketsStatusByuserReport(String userName)` Returns with `TicketsStatusReportData` which represents that how many openned and closed issue tickets binded to the given user. Returns `null`, if something went wrong.
-- `int getNumberOfCreatedTicketsByUser(String userName)` Returns with a number that represents how many tickets were created by the given user. Returns `null`, if something went wrong.
-- `int getNumberOfCreatedTicketsByUser(String userName, Date fromDate, Date untilDate)` Returns with a number that represents how many tickets were created by the given user between the given `fromDate` and `untilDate`. Returns `null`, if something went wrong.
-- `List<String> getTypesByCompany(String companyName)` Returns with a list that contains the available types for the given company. Returns `null`, if something went wrong.
+- `void registerNewTicket(TicketData ticketData)`<br />
+	**Description**: Registers the passed `TicketData` in the Issue Tracker platform. Returns with `false`, if the save failed.
+- `TicketsStatusReportData getTicketsStatusByuserReport(String userName)`<br />
+	**Description**: Returns with `TicketsStatusReportData` which represents that how many openned and closed issue tickets binded to the given user. Returns `null`, if something went wrong.
+- `int getNumberOfCreatedTicketsByUser(String userName)`<br />
+	**Description**: Returns with a number that represents how many tickets were created by the given user. Returns `null`, if something went wrong.
+- `int getNumberOfCreatedTicketsByUser(String userName, Date fromDate, Date untilDate)`<br />
+	**Description**: Returns with a number that represents how many tickets were created by the given user between the given `fromDate` and `untilDate`. Returns `null`, if something went wrong.
+- `List<String> getTypesByCompany(String companyName)`<br />
+	**Description**: Returns with a list that contains the available types for the given company. Returns `null`, if something went wrong.
 

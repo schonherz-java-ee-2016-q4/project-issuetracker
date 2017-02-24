@@ -6,7 +6,7 @@ import java.util.List;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketData;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketsStatusReportData;
 
-public interface ForHelpdeskRemote {
+public interface ForHelpdeskServiceRemote {
 	Boolean registerNewTicket(TicketData ticketData);
 	TicketsStatusReportData getTicketsStatusByuserReport(String userName);
 	Integer getNumberOfCreatedTicketsByUser(String userName);

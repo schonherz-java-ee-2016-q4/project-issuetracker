@@ -24,18 +24,18 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
-import hu.schonherz.javatraining.issuetracker.shared.api.ForHelpdeskRemote;
+import hu.schonherz.javatraining.issuetracker.shared.api.ForHelpdeskServiceRemote;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketData;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketsStatusReportData;
 import lombok.extern.log4j.Log4j;
 
 
-@Stateless(mappedName = "ForHelpdesk")
-@Remote(ForHelpdeskRemote.class)
+@Stateless(mappedName = "ForHelpdeskService")
+@Remote(ForHelpdeskServiceRemote.class)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Log4j
-public class ForHelpdeskBean implements ForHelpdeskRemote {
+public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 
 	@EJB
 	private TicketServiceLocal ticketService;

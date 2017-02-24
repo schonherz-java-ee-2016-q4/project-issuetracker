@@ -12,15 +12,15 @@ import javax.ejb.TransactionAttributeType;
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
-import hu.schonherz.javatraining.issuetracker.shared.api.ForAdminRemote;
+import hu.schonherz.javatraining.issuetracker.shared.api.ForAdminServiceRemote;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketCreationReportData;
 import lombok.extern.log4j.Log4j;
 
-@Stateless(mappedName = "ForAdmin")
-@Remote(ForAdminRemote.class)
+@Stateless(mappedName = "ForAdminService")
+@Remote(ForAdminServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Log4j
-public class ForAdminBean implements ForAdminRemote {
+public class ForAdminServiceBean implements ForAdminServiceRemote {
 
 	@EJB
 	private CompanyServiceLocal companyService;
