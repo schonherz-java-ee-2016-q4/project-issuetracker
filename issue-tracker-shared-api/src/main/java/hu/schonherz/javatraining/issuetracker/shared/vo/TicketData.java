@@ -6,7 +6,7 @@ public class TicketData {
 	private String companyName;
 	private String bindedUser;
 	private String recUser;
-	private String ticketType;
+	private String ticketTypeName;
 	private String clientMail;
 
 	public String getTicketName() {
@@ -49,12 +49,12 @@ public class TicketData {
 		this.recUser = recUser;
 	}
 
-	public String getTicketType() {
-		return ticketType;
+	public String getTicketTypeName() {
+		return ticketTypeName;
 	}
 
-	public void setTicketType(String ticketType) {
-		this.ticketType = ticketType;
+	public void setTicketTypeName(String ticketTypeName) {
+		this.ticketTypeName = ticketTypeName;
 	}
 
 	public String getClientMail() {
