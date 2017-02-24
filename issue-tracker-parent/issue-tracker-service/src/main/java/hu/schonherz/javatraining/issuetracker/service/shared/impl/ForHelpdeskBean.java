@@ -110,8 +110,7 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 			back.setClosedTickets(ticketService.getNumberOfClosedTicketsByUser(user));
 			back.setOpenedTickets(ticketService.getNumberOfOpenedTicketsByUser(user));
 			log.debug(String.format("getTicketsStatusByuserReport(%s)", userName));
-			log.debug(String.format("closed: %s", back.getClosedTickets()));
-			log.debug(String.format("opened: %s", back.getOpenedTickets()));
+			log.debug(String.format("back: %s", back));
 			return back;
 		} catch(Exception e) {
 			log.error(e);
@@ -153,7 +152,7 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 			List<String> back = new ArrayList<>();
 			findByCompany.forEach(x -> back.add(x.getName()));
 			log.debug(String.format("getTypesByCompany(%s)", companyName));
-			log.debug(back);
+			log.debug(String.format("back: %s", back));
 			return back;
 		} catch (Exception e) {
 			log.error(e);

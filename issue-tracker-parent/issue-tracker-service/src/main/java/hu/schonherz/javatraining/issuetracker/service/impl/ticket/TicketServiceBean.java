@@ -15,6 +15,7 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
@@ -86,6 +87,11 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	@Override
 	public int getNumberOfCreatedTicketsByUserBetweenTime(String userName, Date fromDate, Date untilDate) {
 		return ticketDao.getNumberOfCreatedTicketsByUserBetweenTime(userName, fromDate, untilDate);
+	}
+
+	@Override
+	public int getNumberOfCreatedTicketsByCompanyBetweenTime(CompanyVo company, Date fromDate, Date untilDate) {
+		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(GenericVoMappers.companyVoMapper.toEntity(company), fromDate, untilDate);
 	}
 
 }

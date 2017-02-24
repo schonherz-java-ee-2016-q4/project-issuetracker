@@ -20,5 +20,10 @@ public class TicketsStatusReportData implements Serializable {
 	public void setClosedTickets(int closedTickets) {
 		this.closedTickets = closedTickets;
 	}
+	@Override
+	public String toString() {
+		return String.format("TicketsStatusReportData [openedTickets=%s, closedTickets=%s]", openedTickets,
+				closedTickets);
+	}
 	
 }
