@@ -9,6 +9,8 @@
 
     <ui:define name="customHead">
 
+        <h:outputStylesheet library="css" name="ticketdetails.css"/>
+
         <f:metadata>
             <f:viewParam name="currentTicketId" value="#{currentTicketView.currentTicketId}" />
         </f:metadata>
@@ -42,9 +44,10 @@
                                 <p:dataScroller value="#{currentTicketView.currentTicket.comments}" var="comment" chunkSize="10" rendered="#{currentTicketView.currentTicket.comments.size() != 0}">
                                     <h:panelGrid columns="1" style="width:100%" columnClasses="detail">
                                         <p:outputPanel>
-                                            <h:panelGrid columns="2" cellpadding="5">
-                                                <h:outputText value="#{comment.recUserName}:" style="font-weight: bold"/>
-                                                <h:outputText value="#{comment.commentText}"/>
+                                            <h:panelGrid styleClass="css_commentpanelgrid" columns="2" cellpadding="5">
+                                                <h:outputText styleClass="css_recusername" value="#{comment.recUserName}:"/>
+                                                <h:outputText styleClass="css_commenttext" value="#{comment.commentText}"/>
+                                                <hr/>
                                             </h:panelGrid>
                                         </p:outputPanel>
                                     </h:panelGrid>

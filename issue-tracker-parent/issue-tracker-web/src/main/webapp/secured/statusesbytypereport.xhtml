@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/issueTrackerMasterLayout.xhtml"
+                xmlns:sec="http://www.springframework.org/security/tags">
+
+    <ui:define name="pageTitle">IssueTracker</ui:define>
+
+    <ui:define name="customHead">
+    </ui:define>
+
+    <ui:define name="customBody">
+<h:form id="typeselect">
+            <p:panel header="#{mes.type}" style="margin-top: 2em; ;" styleClass="col-md-3 col-md-offset-1">
+                <h:panelGrid columns="1" cellpadding="10">
+                    <h:outputText value="#{mes.tickettype_list_select}" />
+                    <p:selectOneMenu id="type" value="#{statusesByTypeView.typeId}" style="width:150px">
+                        <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue="" />
+                        <f:selectItems value="#{statusesByTypeView.allTypes}" var="type" itemLabel="#{type.name}" itemValue="#{type.id}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton value="#{mes.ticket_history_choose}" action="#{statusesByTypeView.renderChart}" update="typeselect" style="margin-top: 3px;"/>
+            </p:panel>
+
+
+        <p:panel header="#{mes.chart}" style="margin-top: 2em;" styleClass="col-md-6 col-md-offset-1" rendered="#{statusesByTypeView.typeId != null}">
+            <h:panelGrid columns="1" cellpadding="10" >
+                <p:chart type="pie" model="#{statusesByTypeView.chart}" style="width:400px;height:300px;"/>
+            </h:panelGrid>
+        </p:panel>
+</h:form>
+    </ui:define>
+</ui:composition>
