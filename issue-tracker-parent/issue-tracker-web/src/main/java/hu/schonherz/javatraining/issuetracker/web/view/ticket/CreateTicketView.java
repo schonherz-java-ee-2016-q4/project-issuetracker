@@ -95,14 +95,14 @@ public class CreateTicketView implements Serializable {
         threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
         uid = threeLetterCompanyID;
-        startHistory = startHistory.builder()
+        startHistory = HistoryVo.builder()
                 .modStatus(HistoryEnum.CREATED)
                 .build();
 
         startHistory = historyServiceRemote.save(startHistory, userSessionBean.getUserName());
         history.add(startHistory);
 
-        ticketVo = ticketVo.builder()
+        ticketVo = TicketVo.builder()
                 .uid(uid)
                 .clientMail(clientMail)
                 .description(description)
@@ -134,8 +134,6 @@ public class CreateTicketView implements Serializable {
 
     }
 
-}
-
     public String getRecUserName() {
         return recUserName;
     }
@@ -159,7 +157,6 @@ public class CreateTicketView implements Serializable {
     public void setThreeLetterCompanyID(String threeLetterCompanyID) {
         this.threeLetterCompanyID = threeLetterCompanyID;
     }
-
 
     public UserVo getUser() {
         return user;
