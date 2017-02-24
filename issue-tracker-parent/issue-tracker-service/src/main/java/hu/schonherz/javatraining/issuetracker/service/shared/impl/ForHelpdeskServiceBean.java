@@ -25,6 +25,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.shared.api.ForHelpdeskServiceRemote;
+import hu.schonherz.javatraining.issuetracker.shared.vo.QuotaReachedException;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketData;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketsStatusReportData;
 import lombok.extern.log4j.Log4j;
@@ -53,7 +54,7 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 	private HistoryServiceLocal historyService;
 	
 	@Override
-	public Boolean registerNewTicket(TicketData ticketData) {
+	public Boolean registerNewTicket(TicketData ticketData) throws QuotaReachedException {
 		log.debug(String.format("registerNewTicket(%s)", ticketData));
 		try {
 			if (ticketData.getTicketName().length() > 30) {

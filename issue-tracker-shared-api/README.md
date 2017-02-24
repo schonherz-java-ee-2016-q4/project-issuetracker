@@ -42,7 +42,8 @@
 ### APIs
 
 - `void registerNewTicket(TicketData ticketData)`<br />
-	**Description**: Registers the passed `TicketData` in the Issue Tracker platform. Returns with `false`, if the save failed.
+	**Description**: Registers the passed `TicketData` in the Issue Tracker platform. Returns with `false`, if the save failed.<br />
+	**Throws**: Throws `QutaReachedException` if the company has reached the maximum recordable number of tickets.
 - `TicketsStatusReportData getTicketsStatusByuserReport(String userName)`<br />
 	**Description**: Returns with `TicketsStatusReportData` which represents that how many openned and closed issue tickets binded to the given user. Returns `null`, if something went wrong.
 - `int getNumberOfCreatedTicketsByUser(String userName)`<br />
