@@ -1,6 +1,10 @@
 package hu.schonherz.javatraining.issuetracker.shared.vo;
 
-public class TicketsStatusReportData {
+import java.io.Serializable;
+
+public class TicketsStatusReportData implements Serializable {
+	private static final long serialVersionUID = -3849047846122955851L;
+
 	private int openedTickets;
 	private int closedTickets;
 	

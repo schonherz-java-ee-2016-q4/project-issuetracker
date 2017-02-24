@@ -14,10 +14,13 @@ import javax.interceptor.Interceptors;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
@@ -46,14 +49,23 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 	@EJB
 	private UserServiceLocal userService;
 	
+	@EJB
+	private HistoryServiceLocal historyService;
+	
 	@Override
 	public Boolean registerNewTicket(TicketData ticketData) {
+		log.debug(String.format("registerNewTicket(%s)", ticketData));
 		try {
 			if (ticketData.getTicketName().length() > 30) {
 				return false;
 			}
 			
 			UserVo recUser = userService.findByUsername(ticketData.getRecUser());
+			
+			if (recUser == null) {
+				return false;
+			}
+			
 			UserVo bindUser = null;
 			
 			if (ticketData.getBindedUser() != null && !"".equals(ticketData.getBindedUser())) {
@@ -63,6 +75,13 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 			CompanyVo company = companyService.findByName(ticketData.getCompanyName());
 			TypeVo type = typeService.findByNameAndCompany(ticketData.getTicketTypeName(), company);
 			
+			HistoryVo createdHistory = HistoryVo.builder()
+					.modStatus(HistoryEnum.CREATED)
+					.build();
+			createdHistory = historyService.save(createdHistory, recUser.getUsername());
+			List<HistoryVo> history = new ArrayList<>();
+			history.add(createdHistory);
+			
 			TicketVo ticket = TicketVo.builder()
 					.title(ticketData.getTicketName())
 					.description(ticketData.getTicketDescription())
@@ -70,9 +89,12 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 					.company(company)
 					.user(bindUser)
 					.currentStatus(type.getStartEntity())
+					.type(type)
+					.history(history)
 					.build();
-			
-			ticketService.save(ticket , recUser.getUsername());
+			log.debug(String.format("prepare to save: ", ticket));
+			ticket = ticketService.save(ticket , recUser.getUsername());
+			log.debug(String.format("succesfully saved: %s", ticket));
 			return true;
 		} catch(Exception e) {
 			log.error(e);

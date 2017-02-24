@@ -1,6 +1,10 @@
 package hu.schonherz.javatraining.issuetracker.shared.vo;
 
-public class TicketData {
+import java.io.Serializable;
+
+public class TicketData implements Serializable {
+	private static final long serialVersionUID = -2511057542747405123L;
+
 	private String ticketName;
 	private String ticketDescription;
 	private String companyName;
@@ -64,5 +68,12 @@ public class TicketData {
 	public void setClientMail(String clientMail) {
 		this.clientMail = clientMail;
 	}
-	
+
+	@Override
+	public String toString() {
+		return String.format(
+				"TicketData [ticketName=%s, ticketDescription=%s, companyName=%s, bindedUser=%s, recUser=%s, ticketTypeName=%s, clientMail=%s]",
+				ticketName, ticketDescription, companyName, bindedUser, recUser, ticketTypeName, clientMail);
+	}
+
 }
