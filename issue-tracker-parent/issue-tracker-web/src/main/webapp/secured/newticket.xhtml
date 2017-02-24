@@ -58,23 +58,23 @@
                                     <div class="col-md-2"><p:outputLabel for="type" value="#{mes.ticketcreate_type}:"/>
                                     </div>
                                     <div class="col-md-10">
-                                        <p:selectOneMenu id="type" value="#{ticketCreateModifyView.typeName}">
+                                        <p:selectOneMenu id="type" value="#{ticketCreateModifyView.typeId}">
                                             <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue=""/>
                                             <f:selectItems value="#{ticketCreateModifyView.types}"
                                                            var="type"
-                                                           itemLabel="#{type.name}" itemValue="#{type.name}"/>
+                                                           itemLabel="#{type.name}" itemValue="#{type.id}"/>
                                         </p:selectOneMenu>
                                     </div>
 
-                                    <div class="col-md-2"><p:outputLabel for="companyName"
+                                    <div class="col-md-2"><p:outputLabel for="company"
                                                                          value="#{mes.ticketcreate_companyname}:"/>
                                     </div>
                                     <div class="col-md-10">
-                                        <p:selectOneMenu id="companyName" value="#{ticketCreateModifyView.companyName}">
+                                        <p:selectOneMenu id="company" value="#{ticketCreateModifyView.companyId}">
                                             <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue=""/>
                                             <f:selectItems value="#{ticketCreateModifyView.companies}"
                                                            var="company"
-                                                           itemLabel="#{company.name}" itemValue="#{company.name}"/>
+                                                           itemLabel="#{company.name}" itemValue="#{company.id}"/>
                                         </p:selectOneMenu>
                                     </div>
 
