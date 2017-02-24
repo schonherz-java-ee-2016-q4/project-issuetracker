@@ -49,6 +49,10 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 	@Override
 	public Boolean registerNewTicket(TicketData ticketData) {
 		try {
+			if (ticketData.getTicketName().length() > 30) {
+				return false;
+			}
+			
 			UserVo recUser = userService.findByUsername(ticketData.getRecUser());
 			UserVo bindUser = null;
 			
@@ -95,14 +99,28 @@ public class ForHelpdeskBean implements ForHelpdeskRemote {
 
 	@Override
 	public Integer getNumberOfCreatedTicketsByUser(String userName) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Integer back = ticketService.getNumberOfCreatedTicketsByUser(userName);
+			log.debug(String.format("getNumberOfCreatedTicketsByUser(%s)", userName));
+			log.debug(String.format("back: %s", back));
+			return back;
+		} catch(Exception e) {
+			log.debug(e);
+			return null;
+		}
 	}
 
 	@Override
 	public Integer getNumberOfCreatedTicketsByUser(String userName, Date fromDate, Date untilDate) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Integer back = ticketService.getNumberOfCreatedTicketsByUserBetweenTime(userName, fromDate, untilDate);
+			log.debug(String.format("getNumberOfCreatedTicketsByUser(%s, %s, %s)", userName, fromDate, untilDate));
+			log.debug(String.format("back: %s", back));
+			return back;
+		} catch(Exception e) {
+			log.debug(e);
+			return null;
+		}
 	}
 
 	@Override

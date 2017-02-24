@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.core.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,13 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	
 	@Query("SELECT COUNT(ticket.id) FROM TicketEntity ticket WHERE ticket.user = :user AND ticket.currentStatus.isEndStatus = false")
 	int getNumberOfOpenedTicketsByUser(@Param("user") UserEntity user);
+	
+	@Query("SELECT COUNT(ticket.id) FROM TicketEntity ticket WHERE ticket.recUserName = :recUserName")
+	int getNumberOfCreatedTicketsByUser(@Param("recUserName") String recUserName);
+	
+	@Query("SELECT COUNT(ticket.id) FROM TicketEntity ticket WHERE ticket.recUserName = :recUserName AND ticket.recDate BETWEEN :fromDate AND :untilDate")
+	int getNumberOfCreatedTicketsByUserBetweenTime(
+			@Param("recUserName") String recUserName,
+			@Param("fromDate") Date fromDate,
+			@Param("untilDate") Date untilDate);
 }

@@ -20,7 +20,7 @@
 
 **TicketData**:
 
-- `ticketName` Name of the ticket.
+- `ticketName` Name of the ticket. Maximum length is 30 characters.
 - `ticketDescription` Description of the ticket.
 - `companyName` Name of the company.
 - `bindedUser` A username, who have to work on this ticket, can be nullable.

@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.client.api.service.ticket;
 
+import java.util.Date;
 import java.util.List;
 
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
@@ -17,4 +18,6 @@ public interface TicketService {
 	
 	int getNumberOfClosedTicketsByUser(UserVo user);
 	int getNumberOfOpenedTicketsByUser(UserVo user);
+	int getNumberOfCreatedTicketsByUser(String userName);
+	int getNumberOfCreatedTicketsByUserBetweenTime(String userName, Date fromDate, Date untilDate);
 }

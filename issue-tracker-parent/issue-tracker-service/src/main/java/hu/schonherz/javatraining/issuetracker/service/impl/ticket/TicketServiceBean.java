@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.ticket;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -75,6 +76,16 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	@Override
 	public int getNumberOfOpenedTicketsByUser(UserVo user) {
 		return ticketDao.getNumberOfOpenedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+	}
+
+	@Override
+	public int getNumberOfCreatedTicketsByUser(String userName) {
+		return ticketDao.getNumberOfCreatedTicketsByUser(userName);
+	}
+
+	@Override
+	public int getNumberOfCreatedTicketsByUserBetweenTime(String userName, Date fromDate, Date untilDate) {
+		return ticketDao.getNumberOfCreatedTicketsByUserBetweenTime(userName, fromDate, untilDate);
 	}
 
 }
