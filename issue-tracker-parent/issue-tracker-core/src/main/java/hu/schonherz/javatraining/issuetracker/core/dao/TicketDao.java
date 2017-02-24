@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.core.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
@@ -15,4 +16,6 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	List<TicketEntity> findByUser(UserEntity user);
 	List<TicketEntity> findByType(TypeEntity type);
 	List<TicketEntity> findByCompany(CompanyEntity company);
+	List<TicketEntity> findByDateWhereRecdateIsLowerThanDate(Date date);
+
 }

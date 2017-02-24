@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.ticket;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -54,6 +55,12 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	@Override
 	public List<TicketVo> findByCompany(CompanyVo company) {
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
+	}
+
+	@Override
+	public List<TicketVo> findByDateWhereRecdateIsLowerThanDate(Date date) {
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByDateWhereRecdateIsLowerThanDate(date));
+
 	}
 
 	@Override

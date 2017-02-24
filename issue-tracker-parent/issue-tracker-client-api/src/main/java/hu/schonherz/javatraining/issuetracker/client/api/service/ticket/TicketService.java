@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.client.api.service.ticket;
 
+import java.sql.Date;
 import java.util.List;
 
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
@@ -16,4 +17,5 @@ public interface TicketService {
 	TicketVo update(TicketVo ticket, String username);
 	List<TicketVo> findByType(TypeVo type);
 	List<TicketVo> findByCompany(CompanyVo company);
+	List<TicketVo> findByDateWhereRecdateIsLowerThanDate(Date date);
 }
