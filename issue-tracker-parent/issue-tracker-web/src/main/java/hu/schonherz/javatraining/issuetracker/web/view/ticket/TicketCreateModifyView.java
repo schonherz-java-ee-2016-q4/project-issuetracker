@@ -6,6 +6,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.history.History
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
 import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.extern.log4j.Log4j;
@@ -39,19 +40,19 @@ public class TicketCreateModifyView implements Serializable {
     private String title;
     private String description;
     private String clientMail;
-    private String companyName;
-    private String statusName;
-    private String typeName;
+    private Long companyId;
+        private Long statusId;
+    private Long typeId;
     private UserVo user;
     private List<CommentVo> comments;
     private List<HistoryVo> history;
     private TicketVo ticketVo;
     private HistoryVo startHistory;
 
-
     private List<CompanyVo> companies;
     private List<TypeVo> types;
     private List<StatusVo> statuses;
+    private List<UserVo> users;
 
 
     @EJB
@@ -64,6 +65,8 @@ public class TicketCreateModifyView implements Serializable {
     private TypeServiceRemote typeServiceRemote;
     @EJB
     private HistoryServiceRemote historyServiceRemote;
+    @EJB
+    private UserServiceRemote userServiceRemote;
 
 
     @ManagedProperty("#{userSessionBean}")
@@ -83,12 +86,22 @@ public class TicketCreateModifyView implements Serializable {
         companies = companyServiceRemote.findAll();
         types = typeServiceRemote.findAll();
 
+
+    }
+
+    public void onOpenEditor(Long userId)
+    {
+        ticketVo = ticketServiceRemote.findById(userId);
+
+        users= userServiceRemote.findAllByCompany(ticketVo.getCompany());
+        types = typeServiceRemote.findAll();
+
     }
 
     public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        threeLetterCompanyID = companyName.substring(0, 3);
+        threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
         uid = threeLetterCompanyID;
         startHistory = startHistory.builder()
@@ -103,9 +116,10 @@ public class TicketCreateModifyView implements Serializable {
                 .clientMail(clientMail)
                 .description(description)
                 .title(title)
-                .company(companyServiceRemote.findByName(companyName))
-                .type(typeServiceRemote.findByName(typeName))
-                .history(history)
+                .company(companyServiceRemote.findById(companyId))
+                .type(typeServiceRemote.findById(typeId))
+                .currentStatus(statusServiceRemote.findById(statusId))
+                .user(userServiceRemote.findById(user.getId()))
                 .build();
 
         try {
@@ -125,6 +139,39 @@ public class TicketCreateModifyView implements Serializable {
                 log.error("error to save ticket",e);
 
         }
+
+
+    }
+
+    public void updateTicket(){
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        ticketVo = ticketVo.builder()
+                .currentStatus(statusServiceRemote.findById(statusId))
+                .clientMail(clientMail)
+                .description(description)
+                .title(title)
+                .company(companyServiceRemote.findById(companyId))
+                .type(typeServiceRemote.findById(typeId))
+                .history(history)
+                .build();
+
+        try {
+
+            recUserName = userSessionBean.getUserName();
+            ticketServiceRemote.update(ticketVo, recUserName);
+
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", bundle.getString("ticketcreate_savesucces")));
+            log.info("success to save ticket");
+        } catch (Exception e) {
+
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
+            log.error("error to save ticket",e);
+
+        }
+
 
     }
 
@@ -152,29 +199,6 @@ public class TicketCreateModifyView implements Serializable {
         this.threeLetterCompanyID = threeLetterCompanyID;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getStatusName() {
-        return statusName;
-    }
-
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
 
     public UserVo getUser() {
         return user;
@@ -304,6 +328,39 @@ public class TicketCreateModifyView implements Serializable {
     public void setBundle(ResourceBundle bundle) {
         this.bundle = bundle;
     }
+
+    public UserServiceRemote getUserServiceRemote() {
+        return userServiceRemote;
+    }
+
+    public void setUserServiceRemote(UserServiceRemote userServiceRemote) {
+        this.userServiceRemote = userServiceRemote;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
 
 
 }
