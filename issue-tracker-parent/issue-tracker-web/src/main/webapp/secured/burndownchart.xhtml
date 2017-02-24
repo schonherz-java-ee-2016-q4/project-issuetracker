@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/issueTrackerMasterLayout.xhtml"
+                xmlns:sec="http://www.springframework.org/security/tags">
+
+    <ui:define name="pageTitle">IssueTracker</ui:define>
+
+    <ui:define name="customHead">
+    </ui:define>
+
+    <ui:define name="customBody">
+        <h:form id="typeselect">
+            <p:panel header="#{mes.status}" style="margin-top: 2em; ;" styleClass="col-md-3 col-md-offset-1">
+                <h:panelGrid columns="1" cellpadding="10">
+                    <h:outputText value="#{mes.tickettype_list_select}" />
+                    <p:selectOneMenu id="type" value="#{burndownChartView.companyId}" style="width:150px">
+                        <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue="" />
+                        <f:selectItems value="#{burndownChartView.allCompanyList}" var="company" itemLabel="#{company.name}" itemValue="#{company.id}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton value="#{mes.ticket_history_choose}" update="typeselect" style="margin-top: 3px;"/>
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

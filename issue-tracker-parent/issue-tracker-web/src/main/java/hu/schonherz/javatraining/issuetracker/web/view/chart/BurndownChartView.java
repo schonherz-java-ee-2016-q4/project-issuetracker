@@ -42,7 +42,6 @@ public class BurndownChartView {
     @PostConstruct
     public void init () {
         allCompanyList = companyService.findAll();
-        //createLineModel();
     }
 
     private void createLineModel() {
@@ -59,19 +58,20 @@ public class BurndownChartView {
 
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
-        Date date = new Date();
-        ticketList = ticketService.findByCompany(companyService.findById(companyId));
+        Date today = new Date();
+        ticketList = ticketService.getTicketsByCompanyAndTime(companyService.findById(companyId), today);
 
         for(TicketVo ticket : ticketList) {
             if(!ticket.getCurrentStatus().getIsEndStatus()) {
                 openTicketList.add(ticket);
             }
         }
+        int openTickets = openTicketList.size();
 
         ChartSeries tickets = new ChartSeries();
         tickets.setLabel("Tickets");
 
-        tickets.set("2004", 120);
+        tickets.set(today, openTickets);
         tickets.set("2005", 100);
         tickets.set("2006", 44);
         tickets.set("2007", 150);

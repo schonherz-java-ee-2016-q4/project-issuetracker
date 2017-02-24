@@ -1,12 +1,12 @@
 package hu.schonherz.javatraining.issuetracker.client.api.service.ticket;
 
-import java.sql.Date;
-import java.util.List;
-
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+
+import java.util.Date;
+import java.util.List;
 
 public interface TicketService {
 	TicketVo findById(Long id);
@@ -17,5 +17,6 @@ public interface TicketService {
 	TicketVo update(TicketVo ticket, String username);
 	List<TicketVo> findByType(TypeVo type);
 	List<TicketVo> findByCompany(CompanyVo company);
-	List<TicketVo> findByDateWhereRecdateIsLowerThanDate(Date date);
+
+	List<TicketVo> getTicketsByCompanyAndTime(CompanyVo company, Date date);
 }
