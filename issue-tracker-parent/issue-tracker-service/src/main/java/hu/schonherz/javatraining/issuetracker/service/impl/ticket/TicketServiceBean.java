@@ -11,12 +11,16 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
-import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.TicketDao;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
@@ -28,7 +32,7 @@ import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMa
 public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemote {
 
     @Autowired
-    TicketDao ticketDao;
+    private TicketDao ticketDao;
 
     @Override
     public TicketVo findById(Long id) {
@@ -57,7 +61,8 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 
     @Override
     public List<TicketVo> getTicketsByCompanyAndTime(CompanyVo company, Date date) {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.getTicketsByCompanyAndTime(GenericVoMappers.companyVoMapper.toEntity(company), date));
+        return GenericVoMappers.ticketVoMapper.toVo(
+        		ticketDao.getTicketsByCompanyAndTime(GenericVoMappers.companyVoMapper.toEntity(company), date));
     }
 
     @Override

@@ -1,11 +1,16 @@
 package hu.schonherz.javatraining.issuetracker.core.entities;
 
-
-import lombok.*;
-
-import javax.persistence.*;
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "comment")

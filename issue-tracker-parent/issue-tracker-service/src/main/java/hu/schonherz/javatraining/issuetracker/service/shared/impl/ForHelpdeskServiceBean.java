@@ -47,6 +47,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 
+	private final int MAXIMUM_LINE_LENGTH = 30;
+	
 	@EJB
 	private TicketServiceLocal ticketService;
 
@@ -66,7 +68,7 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 	public Boolean registerNewTicket(TicketData ticketData) throws QuotaReachedException {
 		log.debug(String.format("registerNewTicket(%s)", ticketData));
 		try {
-			if (ticketData.getTicketName().length() > 30) {
+			if (ticketData.getTicketName().length() > MAXIMUM_LINE_LENGTH) {
 				log.debug(String.format("too long ticket name in registerNewTicket: %s", ticketData.getTicketName()));
 				return false;
 			}

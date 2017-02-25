@@ -24,7 +24,7 @@ import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMa
 public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceLocal {
 
 	@Autowired
-	HistoryDao historyDao;
+	private HistoryDao historyDao;
 	
 	@Override
 	public HistoryVo findById(Long id) {

@@ -7,7 +7,7 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
 public class GenericVoMapper <E, V> {
-	static Mapper mapper = new DozerBeanMapper();
+	private static Mapper mapper = new DozerBeanMapper();
 	private Class<?> entityType;
 	private Class<?> voType;
 	

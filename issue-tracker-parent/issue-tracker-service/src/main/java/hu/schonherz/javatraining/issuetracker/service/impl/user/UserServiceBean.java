@@ -123,6 +123,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 					modified = true;
 				}
 				break;
+			default:
+				break;
 		}
 
 		return modified ? back : null;
@@ -143,6 +145,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 				break;
 			case UserRoles.AGENT:
 				roles.add(roleService.findByName(DefaultRoleConstants.ROLE_USER));
+				break;
+			default:
 				break;
 		}
 		
