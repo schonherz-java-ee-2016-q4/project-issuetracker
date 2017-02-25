@@ -10,6 +10,6 @@ public interface CompanyService {
     CompanyVo findById(Long id);
     CompanyVo findByName(String name);
     List<CompanyVo> findAll();
-    CompanyVo save(CompanyVo company, String username);
+    CompanyVo save(CompanyVo company);
     CompanyVo update(CompanyVo company, String username);
 }

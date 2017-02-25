@@ -10,6 +10,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
@@ -18,6 +22,7 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.history.History
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
@@ -28,6 +33,8 @@ import hu.schonherz.javatraining.issuetracker.shared.api.ForHelpdeskServiceRemot
 import hu.schonherz.javatraining.issuetracker.shared.vo.QuotaReachedException;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketData;
 import hu.schonherz.javatraining.issuetracker.shared.vo.TicketsStatusReportData;
+import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteLoginService;
+import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteUserVo;
 import lombok.extern.log4j.Log4j;
 
 
@@ -58,23 +65,41 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 		log.debug(String.format("registerNewTicket(%s)", ticketData));
 		try {
 			if (ticketData.getTicketName().length() > 30) {
+				log.debug(String.format("too long ticket name in registerNewTicket: %s", ticketData.getTicketName()));
 				return false;
 			}
 			
-			UserVo recUser = userService.findByUsername(ticketData.getRecUser());
-			
+			UserVo recUser;
+			try {
+				recUser = getUserDataFromAdmin(ticketData.getRecUser());
+			} catch (NameNotFoundException e) {
+				recUser = userService.findByUsername(ticketData.getRecUser());
+			}
 			if (recUser == null) {
+				log.debug(String.format("invalid rec username in registerNewTicket: %s", ticketData.getRecUser()));
 				return false;
 			}
 			
 			UserVo bindUser = null;
-			
 			if (ticketData.getBindedUser() != null && !"".equals(ticketData.getBindedUser())) {
-				bindUser = userService.findByUsername(ticketData.getBindedUser());
+				try {
+					bindUser = getUserDataFromAdmin(ticketData.getBindedUser());
+				} catch (NameNotFoundException e) {
+					bindUser = userService.findByUsername(ticketData.getBindedUser());
+				}
 			}
 			
 			CompanyVo company = companyService.findByName(ticketData.getCompanyName());
+			if (company == null) {
+				log.debug(String.format("invalid company name in registerNewTicket: %s", ticketData.getCompanyName()));
+				return false;
+			}
+			
 			TypeVo type = typeService.findByNameAndCompany(ticketData.getTicketTypeName(), company);
+			if (type == null) {
+				log.debug(String.format("invalid type name in registerNewTicket: %s", ticketData.getTicketTypeName()));
+				return false;
+			}
 			
 			HistoryVo createdHistory = HistoryVo.builder()
 					.modStatus(HistoryEnum.CREATED)
@@ -149,6 +174,11 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 	public List<String> getTypesByCompany(String companyName) {
 		try {
 			CompanyVo company = companyService.findByName(companyName);
+			if (company == null) {
+				log.debug(String.format("invalid company name in getTypesByCompany: %s", companyName));
+				return null;
+			}
+			
 			List<TypeVo> findByCompany = typeService.findByCompany(company);
 			List<String> back = new ArrayList<>();
 			findByCompany.forEach(x -> back.add(x.getName()));
@@ -161,4 +191,16 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 		}
 	}
 	
+	private UserVo getUserDataFromAdmin(String username) throws NameNotFoundException, NamingException {
+		UserVo user;
+    	Context context = new InitialContext();
+    	log.debug("get login service context");
+    	RemoteLoginService adminLoginService = (RemoteLoginService) context.lookup(AdminJNDIConstants.JNDI_LOGIN_SERVICE);
+    	RemoteUserVo remoteUserVo = adminLoginService.login(username);
+    	user = userService.mapRemoteUserVoToUserVo(remoteUserVo);
+    	if (user.getId() == null) {
+    		user = userService.save(user);
+    	}
+		return user;
+	}
 }
