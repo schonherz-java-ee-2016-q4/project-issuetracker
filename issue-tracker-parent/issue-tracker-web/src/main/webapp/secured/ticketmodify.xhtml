@@ -28,10 +28,10 @@
                                 <p:inputText id="title"
                                              placeholder="#{modifyTicketView.ticketVo.title}"
                                              value="#{modifyTicketView.ticketVo.title}"
-                                             required="true" label="Title">
+                                             required="true" label="Title" rendered="#{userSessionBean.admin or userSessionBean.manager}">
                                     <f:validateLength minimum="4"/>
-
                                 </p:inputText>
+                                <h:outputText value="#{modifyTicketView.ticketVo.title}" rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                     <div class="col-md-6">
                                         <p:outputLabel for="type" value="#{mes.type}:"/></div>
                                     <div class="col-md-2">
-                                        <p:selectOneMenu id="type" value="#{modifyTicketView.typeId}">
+                                        <p:selectOneMenu id="type" value="#{modifyTicketView.typeId}" rendered="#{userSessionBean.admin or userSessionBean.manager}">
                                             <f:selectItem itemLabel="#{modifyTicketView.ticketVo.type.name}"
                                                           itemValue="#{modifyTicketView.ticketVo.type.id}"
                                                           noSelectionOption="false"/>
@@ -60,6 +60,7 @@
                                                            var="type"
                                                            itemLabel="#{type.name}" itemValue="#{type.id}"/>
                                         </p:selectOneMenu>
+                                        <h:outputText value="#{modifyTicketView.ticketVo.type.name}" rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -96,8 +97,10 @@
                                      style="margin-bottom: 2em;">
                                 <h:panelGrid columns="1" cellpadding="10">
                                     <div class="col-md-12">
-                                    <p:inputTextarea
-                                        value="#{modifyTicketView.ticketVo.description}"/></div></h:panelGrid>
+                                    <p:inputTextarea value="#{modifyTicketView.ticketVo.description}" rendered="#{userSessionBean.admin or userSessionBean.manager}"/>
+                                        <h:outputText value="#{modifyTicketView.ticketVo.description}" rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
+                                    </div>
+                                </h:panelGrid>
                             </p:panel>
 
                             <p:panel styleClass="col-md-11" header="#{mes.comments}" style="margin-bottom: 1em;">

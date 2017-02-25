@@ -34,6 +34,10 @@ public class UserTicketsView implements Serializable {
 
     @PostConstruct
     public void init() {
-        tickets = ticketService.findAll();
+        if (userSessionBean.isAdmin() || userSessionBean.isManager()) {
+            tickets = ticketService.findAll();
+        } else {
+            tickets = ticketService.findByUser(userSessionBean.getCurrentUser());
+        }
     }
 }
