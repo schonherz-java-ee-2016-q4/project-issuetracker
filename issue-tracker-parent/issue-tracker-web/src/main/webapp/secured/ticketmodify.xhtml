@@ -68,7 +68,7 @@
                                     <div class="col-md-2">
                                         <p:selectOneMenu id="user" value="#{modifyTicketView.userId}">
                                             <f:selectItem
-                                                    itemLabel="#{modifyTicketView.ticketVo.user.name == null ? mes.nouser : modifyTicketView.ticketVo.user.name}"
+                                                    itemLabel="#{modifyTicketView.ticketVo.user.username == null ? mes.nouser : modifyTicketView.ticketVo.user.username}"
                                                     itemValue="#{modifyTicketView.ticketVo.user.id}"/>
                                             <f:selectItems value="#{modifyTicketView.users}"
                                                            var="user"
