@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.web.beans;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.role.DefaultRoleConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
@@ -34,7 +35,7 @@ public class UserSessionBean {
         List<RoleVo> roles = currentUser.getRoles();
         for (RoleVo role : roles) {
             String roleName = role.getName();
-            if ("ROLE_USER".equals(roleName)) {
+            if (DefaultRoleConstants.ROLE_USER.equals(roleName)) {
                 return true;
             }
         }
@@ -45,7 +46,7 @@ public class UserSessionBean {
         List<RoleVo> roles = currentUser.getRoles();
         for (RoleVo role : roles) {
             String roleName = role.getName();
-            if ("ROLE_MANAGER".equals(roleName)) {
+            if (DefaultRoleConstants.ROLE_MANAGER.equals(roleName)) {
                 return true;
             }
         }
@@ -56,7 +57,7 @@ public class UserSessionBean {
         List<RoleVo> roles = currentUser.getRoles();
         for (RoleVo role : roles) {
             String roleName = role.getName();
-            if ("ROLE_ADMIN".equals(roleName)) {
+            if (DefaultRoleConstants.ROLE_ADMIN.equals(roleName)) {
                 return true;
             }
         }

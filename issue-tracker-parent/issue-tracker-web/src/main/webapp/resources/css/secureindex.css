@@ -1,0 +1,9 @@
+#mainpanel {
+    margin-top: 5em;
+}
+
+.StatusesByTypeGrid.ui-panelgrid>*>tr,
+.StatusesByTypeGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+    margin-top: 2em;
+}
