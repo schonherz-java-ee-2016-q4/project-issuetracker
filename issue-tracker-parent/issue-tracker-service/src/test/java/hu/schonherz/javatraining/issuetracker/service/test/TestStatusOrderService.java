@@ -3,6 +3,8 @@ package hu.schonherz.javatraining.issuetracker.service.test;
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -17,6 +19,8 @@ import hu.schonherz.javatraining.issuetracker.service.test.TestUserService.Calle
 @ManagedBean
 public class TestStatusOrderService {
 
+	static final Logger log = LogManager.getLogger(TestStatusOrderService.class.getName());
+	
 	@EJB
 	StatusOrderServiceLocal serviceLocal;
 
@@ -29,7 +33,7 @@ public class TestStatusOrderService {
 		try {
 			CreateContext.ejbContainer.getContext().bind("inject", this);
 		} catch (Throwable e) {
-			throw e;
+			log.error("Error startContainer",e);
 		}
 	}
 
@@ -42,7 +46,8 @@ public class TestStatusOrderService {
 				vo.setToStatusId(1L);
 				serviceLocal.save(vo, "testUser");
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error to Save", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -55,7 +60,8 @@ public class TestStatusOrderService {
 				StatusOrderVo vo = serviceLocal.findByFromStatusId(0L).get(0);
 				Assert.assertEquals(vo.getFromStatusId().longValue(), 0L);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test2FindByFromStatusId", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -68,7 +74,8 @@ public class TestStatusOrderService {
 				StatusOrderVo vo = serviceLocal.findByToStatusId(1L).get(0);
 				Assert.assertEquals(vo.getToStatusId().longValue(), 1L);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test3FindByToStatusId", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -82,7 +89,8 @@ public class TestStatusOrderService {
 				vo.setFromStatusId(2L);
 				serviceLocal.update(vo, "testUser");
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test4Update", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -95,7 +103,8 @@ public class TestStatusOrderService {
 				StatusOrderVo vo = serviceLocal.findByFromStatusId(2L).get(0);
 				Assert.assertEquals(vo.getFromStatusId().longValue(), 2L);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test5FindByFromStatusIdAfterUpdate", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -108,7 +117,8 @@ public class TestStatusOrderService {
 				StatusOrderVo vo = serviceLocal.findByFromStatusIdAndToStatusId(2L, 1L);
 				Assert.assertNotEquals(vo, null);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test6FindByFromStatusIdAndToStatusId", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -121,7 +131,8 @@ public class TestStatusOrderService {
 				StatusOrderVo vo = serviceLocal.findByFromStatusIdAndToStatusId(2L, 1L);
 				serviceLocal.deleteById(vo.getId());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test7Delete", e);
+				Assert.fail();
 			}
 			return null;
 		});

@@ -1,9 +1,11 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
+import javax.ejb.TransactionManagement;
+import javax.inject.Inject;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -41,7 +43,10 @@ public class TestTicketService {
     
     @EJB
     UserServiceLocal userService;
-
+    
+    @Inject
+    TransactionManagement transactionManager;
+    
     @Before
     public void startTheContainer() throws Exception {
         try {
@@ -70,89 +75,18 @@ public class TestTicketService {
                 ticketVo.setType(typeVo);
                 ticketVo.setCurrentStatus(typeVo.getStartEntity());
                 ticketVo.setUser(userVo);
+                ticketVo.setCompany(companyVo);
+                ticketVo.setComments(new ArrayList<>());
+                ticketVo.setHistory(new ArrayList<>());
 
-                serviceLocal.save(ticketVo, "TestUser");
-
+                TicketVo save = serviceLocal.save(ticketVo, "TestUser");
+                log.debug(String.format("saved ticket: %s, id: %s", save, save.getId()));
             } catch (Exception e) {
-                log.error("Error in save", e);
+                log.error("Error in test1Save", e);
+				Assert.fail();
             }
             return null;
         });
     }
 
-    @Test
-    public void test2FindByUid() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-                TicketVo voByUid = serviceLocal.findByUid("TestUid");
-                Assert.assertEquals("TestUid", voByUid.getUid());
-            } catch (Exception e) {
-                log.error("Error in findByUid", e);
-            }
-            return null;
-        });
-    }
-
-    @Test
-    public void test3FindById() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-                TicketVo vo = serviceLocal.findByUid("TestUid");
-                TicketVo voById = serviceLocal.findById(vo.getId());
-                Assert.assertEquals("TestUid", voById.getUid());
-            } catch (Exception e) {
-                log.error("Error in findById", e);
-            }
-            return null;
-        });
-    }
-
-    @Test
-    public void test4FindByUser() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-                UserVo user = new UserVo();
-                user.setUsername("TestUser");
-
-                List<TicketVo> tickets = serviceLocal.findByUser(user);
-                for (TicketVo ticket : tickets) {
-                    Assert.assertEquals(user, ticket.getUser());
-                }
-
-            } catch (Exception e) {
-                log.error("Error in findByUser", e);
-            }
-            return null;
-        });
-    }
-    
-    @Test
-    public void test5FindByType() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-            	CompanyVo companyVo = companyService.findByName("testCompany");
-                TypeVo typeVo = typeService.findByNameAndCompany("testType_updated", companyVo);
-
-                List<TicketVo> tickets = serviceLocal.findByType(typeVo);
-                Assert.assertNotEquals(tickets.size(), 0);
-            } catch (Exception e) {
-                log.error("Error in findByUser", e);
-            }
-            return null;
-        });
-    }
-
-    @Test
-    public void test6Update() throws Exception {
-        transactionalCaller.call(() -> {
-            try {
-                TicketVo vo = serviceLocal.findByUid("TestUid");
-                vo.setTitle("TestTitle_updated");
-                serviceLocal.update(vo, "modUser");
-            } catch (Exception e) {
-                log.error("Error during executing update on TicketVo",e);
-            }
-            return null;
-        });
-    }
 }

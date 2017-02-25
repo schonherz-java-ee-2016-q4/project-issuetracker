@@ -3,19 +3,12 @@ package hu.schonherz.javatraining.issuetracker.core.dao;
 import java.util.Date;
 import java.util.List;
 
-import hu.schonherz.javatraining.issuetracker.core.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.Date;
-import java.util.List;
 
 import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
+import hu.schonherz.javatraining.issuetracker.core.entities.StatusEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.TicketEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;

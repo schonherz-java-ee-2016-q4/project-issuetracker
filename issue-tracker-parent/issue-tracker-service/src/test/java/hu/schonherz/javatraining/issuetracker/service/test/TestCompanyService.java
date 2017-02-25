@@ -43,6 +43,7 @@ public class TestCompanyService {
 				serviceLocal.save(companyVo);
 			} catch (Exception e) {
                 log.error("Error to save company",e);
+                Assert.fail();
 			}
 			return null;
 		});
@@ -56,6 +57,7 @@ public class TestCompanyService {
 				Assert.assertEquals("testCompany", companyVo.getName());
 			} catch (Exception e) {
 				log.error("Error in findByName company", e);
+				Assert.fail();
 			}
 			
 			return null;
@@ -71,6 +73,7 @@ public class TestCompanyService {
 				Assert.assertEquals(companyVo, voById);
 			} catch (Exception e) {
 				log.error("Error in findById company", e);
+				Assert.fail();
 			}
 
 			return null;
@@ -86,6 +89,7 @@ public class TestCompanyService {
 				serviceLocal.update(companyVo, "modUser");
 			} catch (Exception e) {
 				log.error("Error in update company", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -99,6 +103,7 @@ public class TestCompanyService {
 				Assert.assertEquals("testCompanyUpdate", companyVo.getName());
 			} catch (Exception e) {
 				log.error("Error in findByName after update company", e);
+				Assert.fail();
 			}
 			
 			return null;
@@ -114,6 +119,7 @@ public class TestCompanyService {
 				Assert.assertEquals(companyVo, voById);
 			} catch (Exception e) {
 				log.error("Error in findById after update company", e);
+				Assert.fail();
 			}
 			
 			return null;

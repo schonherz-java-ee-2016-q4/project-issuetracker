@@ -60,6 +60,7 @@ public class TestTypeService {
 				statusVo = statusServiceLocal.save(statusVo, "username");
 			} catch (Exception e) {
 				log.error("Error to save a typevo", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -78,7 +79,7 @@ public class TestTypeService {
 				serviceLocal.save(typeVo, "testUser");
 			} catch (Exception e) {
 				log.error("Error to save a typevo", e);
-
+				Assert.fail();
 			}
 			return null;
 		});
@@ -93,6 +94,7 @@ public class TestTypeService {
 				Assert.assertEquals("testType", vo.getName());
 			} catch (Exception e) {
 				log.error("Error in findbyname", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -107,6 +109,7 @@ public class TestTypeService {
 				Assert.assertEquals("testDescription", vo.getDescription());
 			} catch (Exception e) {
 				log.error("Error in findbyname", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -122,6 +125,7 @@ public class TestTypeService {
 				Assert.assertEquals(vo, voById);
 			} catch (Exception e) {
 				log.error("Error in findbyname", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -138,6 +142,7 @@ public class TestTypeService {
 				Assert.assertNotEquals(statuses.size(), 0);
 			} catch (Exception e) {
 				log.error("Error in findbyname", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -153,6 +158,7 @@ public class TestTypeService {
 				serviceLocal.update(vo, "modUser");
 			} catch (Exception e) {
 				log.error("Error to update vo", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -167,6 +173,7 @@ public class TestTypeService {
 				Assert.assertEquals("testType_updated", vo.getName());
 			} catch (Exception e) {
 				log.error("Error in findbyname after update", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -181,6 +188,7 @@ public class TestTypeService {
 				Assert.assertEquals(findByCompany.size(), 1);
 			} catch (Exception e) {
 				log.error("Error in findbyname after update", e);
+				Assert.fail();
 			}
 			return null;
 		});

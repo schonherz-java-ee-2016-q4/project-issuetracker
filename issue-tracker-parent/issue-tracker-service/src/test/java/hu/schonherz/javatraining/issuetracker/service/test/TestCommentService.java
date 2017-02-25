@@ -29,7 +29,7 @@ public class TestCommentService {
 	@EJB
 	private TestUserService.Caller transactionalCaller;
 	
-	private Long savedId;
+	private static Long savedId;
 	
 	@Before
 	public void startTheContainer() throws Exception {
@@ -49,9 +49,11 @@ public class TestCommentService {
 						.build();
 				
 				commentVo = serviceLocal.save(commentVo, "test");
+				savedId = commentVo.getId();
 				Assert.assertNotEquals(commentVo.getId(), null);
 			} catch (Exception e) {
 				log.error("Error to save", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -65,6 +67,7 @@ public class TestCommentService {
 				Assert.assertEquals(commentVo.getId(), savedId);
 			} catch (Exception e) {
 				log.error("Error in findById", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -79,6 +82,7 @@ public class TestCommentService {
 				serviceLocal.update(commentVo, "test");
 			} catch (Exception e) {
 				log.error("Error to update", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -92,6 +96,7 @@ public class TestCommentService {
 				Assert.assertEquals(commentVo.getCommentText(), "newText");
 			} catch (Exception e) {
 				log.error("Error in findById after update", e);
+				Assert.fail();
 			}
 			return null;
 		});
