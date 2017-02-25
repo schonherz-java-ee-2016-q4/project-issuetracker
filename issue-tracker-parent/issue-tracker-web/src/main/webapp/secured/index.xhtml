@@ -15,70 +15,59 @@
     <ui:define name="customBody">
 
         <div class="container">
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="mainpanel">
                 <div class="panel-heading">
                     <h3>#{mes.index}</h3>
                 </div>
                 <div class="panel-body">
-                    <p:panelGrid
-                            rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0 and userSessionBean.user}">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">#{mes.home_ticketsbystatus_chart_title}</div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <p:chart type="pie" model="#{ticketsByStatusView.chart}"
-                                             style="width:400px;height:300px"/>
-                                </div>
-                            </div>
-                        </div>
-                    </p:panelGrid>
 
-                    <p:panelGrid rendered="#{burndownChartView.companyId != null and userSessionBean.manager}">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">#{mes.burndownchart}</div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <p:chart styleClass="col-md-10 col-md-offset-1" type="line"
-                                             model="#{burndownChartView.lineChart}" style="height:300px;"/>
-                                </div>
-                            </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            #{mes.burndownchart}
                         </div>
-                    </p:panelGrid>
+                        <div class="panel-body">
+                            <p:chart styleClass="col-md-10 col-md-offset-1" type="line"
+                                     model="#{burndownChartView.lineChart}" style="height:300px;"
+                                     rendered="#{burndownChartView.companyId != null and userSessionBean.manager}"/>
+                        </div>
+                    </div>
+
+                    <p:chart styleClass="col-md-5 col-md-offset-1" type="pie" model="#{ticketsByStatusView.chart}"
+                             style="width:400px;height:300px"
+                             rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0 and userSessionBean.user}"/>
 
                     <h:form id="typeselect">
-                        <p:panelGrid rendered="#{userSessionBean.manager}">
-                                    <p:panelGrid>
-                                        <p:row>
-                                            <p:column>
-                                                <h:outputText value="#{mes.tickettype_list_select}"/>
-                                            </p:column>
-                                            <p:column rowspan="3">
-                                                <p:chart type="pie" model="#{statusesByTypeView.chart}"
-                                                         style="width:400px;height:300px;"
-                                                         rendered="#{statusesByTypeView.typeId != null}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <p:row>
-                                            <p:column>
-                                                <p:selectOneMenu id="type" value="#{statusesByTypeView.typeId}"
-                                                                 style="width:150px">
-                                                    <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""/>
-                                                    <f:selectItems value="#{statusesByTypeView.allTypes}" var="type"
-                                                                   itemLabel="#{type.name}" itemValue="#{type.id}"/>
-                                                </p:selectOneMenu>
-                                            </p:column>
-                                        </p:row>
-                                        <p:row>
-                                            <p:column>
-                                                <p:commandButton value="#{mes.ticket_history_choose}"
-                                                                 action="#{statusesByTypeView.renderChart}"
-                                                                 update="typeselect"
-                                                                 style="margin-top: 3px;"/>
-                                            </p:column>
-                                        </p:row>
-                                    </p:panelGrid>
-                        </p:panelGrid>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                #{mes.typesbystatus_chart_title}
+                            </div>
+                            <div class="panel-body">
+                                <p:panelGrid rendered="#{userSessionBean.manager}"
+                                             styleClass="col-md-10 col-md-offset-1 StatusesByTypeGrid">
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputText value="Select a type to view the number of the tickets in that type!"/><br/>
+                                            <p:selectOneMenu id="type" value="#{statusesByTypeView.typeId}"
+                                                             style="width:150px">
+                                                <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
+                                                              itemValue=""/>
+                                                <f:selectItems value="#{statusesByTypeView.allTypes}" var="type"
+                                                               itemLabel="#{type.name}" itemValue="#{type.id}"/>
+                                            </p:selectOneMenu><br/>
+                                            <p:commandButton value="#{mes.ticket_history_choose}"
+                                                             action="#{statusesByTypeView.renderChart}"
+                                                             update="typeselect"
+                                                             style="margin-top: 3px;"/>
+                                        </p:column>
+                                        <p:column rowspan="1">
+                                            <p:chart type="pie" model="#{statusesByTypeView.chart}"
+                                                     style="width:400px;height:300px;"
+                                                     rendered="#{statusesByTypeView.typeId != null}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </div>
+                        </div>
                     </h:form>
 
 

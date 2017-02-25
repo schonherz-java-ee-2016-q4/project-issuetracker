@@ -75,12 +75,22 @@ public class ModifyTicketView implements Serializable {
         Long ticketId = Long.valueOf(context.getExternalContext().getRequestParameterMap().get("ticketId"));
         ticketVo = ticketServiceRemote.findById(ticketId);
 
-
         users = userServiceRemote.findAll();
-        types = typeServiceRemote.findAll();
-        statuses = typeServiceRemote.getStatuses(ticketVo.getType());
-        histories = ticketVo.getHistory();
+        if (users.contains(ticketVo.getUser())) {
+            users.remove(ticketVo.getUser());
+        }
 
+        types = typeServiceRemote.findAll();
+        if (types.contains(ticketVo.getType())) {
+            types.remove(ticketVo.getType());
+        }
+
+        statuses = typeServiceRemote.getStatuses(ticketVo.getType());
+        if (statuses.contains(ticketVo.getCurrentStatus())) {
+            statuses.remove(ticketVo.getCurrentStatus());
+        }
+
+        histories = ticketVo.getHistory();
     }
 
 

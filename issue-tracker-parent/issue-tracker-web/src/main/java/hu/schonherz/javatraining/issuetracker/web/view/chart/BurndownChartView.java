@@ -30,6 +30,9 @@ public class BurndownChartView {
     @ManagedProperty("#{userSessionBean}")
     private UserSessionBean userSessionBean;
 
+    @ManagedProperty("#{mes}")
+    private ResourceBundle bundle;
+
     private LineChartModel lineChart;
     private Long companyId;
     int yAxisValue = 0;
@@ -44,6 +47,7 @@ public class BurndownChartView {
         lineChart = initLinearModel();
         lineChart.setLegendPosition("e");
         lineChart.getAxes().put(AxisType.X, new CategoryAxis("Date"));
+        lineChart.setTitle(bundle.getString("burndownchart"));
         Axis yAxis = lineChart.getAxis(AxisType.Y);
         yAxis.setLabel("Tickets");
         yAxis.setMin(0);
