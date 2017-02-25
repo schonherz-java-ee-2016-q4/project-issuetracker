@@ -51,10 +51,10 @@ public class StartUpConfig implements ServletContextListener {
 			managerRole = roleServiceRemote.save(managerRole);
 		}
 		
-		RoleVo userRole = roleServiceRemote.findByName(DefaultRoleConstants.ROLE_MANAGER);
+		RoleVo userRole = roleServiceRemote.findByName(DefaultRoleConstants.ROLE_USER);
 		if (userRole == null) {
 			userRole = new RoleVo();
-			userRole.setName(DefaultRoleConstants.ROLE_MANAGER);
+			userRole.setName(DefaultRoleConstants.ROLE_USER);
 			userRole = roleServiceRemote.save(userRole);
 		}
 		
