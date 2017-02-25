@@ -3,12 +3,18 @@ package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.role.DefaultRoleConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.DefaultTicketQuotasConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
 import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
+import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteLoginService;
+import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteQuotasService;
+import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteQuotasVo;
 import lombok.extern.log4j.Log4j;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +24,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,11 +39,6 @@ import java.util.ResourceBundle;
 @ViewScoped
 @Log4j
 public class CreateTicketView implements Serializable {
-
-    private static final int DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY=2;
-    private static final int WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=5;
-    private static final int MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=60;
-
     private static final String TICKETS_PAGE = "tickets.xhtml";
     private String recUserName;
     private String uid;
@@ -102,6 +107,20 @@ public class CreateTicketView implements Serializable {
         numberOfTicketsOnCompanyDaily=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyToday(companyVo);
         numberOfTicketsOnCompanyWeekly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisWeek(companyVo);
         numberOfTicketsOnCompanyMonthly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisMonth(companyVo);
+        
+        int dailyMax = DefaultTicketQuotasConstants.DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY;
+        int weeklyMax = DefaultTicketQuotasConstants.WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY;
+        int monthlyMax = DefaultTicketQuotasConstants.MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY;
+        
+        try {
+        	Context contextForEJB = new InitialContext();
+        	log.debug("get admin qoutas service context");
+        	RemoteQuotasService adminQoutaService = (RemoteQuotasService) contextForEJB.lookup(AdminJNDIConstants.JNDI_QOUTAS_SERVICE);
+        	RemoteQuotasVo quotasOfCompany = adminQoutaService.getQuotasOfCompany(companyVo.getName());
+        	dailyMax = quotasOfCompany.getMaxDayTickets();
+        	weeklyMax = quotasOfCompany.getMaxWeekTickets();
+        	monthlyMax = quotasOfCompany.getMaxMonthTickets();
+        } catch (NamingException e) { }
 
         threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
@@ -125,7 +144,10 @@ public class CreateTicketView implements Serializable {
                 .history(history)
                 .build();
 
-        if(numberOfTicketsOnCompanyDaily<=DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY && numberOfTicketsOnCompanyMonthly<=MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY && numberOfTicketsOnCompanyWeekly<=WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY) {
+        if(
+        	numberOfTicketsOnCompanyDaily < dailyMax &&
+        	numberOfTicketsOnCompanyWeekly < weeklyMax &&
+        	numberOfTicketsOnCompanyMonthly < monthlyMax) {
             try {
 
                 recUserName = userSessionBean.getUserName();
