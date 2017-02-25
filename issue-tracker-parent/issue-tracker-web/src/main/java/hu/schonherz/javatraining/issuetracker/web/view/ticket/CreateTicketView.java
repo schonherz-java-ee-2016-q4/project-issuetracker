@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-@ManagedBean(name = "ticketCreateModifyView")
+@ManagedBean(name = "createTicketView")
 @ViewScoped
 @Log4j
 public class CreateTicketView implements Serializable {

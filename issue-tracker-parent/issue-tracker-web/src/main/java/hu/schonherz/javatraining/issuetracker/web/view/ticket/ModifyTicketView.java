@@ -76,8 +76,8 @@ public class ModifyTicketView implements Serializable {
         ticketVo = ticketServiceRemote.findById(ticketId);
 
 
-        users = userServiceRemote.findAllByCompany(ticketVo.getCompany());
-        types = typeServiceRemote.findByCompany(ticketVo.getCompany());
+        users = userServiceRemote.findAll();
+        types = typeServiceRemote.findAll();
         statuses = typeServiceRemote.getStatuses(ticketVo.getType());
         histories = ticketVo.getHistory();
 

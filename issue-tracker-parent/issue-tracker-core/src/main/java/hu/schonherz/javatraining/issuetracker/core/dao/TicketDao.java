@@ -13,4 +13,5 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	TicketEntity findByUid(String uid);
 	List<TicketEntity> findByUser(UserEntity user);
 	List<TicketEntity> findByType(TypeEntity type);
+
 }
