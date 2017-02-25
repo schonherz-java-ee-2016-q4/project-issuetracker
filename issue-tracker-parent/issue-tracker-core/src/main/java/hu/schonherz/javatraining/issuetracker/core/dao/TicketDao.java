@@ -3,9 +3,17 @@ package hu.schonherz.javatraining.issuetracker.core.dao;
 import java.util.Date;
 import java.util.List;
 
+import hu.schonherz.javatraining.issuetracker.core.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+import java.util.List;
 
 import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.TicketEntity;
@@ -23,6 +31,12 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	List<TicketEntity> getTicketsByCompanyAndTime(
 			@Param("company") CompanyEntity company,
 			@Param("date") Date date);
+
+	@Query("SELECT COUNT(ticket.id) FROM TicketEntity ticket WHERE ticket.type = :type AND ticket.currentStatus = :currentStatus")
+	int getNumberOfTicketsByTypeAndStatus(
+			@Param("type") TypeEntity type,
+			@Param("currentStatus") StatusEntity currentStatus);
+
 	
 	@Query("SELECT COUNT(ticket.id) FROM TicketEntity ticket WHERE ticket.user = :user AND ticket.currentStatus.isEndStatus = true")
 	int getNumberOfClosedTicketsByUser(@Param("user") UserEntity user);

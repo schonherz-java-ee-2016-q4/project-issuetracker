@@ -2,7 +2,6 @@ package hu.schonherz.javatraining.issuetracker.web.view.chart;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
 import lombok.Data;
@@ -32,14 +31,13 @@ public class BurndownChartView {
     private UserSessionBean userSessionBean;
 
     private LineChartModel lineChart;
-    private List<CompanyVo> allCompanyList;
-    private CompanyVo selectedCompany;
     private Long companyId;
     int yAxisValue = 0;
 
     @PostConstruct
-    public void init () {
-        allCompanyList = companyService.findAll();
+    public void init() {
+        companyId = userSessionBean.getCurrentUser().getCompany().getId();
+        createLineModel();
     }
 
     public void createLineModel() {
@@ -64,17 +62,17 @@ public class BurndownChartView {
         tickets.setLabel("Tickets");
 
         for (int i = 6; i >= 0; i--) {
-            Date step = new Date(today.getTime() - i*(1000 * 60 * 60 * 24));
+            Date step = new Date(today.getTime() - i * (1000 * 60 * 60 * 24));
             ticketList = ticketService.getTicketsByCompanyAndTime(companyService.findById(companyId), step);
             if (ticketList.isEmpty()) {
-                tickets.set(String.valueOf(step).substring(4,10), 0);
+                tickets.set(String.valueOf(step).substring(4, 10), 0);
             } else {
 
                 for (TicketVo ticket : ticketList) {
                     if (!ticket.getCurrentStatus().getIsEndStatus()) {
                         openTicketList.add(ticket);
                         openTickets = openTicketList.size();
-                        tickets.set(String.valueOf(step).substring(4,10), openTickets);
+                        tickets.set(String.valueOf(step).substring(4, 10), openTickets);
                         if (openTickets > yAxisValue) {
                             yAxisValue = openTickets;
                         }
