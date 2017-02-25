@@ -46,10 +46,10 @@ public class BurndownChartView {
     public void createLineModel() {
         lineChart = initLinearModel();
         lineChart.setLegendPosition("e");
-        lineChart.getAxes().put(AxisType.X, new CategoryAxis("Date"));
+        lineChart.getAxes().put(AxisType.X, new CategoryAxis(bundle.getString("date")));
         lineChart.setTitle(bundle.getString("burndownchart"));
         Axis yAxis = lineChart.getAxis(AxisType.Y);
-        yAxis.setLabel("Tickets");
+        yAxis.setLabel(bundle.getString("opentickets"));
         yAxis.setMin(0);
         yAxis.setMax(yAxisValue);
         yAxis.setTickInterval("1");
@@ -58,12 +58,11 @@ public class BurndownChartView {
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
         Date today = new Date();
-        Map<Object, Number> chartData = new HashMap<>();
         List<TicketVo> openTicketList = new ArrayList<>();
         int openTickets;
         List<TicketVo> ticketList;
         ChartSeries tickets = new ChartSeries();
-        tickets.setLabel("Tickets");
+        tickets.setLabel(bundle.getString("tickets"));
 
         for (int i = 6; i >= 0; i--) {
             Date step = new Date(today.getTime() - i * (1000 * 60 * 60 * 24));
@@ -75,19 +74,18 @@ public class BurndownChartView {
                 for (TicketVo ticket : ticketList) {
                     if (!ticket.getCurrentStatus().getIsEndStatus()) {
                         openTicketList.add(ticket);
-                        openTickets = openTicketList.size();
-                        tickets.set(String.valueOf(step).substring(4, 10), openTickets);
-                        if (openTickets > yAxisValue) {
-                            yAxisValue = openTickets;
-                        }
-                        openTicketList.clear();
                     }
                 }
+                openTickets = openTicketList.size();
+                tickets.set(String.valueOf(step).substring(4, 10), openTickets);
+                if (openTickets > yAxisValue) {
+                    yAxisValue = openTickets;
+                }
+                openTicketList.clear();
             }
         }
 
-        log.debug("openticketlist:" + openTicketList);
-        log.debug("chartdata" + chartData);
+        yAxisValue += 1;
         model.addSeries(tickets);
         return model;
     }

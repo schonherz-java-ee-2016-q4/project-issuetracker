@@ -21,32 +21,36 @@
                 </div>
                 <div class="panel-body">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            #{mes.burndownchart}
+                    <h:form rendered="#{burndownChartView.companyId != null and userSessionBean.manager}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                #{mes.burndownchart}
+                            </div>
+                            <div class="panel-body">
+                                <p:chart styleClass="col-md-10 col-md-offset-1" type="line"
+                                         model="#{burndownChartView.lineChart}" style="height:300px;"/>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <p:chart styleClass="col-md-10 col-md-offset-1" type="line"
-                                     model="#{burndownChartView.lineChart}" style="height:300px;"
-                                     rendered="#{burndownChartView.companyId != null and userSessionBean.manager}"/>
-                        </div>
-                    </div>
+                    </h:form>
 
-                    <p:chart styleClass="col-md-5 col-md-offset-1" type="pie" model="#{ticketsByStatusView.chart}"
-                             style="width:400px;height:300px"
-                             rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0 and userSessionBean.user}"/>
+                    <h:form rendered="#{!userSessionBean.admin and !userSessionBean.manager}"
+                            styleClass="col-md-10 col-md-offset-1">
+                        <p:chart type="pie" model="#{ticketsByStatusView.chart}"
+                                 style="width:400px;height:300px"
+                                 rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0}"/>
+                    </h:form>
 
-                    <h:form id="typeselect">
+                    <h:form id="typeselect" rendered="#{userSessionBean.manager}">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 #{mes.typesbystatus_chart_title}
                             </div>
                             <div class="panel-body">
-                                <p:panelGrid rendered="#{userSessionBean.manager}"
-                                             styleClass="col-md-10 col-md-offset-1 StatusesByTypeGrid">
+                                <p:panelGrid
+                                        styleClass="col-md-10 col-md-offset-1 StatusesByTypeGrid">
                                     <p:row>
                                         <p:column>
-                                            <h:outputText value="Select a type to view the number of the tickets in that type!"/><br/>
+                                            <h:outputText value="#{mes.giveatype}"/><br/>
                                             <p:selectOneMenu id="type" value="#{statusesByTypeView.typeId}"
                                                              style="width:150px">
                                                 <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
