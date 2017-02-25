@@ -67,7 +67,8 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 
     @Override
     public int getNumberOfTicketsByTypeAndStatus(TypeVo type, StatusVo currentStatus) {
-        return ticketDao.getNumberOfTicketsByTypeAndStatus(GenericVoMappers.typeVoMapper.toEntity(type),GenericVoMappers.statusVoMapper.toEntity(currentStatus));
+        return ticketDao.getNumberOfTicketsByTypeAndStatus(
+        		GenericVoMappers.typeVoMapper.toEntity(type),GenericVoMappers.statusVoMapper.toEntity(currentStatus));
     }
 
     @Override
@@ -119,7 +120,8 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		c.set(Calendar.MILLISECOND, 0);
 		
 		Date fromDate = c.getTime();
-		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
+		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(
+				GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
 	}
 
 	@Override
@@ -135,7 +137,8 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 		
 		Date fromDate = c.getTime();
-		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
+		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(
+				GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
 	}
 
 	@Override
@@ -151,7 +154,8 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		c.set(Calendar.DAY_OF_MONTH, 1);
 		
 		Date fromDate = c.getTime();
-		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
+		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(
+				GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
 	}
 
 }
