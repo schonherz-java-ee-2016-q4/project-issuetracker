@@ -115,6 +115,9 @@ public class ModifyTicketView implements Serializable {
                 .history(histories)
                 .build();
 
+
+        ticketVo.setId(TicketId);
+
         try {
 
             String modUserName = userSessionBean.getUserName();

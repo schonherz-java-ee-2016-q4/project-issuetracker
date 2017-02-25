@@ -139,6 +139,12 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>hu.schonherz.javatraining</groupId>
+			<artifactId>issue-tracker-shared-api</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
