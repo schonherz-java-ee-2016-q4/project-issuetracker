@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.ticket;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -14,6 +15,7 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
@@ -65,6 +67,31 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 	public TicketVo update(TicketVo ticket, String username) {
 		ticket.setModUserName(username);
 		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
+	}
+
+	@Override
+	public int getNumberOfClosedTicketsByUser(UserVo user) {
+		return ticketDao.getNumberOfClosedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+	}
+
+	@Override
+	public int getNumberOfOpenedTicketsByUser(UserVo user) {
+		return ticketDao.getNumberOfOpenedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+	}
+
+	@Override
+	public int getNumberOfCreatedTicketsByUser(String userName) {
+		return ticketDao.getNumberOfCreatedTicketsByUser(userName);
+	}
+
+	@Override
+	public int getNumberOfCreatedTicketsByUserBetweenTime(String userName, Date fromDate, Date untilDate) {
+		return ticketDao.getNumberOfCreatedTicketsByUserBetweenTime(userName, fromDate, untilDate);
+	}
+
+	@Override
+	public int getNumberOfCreatedTicketsByCompanyBetweenTime(CompanyVo company, Date fromDate, Date untilDate) {
+		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(GenericVoMappers.companyVoMapper.toEntity(company), fromDate, untilDate);
 	}
 
 }
