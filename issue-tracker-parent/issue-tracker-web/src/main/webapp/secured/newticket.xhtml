@@ -27,7 +27,7 @@
                                                                          value="#{mes.ticketcreate_tilte}:"/></div>
                                     <div class="col-md-10">
                                         <p:inputText id="title" placeholder="min. 4"
-                                                     value="#{ticketCreateModifyView.title}"
+                                                     value="#{createTicketView.title}"
                                                      required="true" label="Title">
                                             <f:validateLength minimum="4"/>
                                         </p:inputText>
@@ -39,7 +39,7 @@
                                     <div class="col-md-10">
                                         <p:inputTextarea rows="6" cols="33" id="description"
                                                          placeholder="#{mes.ticketcreate_detailedrequired}"
-                                                         value="#{ticketCreateModifyView.description}"
+                                                         value="#{createTicketView.description}"
                                                          required="true" label="Description">
                                             <f:validateLength minimum="4"/>
                                         </p:inputTextarea>
@@ -49,7 +49,7 @@
                                                                          value="#{mes.ticketcreate_clientmail}:"/></div>
                                     <div class="col-md-10">
                                         <p:inputText id="clientMail" placeholder="email@address.com"
-                                                     value="#{ticketCreateModifyView.clientMail}" required="true"
+                                                     value="#{createTicketView.clientMail}" required="true"
                                                      label="Title">
                                             <f:validateLength minimum="4"/>
                                         </p:inputText>
@@ -58,29 +58,29 @@
                                     <div class="col-md-2"><p:outputLabel for="type" value="#{mes.ticketcreate_type}:"/>
                                     </div>
                                     <div class="col-md-10">
-                                        <p:selectOneMenu id="type" value="#{ticketCreateModifyView.typeName}">
+                                        <p:selectOneMenu id="type" value="#{createTicketView.typeId}">
                                             <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue=""/>
-                                            <f:selectItems value="#{ticketCreateModifyView.types}"
+                                            <f:selectItems value="#{createTicketView.types}"
                                                            var="type"
-                                                           itemLabel="#{type.name}" itemValue="#{type.name}"/>
+                                                           itemLabel="#{type.name}" itemValue="#{type.id}"/>
                                         </p:selectOneMenu>
                                     </div>
 
-                                    <div class="col-md-2"><p:outputLabel for="companyName"
+                                    <div class="col-md-2"><p:outputLabel for="company"
                                                                          value="#{mes.ticketcreate_companyname}:"/>
                                     </div>
                                     <div class="col-md-10">
-                                        <p:selectOneMenu id="companyName" value="#{ticketCreateModifyView.companyName}">
+                                        <p:selectOneMenu id="company" value="#{createTicketView.companyId}">
                                             <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue=""/>
-                                            <f:selectItems value="#{ticketCreateModifyView.companies}"
+                                            <f:selectItems value="#{createTicketView.companies}"
                                                            var="company"
-                                                           itemLabel="#{company.name}" itemValue="#{company.name}"/>
+                                                           itemLabel="#{company.name}" itemValue="#{company.id}"/>
                                         </p:selectOneMenu>
                                     </div>
 
                                     <div class="col-md-10">
                                         <p:commandButton value="#{mes.ticketcreate_save}" update="newticket"
-                                                         actionListener="#{ticketCreateModifyView.addTicket}"
+                                                         actionListener="#{createTicketView.addTicket}"
                                                          icon="ui-icon-check"/>
                                     </div>
                                 </div>

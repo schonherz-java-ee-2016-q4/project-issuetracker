@@ -18,6 +18,8 @@ public class TicketEntity extends BaseEntity implements Serializable {
 
     private String uid;
     private String title;
+
+    @Lob
     private String description;
     private String clientMail;
     
