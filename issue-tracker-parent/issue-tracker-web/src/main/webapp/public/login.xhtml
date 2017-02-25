@@ -1,34 +1,71 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/issueTrackerMasterLayout.xhtml"
-                xmlns:sec="http://www.springframework.org/security/tags">
-
-        <ui:define name="customTitle">IssueTracker - #{mes.login}</ui:define>
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/masterLayout.xhtml">
 
     <ui:define name="customHead">
-
-        <h:outputStylesheet library="css" name="login.css"></h:outputStylesheet>
+        <h:outputStylesheet library="css" name="login.css"/>
     </ui:define>
 
-         <ui:define name="customBody">
+    <ui:define name="customBody">
+        <div class="panel-parent">
 
-             <div class="form-login">
-                 <h:outputLabel value="#{mes.login}:"/>
-                <form id="loginForm" action="#{request.contextPath}/login" method="post">
+            <div class="jumbotron col-lg-5 col-md-7 col-sm-11 col-xs-11">
+                <h2>#{mes.welcome}!</h2>
+                <p>#{mes.if_agent_text}</p>
+            </div>
 
-                    <h:panelGroup layout="block" class="error"
-                                  styleClass="alert alert-danger"
-                                  rendered="#{param['error'] == 1}">#{mes.login} #{mes.error}</h:panelGroup>
-                    <input type="text" class="form-control" name="username" placeholder="#{mes.username}" required="required"/>
-                    <input type="password" class="form-control" name="password" placeholder="#{mes.password}" required="required"/>
-                    <input type="submit" value="#{mes.login}" class="btn btn-lg btn-primary btn-block"></input>
+            <div class="col-lg-4 col-md-7 col-sm-11 col-xs-11">
+                <div class="panel panel-info ">
 
-                </form>
-             </div>
+                    <div class="panel-heading helpdesk-login-panel-head">
+                        <label>#{mes.login}</label>
+                    </div>
 
-        </ui:define>
+                    <div class="panel-body">
+                        <form id="loginForm" action="#{request.contextPath}/login" method="post">
+                            <c:if test="#{param['error'] != null}">
+                                <div class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/>
+                                    <span class="sr-only"/>
+                                    <span>#{mes.bad_credentials}</span>
+                                </div>
+                            </c:if>
 
+                            <div class="input-group helpdesk-login-input">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-user"/>
+                                </span>
+                                <input id="username"
+                                       type="text"
+                                       class="form-control"
+                                       name="username"
+                                       placeholder="#{mes.username}"/>
+                            </div>
+                            <div class="input-group helpdesk-login-input">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-lock"/>
+                                </span>
+                                <input id="password"
+                                       type="password"
+                                       class="form-control"
+                                       name="password"
+                                       placeholder="#{mes.password}"/>
+                            </div>
+
+                            <button type="submit" class="btn btn-info col-sm-4 col-md-4 col-lg-4 helpdesk-login-button">
+                                <span>#{mes.login}</span>
+                                <i class="glyphicon glyphicon-chevron-right"/>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="panel-footer">#{mes.not_registered}!</div>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
 </ui:composition>
+
