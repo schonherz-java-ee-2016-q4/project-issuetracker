@@ -32,8 +32,8 @@ public class ForAdminServiceBean implements ForAdminServiceRemote {
 			if (company == null) {
 				return null;
 			}
-			TicketCreationReportData back = new TicketCreationReportData();
 			
+			TicketCreationReportData back = new TicketCreationReportData();
 			back.setToday(ticketService.getNumberOfCreatedTicketsByCompanyToday(company));
 			back.setOnThisWeek(ticketService.getNumberOfCreatedTicketsByCompanyThisWeek(company));
 			back.setOnThisMonth(ticketService.getNumberOfCreatedTicketsByCompanyThisMonth(company));
