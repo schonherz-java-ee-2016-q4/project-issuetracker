@@ -89,7 +89,13 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	}
 	
 	private UserVo makeChangesInUserByRemoteData(RemoteUserVo remoteUserVo, UserVo userVo) {
-		UserVo back = null;
+		boolean modified = false;
+		UserVo back = userVo;
+		
+		if (!remoteUserVo.getEncryptedPassword().equals(userVo.getPassword())) {
+			back.setPassword(remoteUserVo.getEncryptedPassword());
+			modified = true;
+		}
 		
 		List<RoleVo> newRoles = new ArrayList<>();
 		switch (remoteUserVo.getRole()) {
@@ -98,28 +104,28 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 					newRoles.add(roleService.findByName(DefaultRoleConstants.ROLE_ADMIN));
 					newRoles.add(roleService.findByName(DefaultRoleConstants.ROLE_MANAGER));
 					newRoles.add(roleService.findByName(DefaultRoleConstants.ROLE_USER));
-					userVo.setRoles(newRoles);
-					back = userVo;
+					back.setRoles(newRoles);
+					modified = true;
 				}
 				break;
 			case UserRoles.COMPANY_ADMIN:
 				if (!userVo.getRoles().stream().filter(x -> x.getName() == DefaultRoleConstants.ROLE_MANAGER).findFirst().isPresent()) {
 					newRoles.add(roleService.findByName(DefaultRoleConstants.ROLE_MANAGER));
 					newRoles.add(roleService.findByName(DefaultRoleConstants.ROLE_USER));
-					userVo.setRoles(newRoles);
-					back = userVo;
+					back.setRoles(newRoles);
+					modified = true;
 				}
 				break;
 			case UserRoles.AGENT:
 				if (!userVo.getRoles().stream().filter(x -> x.getName() == DefaultRoleConstants.ROLE_USER).findFirst().isPresent()) {
 					newRoles.add(roleService.findByName(DefaultRoleConstants.ROLE_USER));
-					userVo.setRoles(newRoles);
-					back = userVo;
+					back.setRoles(newRoles);
+					modified = true;
 				}
 				break;
 		}
-		
-		return back;
+
+		return modified ? back : null;
 	}
 	
 	private UserVo createNewFromRemoteUserVo(RemoteUserVo remoteUserVo) {
