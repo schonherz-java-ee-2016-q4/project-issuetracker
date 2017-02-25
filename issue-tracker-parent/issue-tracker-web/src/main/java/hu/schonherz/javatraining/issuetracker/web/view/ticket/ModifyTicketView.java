@@ -107,13 +107,16 @@ public class ModifyTicketView implements Serializable {
         ticketVo = TicketVo.builder()
                 .currentStatus(statusServiceRemote.findById(statusId))
                 .clientMail(clientMail)
-                .description(description)
-                .title(title)
+                .description(ticketVo.getDescription())
+                .title(ticketVo.getTitle())
                 .company(companyServiceRemote.findById(companyId))
                 .type(typeServiceRemote.findById(typeId))
                 .user(userServiceRemote.findById(userId))
                 .history(histories)
                 .build();
+
+
+        ticketVo.setId(TicketId);
 
         try {
 

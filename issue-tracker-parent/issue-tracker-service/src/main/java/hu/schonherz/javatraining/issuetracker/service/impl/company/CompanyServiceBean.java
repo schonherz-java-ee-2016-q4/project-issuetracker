@@ -42,8 +42,8 @@ public class CompanyServiceBean implements CompanyServiceLocal, CompanyServiceRe
     }
 
     @Override
-    public CompanyVo save(CompanyVo company, String username) {
-        company.setRecUserName(username);
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public CompanyVo save(CompanyVo company) {
         return GenericVoMappers.companyVoMapper.toVo(companyDao.save(GenericVoMappers.companyVoMapper.toEntity(company)));
     }
 

@@ -20,7 +20,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,6 +30,9 @@ import java.util.ResourceBundle;
 @Log4j
 public class CreateTicketView implements Serializable {
 
+    private static final int DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY=2;
+    private static final int WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=5;
+    private static final int MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=60;
 
     private static final String TICKETS_PAGE = "tickets.xhtml";
     private String recUserName;
@@ -42,11 +44,14 @@ public class CreateTicketView implements Serializable {
     private Long companyId;
     private Long statusId;
     private Long typeId;
-    private UserVo user;
+    private Long userId;
     private List<CommentVo> comments;
     private List<HistoryVo> history;
     private TicketVo ticketVo;
-    private HistoryVo startHistory;
+
+    private int numberOfTicketsOnCompanyDaily;
+    private int numberOfTicketsOnCompanyWeekly;
+    private int numberOfTicketsOnCompanyMonthly;
 
     private List<CompanyVo> companies;
     private List<TypeVo> types;
@@ -86,16 +91,22 @@ public class CreateTicketView implements Serializable {
 
 
 
+
     }
 
 
     public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
+        CompanyVo companyVo = companyServiceRemote.findById(companyId);
+
+        numberOfTicketsOnCompanyDaily=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyToday(companyVo);
+        numberOfTicketsOnCompanyWeekly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisWeek(companyVo);
+        numberOfTicketsOnCompanyMonthly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisMonth(companyVo);
 
         threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
         uid = threeLetterCompanyID;
-        startHistory = HistoryVo.builder()
+        HistoryVo startHistory = HistoryVo.builder()
                 .modStatus(HistoryEnum.CREATED)
                 .build();
 
@@ -107,28 +118,35 @@ public class CreateTicketView implements Serializable {
                 .clientMail(clientMail)
                 .description(description)
                 .title(title)
-                .company(companyServiceRemote.findById(companyId))
+                .company(companyVo)
                 .type(typeServiceRemote.findById(typeId))
                 .currentStatus(statusServiceRemote.findById(statusId))
-                //.user(userServiceRemote.findById(user.getId()))
+                .user(userServiceRemote.findById(userId))
+                .history(history)
                 .build();
 
-        try {
+        if(numberOfTicketsOnCompanyDaily<=DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY && numberOfTicketsOnCompanyMonthly<=MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY && numberOfTicketsOnCompanyWeekly<=WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY) {
+            try {
 
-            recUserName = userSessionBean.getUserName();
-            ticketVo.setCurrentStatus(ticketVo.getType().getStartEntity());
+                recUserName = userSessionBean.getUserName();
+                ticketVo.setCurrentStatus(ticketVo.getType().getStartEntity());
 
-            ticketServiceRemote.save(ticketVo, recUserName);
+                ticketServiceRemote.save(ticketVo, recUserName);
 
-            context.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", bundle.getString("ticketcreate_savesucces")));
-            log.info("success to save ticket");
-        } catch (Exception e) {
+                context.addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", bundle.getString("ticketcreate_savesucces")));
+                log.info("success to save ticket");
+            } catch (Exception e) {
 
+                context.addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
+                log.error("error to save ticket", e);
+
+            }
+        }else
+        {
             context.addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
-            log.error("error to save ticket", e);
-
         }
 
 
@@ -156,14 +174,6 @@ public class CreateTicketView implements Serializable {
 
     public void setThreeLetterCompanyID(String threeLetterCompanyID) {
         this.threeLetterCompanyID = threeLetterCompanyID;
-    }
-
-    public UserVo getUser() {
-        return user;
-    }
-
-    public void setUser(UserVo user) {
-        this.user = user;
     }
 
     public List<CommentVo> getComments() {
@@ -318,6 +328,47 @@ public class CreateTicketView implements Serializable {
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public List<UserVo> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserVo> users) {
+        this.users = users;
+    }
+
+    public int getNumberOfTicketsOnCompanyDaily() {
+        return numberOfTicketsOnCompanyDaily;
+    }
+
+    public void setNumberOfTicketsOnCompanyDaily(int numberOfTicketsOnCompanyDaily) {
+        this.numberOfTicketsOnCompanyDaily = numberOfTicketsOnCompanyDaily;
+    }
+
+    public int getNumberOfTicketsOnCompanyWeekly() {
+        return numberOfTicketsOnCompanyWeekly;
+    }
+
+    public void setNumberOfTicketsOnCompanyWeekly(int numberOfTicketsOnCompanyWeekly) {
+        this.numberOfTicketsOnCompanyWeekly = numberOfTicketsOnCompanyWeekly;
+    }
+
+    public int getNumberOfTicketsOnCompanyMonthly() {
+        return numberOfTicketsOnCompanyMonthly;
+    }
+
+    public void setNumberOfTicketsOnCompanyMonthly(int numberOfTicketsOnCompanyMonthly) {
+        this.numberOfTicketsOnCompanyMonthly = numberOfTicketsOnCompanyMonthly;
+    }
+
 
 
 

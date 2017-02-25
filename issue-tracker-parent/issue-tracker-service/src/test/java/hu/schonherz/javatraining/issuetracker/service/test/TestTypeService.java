@@ -52,7 +52,7 @@ public class TestTypeService {
 			try {
 				CompanyVo companyVo = new CompanyVo();
 				companyVo.setName("testCompany");
-				companyVo = companyServiceLocal.save(companyVo, "username");
+				companyVo = companyServiceLocal.save(companyVo);
 
 				StatusVo statusVo = new StatusVo();
 				statusVo.setName("test");

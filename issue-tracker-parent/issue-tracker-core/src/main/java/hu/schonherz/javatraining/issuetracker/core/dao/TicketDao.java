@@ -15,6 +15,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.Date;
 import java.util.List;
 
+import hu.schonherz.javatraining.issuetracker.core.entities.CompanyEntity;
+import hu.schonherz.javatraining.issuetracker.core.entities.TicketEntity;
+import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
+import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
+
 public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	TicketEntity findById(Long id);
 	TicketEntity findByUid(String uid);

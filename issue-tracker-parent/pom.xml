@@ -118,6 +118,12 @@
             </dependency>
             
             <dependency>
+                <groupId>hu.schonherz.java.training.project</groupId>
+                <artifactId>remote-admin-api</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
@@ -333,55 +339,17 @@
                         <target>${java.version}</target>
                     </configuration>
                 </plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.17</version>
+					<configuration>
+						<configLocation>checkstyle.xml</configLocation>
+						<suppressionsLocation>suppressions.xml</suppressionsLocation>
+					</configuration>
+				</plugin>
             </plugins>
         </pluginManagement>
     </build>
-
-    <distributionManagement>
-        <site>
-            <id>http://javatraining.neuron.hu/IssueTracker</id>
-            <url>http://javatraining.neuron.hu/IssueTracker</url>
-        </site>
-    </distributionManagement>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.7</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>index</report>
-                            <report>project-team</report>
-                            <report>help</report>
-                            <report>modules</report>
-                            <report>plugin-management</report>
-                            <report>plugins</report>
-                            <report>scm</report>
-                            <report>summary</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-					<suppressionsLocation>suppressions.xml</suppressionsLocation>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </reporting>
 </project>

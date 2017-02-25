@@ -40,7 +40,7 @@ public class TestCompanyService {
 			try {
 				CompanyVo companyVo = new CompanyVo();
 				companyVo.setName("testCompany");
-				serviceLocal.save(companyVo, "testUser");
+				serviceLocal.save(companyVo);
 			} catch (Exception e) {
                 log.error("Error to save company",e);
 			}
