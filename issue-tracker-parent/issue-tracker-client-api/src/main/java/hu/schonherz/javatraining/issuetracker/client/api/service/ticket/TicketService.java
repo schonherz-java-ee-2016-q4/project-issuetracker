@@ -8,9 +8,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
-import java.util.Date;
-import java.util.List;
-
 public interface TicketService {
 	TicketVo findById(Long id);
 	TicketVo findByUid(String uid);
@@ -29,5 +26,7 @@ public interface TicketService {
 	int getNumberOfOpenedTicketsByUser(UserVo user);
 	int getNumberOfCreatedTicketsByUser(String userName);
 	int getNumberOfCreatedTicketsByUserBetweenTime(String userName, Date fromDate, Date untilDate);
-	int getNumberOfCreatedTicketsByCompanyBetweenTime(CompanyVo company, Date fromDate, Date untilDate);
+	int getNumberOfCreatedTicketsByCompanyToday(CompanyVo company);
+	int getNumberOfCreatedTicketsByCompanyThisWeek(CompanyVo company);
+	int getNumberOfCreatedTicketsByCompanyThisMonth(CompanyVo company);
 }
