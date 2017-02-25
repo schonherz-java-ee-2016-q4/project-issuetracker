@@ -20,6 +20,8 @@ public class TicketEntity extends BaseEntity implements Serializable {
     private String title;
     private String description;
     private String clientMail;
+    
+    @ManyToOne
     private CompanyEntity company;
 
     @ManyToOne
