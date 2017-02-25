@@ -65,6 +65,7 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 		log.debug(String.format("registerNewTicket(%s)", ticketData));
 		try {
 			if (ticketData.getTicketName().length() > 30) {
+				log.debug(String.format("too long ticket name in registerNewTicket: %s", ticketData.getTicketName()));
 				return false;
 			}
 			
@@ -75,6 +76,7 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 				recUser = userService.findByUsername(ticketData.getRecUser());
 			}
 			if (recUser == null) {
+				log.debug(String.format("invalid rec username in registerNewTicket: %s", ticketData.getRecUser()));
 				return false;
 			}
 			
@@ -89,11 +91,13 @@ public class ForHelpdeskServiceBean implements ForHelpdeskServiceRemote {
 			
 			CompanyVo company = companyService.findByName(ticketData.getCompanyName());
 			if (company == null) {
+				log.debug(String.format("invalid company name in registerNewTicket: %s", ticketData.getCompanyName()));
 				return false;
 			}
 			
 			TypeVo type = typeService.findByNameAndCompany(ticketData.getTicketTypeName(), company);
 			if (type == null) {
+				log.debug(String.format("invalid type name in registerNewTicket: %s", ticketData.getTicketTypeName()));
 				return false;
 			}
 			
