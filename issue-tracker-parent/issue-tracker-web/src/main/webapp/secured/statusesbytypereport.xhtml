@@ -25,7 +25,7 @@
             </p:panel>
 
 
-        <p:panel header="#{mes.chart}" style="margin-top: 2em;" styleClass="col-md-6 col-md-offset-1" rendered="#{statusesByTypeView.typeId != null}">
+        <p:panel header="#{mes.typesbystatus_chart_title}" style="margin-top: 2em;" styleClass="col-md-6 col-md-offset-1" rendered="#{statusesByTypeView.typeId != null}">
             <h:panelGrid columns="1" cellpadding="10" >
                 <p:chart type="pie" model="#{statusesByTypeView.chart}" style="width:400px;height:300px;"/>
             </h:panelGrid>

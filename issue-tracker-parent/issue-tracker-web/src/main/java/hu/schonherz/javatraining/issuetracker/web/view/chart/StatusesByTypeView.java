@@ -1,5 +1,6 @@
 package hu.schonherz.javatraining.issuetracker.web.view.chart;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
@@ -27,6 +28,9 @@ public class StatusesByTypeView implements Serializable {
     @EJB
     private TypeServiceRemote typeService;
 
+    @EJB
+    private TicketServiceRemote ticketService;
+
     @ManagedProperty("#{mes}")
     private ResourceBundle bundle;
 
@@ -48,17 +52,10 @@ public class StatusesByTypeView implements Serializable {
 
         for (StatusVo status : statuses) {
             String statusName = status.getName().toLowerCase();
-            Number value = chartData.get(statusName);
-            if (value == null) {
-                chartData.put(statusName, 1);
-            } else {
-                value = value.longValue() + 1;
-                chartData.put(statusName, value);
-            }
-        }
+            chartData.put(statusName, ticketService.getNumberOfTicketsByTypeAndStatus(typeVo, status));
 
+        }
         chart.setData(chartData);
-        chart.setTitle(bundle.getString("typesbystatus_chart_title"));
         chart.setLegendPosition("w");
         log.debug("chart created:" + chart.getData());
     }
