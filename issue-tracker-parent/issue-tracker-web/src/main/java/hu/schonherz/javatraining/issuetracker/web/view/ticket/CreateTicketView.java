@@ -20,13 +20,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import java.io.Serializable;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,6 +30,9 @@ import java.util.ResourceBundle;
 @Log4j
 public class CreateTicketView implements Serializable {
 
+    private static final int DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY=2;
+    private static final int WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=5;
+    private static final int MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=60;
 
     private static final String TICKETS_PAGE = "tickets.xhtml";
     private String recUserName;
@@ -55,38 +52,6 @@ public class CreateTicketView implements Serializable {
     private int numberOfTicketsOnCompanyDaily;
     private int numberOfTicketsOnCompanyWeekly;
     private int numberOfTicketsOnCompanyMonthly;
-
-    public int getNumberOfTicketsOnCompanyDaily() {
-        return numberOfTicketsOnCompanyDaily;
-    }
-
-    public void setNumberOfTicketsOnCompanyDaily(int numberOfTicketsOnCompanyDaily) {
-        this.numberOfTicketsOnCompanyDaily = numberOfTicketsOnCompanyDaily;
-    }
-
-    public int getNumberOfTicketsOnCompanyWeekly() {
-        return numberOfTicketsOnCompanyWeekly;
-    }
-
-    public void setNumberOfTicketsOnCompanyWeekly(int numberOfTicketsOnCompanyWeekly) {
-        this.numberOfTicketsOnCompanyWeekly = numberOfTicketsOnCompanyWeekly;
-    }
-
-    public int getNumberOfTicketsOnCompanyMonthly() {
-        return numberOfTicketsOnCompanyMonthly;
-    }
-
-    public void setNumberOfTicketsOnCompanyMonthly(int numberOfTicketsOnCompanyMonthly) {
-        this.numberOfTicketsOnCompanyMonthly = numberOfTicketsOnCompanyMonthly;
-    }
-
-
-
-
-
-    private static final int DAILY_MAX_NUMBER_OF_TICKET_ON_COMPANY=2;
-    private static final int WEEKLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=5;
-    private static final int MONTHLY_MAX_NUMBER_OF_TICKET_ON_COMPANY=60;
 
     private List<CompanyVo> companies;
     private List<TypeVo> types;
@@ -132,9 +97,11 @@ public class CreateTicketView implements Serializable {
 
     public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
-        String companyName = companyServiceRemote.findById(companyId).getName();
+        CompanyVo companyVo = companyServiceRemote.findById(companyId);
 
-      
+        numberOfTicketsOnCompanyDaily=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyToday(companyVo);
+        numberOfTicketsOnCompanyWeekly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisWeek(companyVo);
+        numberOfTicketsOnCompanyMonthly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisMonth(companyVo);
 
         threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
@@ -151,7 +118,7 @@ public class CreateTicketView implements Serializable {
                 .clientMail(clientMail)
                 .description(description)
                 .title(title)
-                .company(companyServiceRemote.findById(companyId))
+                .company(companyVo)
                 .type(typeServiceRemote.findById(typeId))
                 .currentStatus(statusServiceRemote.findById(statusId))
                 .user(userServiceRemote.findById(userId))
@@ -377,6 +344,31 @@ public class CreateTicketView implements Serializable {
     public void setUsers(List<UserVo> users) {
         this.users = users;
     }
+
+    public int getNumberOfTicketsOnCompanyDaily() {
+        return numberOfTicketsOnCompanyDaily;
+    }
+
+    public void setNumberOfTicketsOnCompanyDaily(int numberOfTicketsOnCompanyDaily) {
+        this.numberOfTicketsOnCompanyDaily = numberOfTicketsOnCompanyDaily;
+    }
+
+    public int getNumberOfTicketsOnCompanyWeekly() {
+        return numberOfTicketsOnCompanyWeekly;
+    }
+
+    public void setNumberOfTicketsOnCompanyWeekly(int numberOfTicketsOnCompanyWeekly) {
+        this.numberOfTicketsOnCompanyWeekly = numberOfTicketsOnCompanyWeekly;
+    }
+
+    public int getNumberOfTicketsOnCompanyMonthly() {
+        return numberOfTicketsOnCompanyMonthly;
+    }
+
+    public void setNumberOfTicketsOnCompanyMonthly(int numberOfTicketsOnCompanyMonthly) {
+        this.numberOfTicketsOnCompanyMonthly = numberOfTicketsOnCompanyMonthly;
+    }
+
 
 
 
