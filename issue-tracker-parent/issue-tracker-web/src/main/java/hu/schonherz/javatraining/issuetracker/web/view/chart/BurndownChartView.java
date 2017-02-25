@@ -14,8 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @ManagedBean(name = "burndownChartView")
 @ViewScoped
@@ -33,52 +32,61 @@ public class BurndownChartView {
     private UserSessionBean userSessionBean;
 
     private LineChartModel lineChart;
-    private List<TicketVo> ticketList;
-    private List<TicketVo> openTicketList;
     private List<CompanyVo> allCompanyList;
     private CompanyVo selectedCompany;
     private Long companyId;
+    int yAxisValue = 0;
 
     @PostConstruct
     public void init () {
         allCompanyList = companyService.findAll();
     }
 
-    private void createLineModel() {
+    public void createLineModel() {
         lineChart = initLinearModel();
-        lineChart.setTitle("Category Chart");
         lineChart.setLegendPosition("e");
-        lineChart.setShowPointLabels(true);
         lineChart.getAxes().put(AxisType.X, new CategoryAxis("Date"));
         Axis yAxis = lineChart.getAxis(AxisType.Y);
         yAxis.setLabel("Tickets");
         yAxis.setMin(0);
-        yAxis.setMax(200);
+        yAxis.setMax(yAxisValue);
+        yAxis.setTickInterval("1");
     }
 
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
         Date today = new Date();
-        ticketList = ticketService.getTicketsByCompanyAndTime(companyService.findById(companyId), today);
-
-        for(TicketVo ticket : ticketList) {
-            if(!ticket.getCurrentStatus().getIsEndStatus()) {
-                openTicketList.add(ticket);
-            }
-        }
-        int openTickets = openTicketList.size();
-
+        Map<Object, Number> chartData = new HashMap<>();
+        List<TicketVo> openTicketList = new ArrayList<>();
+        int openTickets;
+        List<TicketVo> ticketList;
         ChartSeries tickets = new ChartSeries();
         tickets.setLabel("Tickets");
 
-        tickets.set(today, openTickets);
-        tickets.set("2005", 100);
-        tickets.set("2006", 44);
-        tickets.set("2007", 150);
-        tickets.set("2008", 25);
+        for (int i = 6; i >= 0; i--) {
+            Date step = new Date(today.getTime() - i*(1000 * 60 * 60 * 24));
+            ticketList = ticketService.getTicketsByCompanyAndTime(companyService.findById(companyId), step);
+            if (ticketList.isEmpty()) {
+                tickets.set(String.valueOf(step).substring(4,10), 0);
+            } else {
 
+                for (TicketVo ticket : ticketList) {
+                    if (!ticket.getCurrentStatus().getIsEndStatus()) {
+                        openTicketList.add(ticket);
+                        openTickets = openTicketList.size();
+                        tickets.set(String.valueOf(step).substring(4,10), openTickets);
+                        if (openTickets > yAxisValue) {
+                            yAxisValue = openTickets;
+                        }
+                        openTicketList.clear();
+                    }
+                }
+            }
+        }
+
+        log.debug("openticketlist:" + openTicketList);
+        log.debug("chartdata" + chartData);
         model.addSeries(tickets);
-
         return model;
     }
 }

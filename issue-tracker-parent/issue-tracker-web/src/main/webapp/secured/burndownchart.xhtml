@@ -13,7 +13,7 @@
 
     <ui:define name="customBody">
         <h:form id="typeselect">
-            <p:panel header="#{mes.status}" style="margin-top: 2em; ;" styleClass="col-md-3 col-md-offset-1">
+            <p:panel header="#{mes.status}" style="margin-top: 2em; margin-bottom: 2em;" styleClass="col-md-3 col-md-offset-1">
                 <h:panelGrid columns="1" cellpadding="10">
                     <h:outputText value="#{mes.tickettype_list_select}" />
                     <p:selectOneMenu id="type" value="#{burndownChartView.companyId}" style="width:150px">
@@ -21,7 +21,11 @@
                         <f:selectItems value="#{burndownChartView.allCompanyList}" var="company" itemLabel="#{company.name}" itemValue="#{company.id}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
-                <p:commandButton value="#{mes.ticket_history_choose}" update="typeselect" style="margin-top: 3px;"/>
+                <p:commandButton value="#{mes.ticket_history_choose}" action="#{burndownChartView.createLineModel}" update="typeselect" style="margin-top: 3px;"/>
+            </p:panel>
+
+            <p:panel header="burndownchart" styleClass="col-md-10 col-md-offset-1" rendered="#{burndownChartView.companyId != null}">
+                <p:chart type="line" model="#{burndownChartView.lineChart}" style="height:300px;" />
             </p:panel>
 
         </h:form>
