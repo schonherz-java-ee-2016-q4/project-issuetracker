@@ -44,10 +44,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CreateTicketView implements Serializable {
     private static final String TICKETS_PAGE = "tickets.xhtml";
-    private final int companyCutEndIndex = 3;
     private String recUserName;
-    private String uid;
-    private String threeLetterCompanyID;
     private String title;
     private String description;
     private String clientMail;
@@ -67,7 +64,6 @@ public class CreateTicketView implements Serializable {
     private List<TypeVo> types;
     private List<StatusVo> statuses;
     private List<UserVo> users;
-
 
     @EJB
     private TicketServiceRemote ticketServiceRemote;
@@ -127,9 +123,6 @@ public class CreateTicketView implements Serializable {
         	monthlyMax = quotasOfCompany.getMaxMonthTickets();
         } catch (NamingException e) { }
 
-        threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, companyCutEndIndex);
-        threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
-        uid = threeLetterCompanyID;
         HistoryVo startHistory = HistoryVo.builder()
                 .modStatus(HistoryEnum.CREATED)
                 .build();
@@ -138,7 +131,6 @@ public class CreateTicketView implements Serializable {
         history.add(startHistory);
 
         ticketVo = TicketVo.builder()
-                .uid(uid)
                 .clientMail(clientMail)
                 .description(description)
                 .title(title)
@@ -184,22 +176,6 @@ public class CreateTicketView implements Serializable {
 
     public void setRecUserName(String recUserName) {
         this.recUserName = recUserName;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getThreeLetterCompanyID() {
-        return threeLetterCompanyID;
-    }
-
-    public void setThreeLetterCompanyID(String threeLetterCompanyID) {
-        this.threeLetterCompanyID = threeLetterCompanyID;
     }
 
     public List<CommentVo> getComments() {
@@ -289,7 +265,6 @@ public class CreateTicketView implements Serializable {
     public void setUserSessionBean(UserSessionBean userSessionBean) {
         this.userSessionBean = userSessionBean;
     }
-
 
     public String getTitle() {
         return title;
@@ -394,8 +369,6 @@ public class CreateTicketView implements Serializable {
     public void setNumberOfTicketsOnCompanyMonthly(int numberOfTicketsOnCompanyMonthly) {
         this.numberOfTicketsOnCompanyMonthly = numberOfTicketsOnCompanyMonthly;
     }
-
-
 
 
 }
