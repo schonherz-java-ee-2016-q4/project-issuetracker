@@ -136,12 +136,12 @@ public class TypeCreateModifyView implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		log.debug("mentes");
 
-		if ("".equals(typevo.getName())) {
+
+		if ("".equals(typevo.getDescription())) {if ("".equals(typevo.getName())) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_empty_name")));
 			return;
 		}
-		if ("".equals(typevo.getDescription())) {
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("tickettype_empty_desc")));
 			return;

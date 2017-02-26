@@ -113,6 +113,24 @@ public class CreateTicketView implements Serializable {
         startHistory = historyServiceRemote.save(startHistory, userSessionBean.getUserName());
         history.add(startHistory);
 
+
+        if (title.length()<=4 || title.length()>=1000) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("ticket_notvalid_title")));
+            return;
+        }
+
+        if (description.length()<=4 || description.length()>=1000) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("ticket_notvalid_description")));
+            return;
+        }
+        if ("".equals(clientMail)) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "", bundle.getString("ticket_notvalid_email")));
+            return;
+        }
+
         ticketVo = TicketVo.builder()
                 .uid(uid)
                 .clientMail(clientMail)
@@ -150,6 +168,10 @@ public class CreateTicketView implements Serializable {
         }
 
 
+    }
+
+    public void onChangeCompany () {
+        users = userServiceRemote.findAllByCompany(companyServiceRemote.findById(companyId));
     }
 
     public String getRecUserName() {
