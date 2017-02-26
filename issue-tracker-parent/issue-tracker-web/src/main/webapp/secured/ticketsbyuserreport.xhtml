@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/issueTrackerMasterLayout.xhtml"
+                xmlns:sec="http://www.springframework.org/security/tags">
+
+    <ui:define name="pageTitle">IssueTracker</ui:define>
+
+    <ui:define name="customHead">
+    </ui:define>
+
+    <ui:define name="customBody">
+    	<h:form id="ticketsbyuser">
+    		<p:panel header="#{mes.company}" style="margin-top: 2em; ;" styleClass="col-md-3 col-md-offset-1">
+                <h:panelGrid columns="1" cellpadding="10">
+                    <p:outputLabel value="#{mes.company_list_select}"/>
+                    <p:selectOneMenu id="type" value="#{ticketsByUserView.companyId}" style="width:150px">
+                        <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue="" />
+                        <f:selectItems value="#{ticketsByUserView.allCompany}" var="company" itemLabel="#{company.name}" itemValue="#{company.id}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton value="#{mes.ticket_history_choose}" action="#{ticketsByUserView.renderChart}" update="ticketsbyuser" style="margin-top: 3px;"/>
+            </p:panel>
+      
+            <p:panel  header="#{mes.chart}" style="margin-top: 2em;" styleClass="col-md-6 col-md-offset-1"> 
+		    	<p:dataTable var="map" value="#{ticketsByUserView.map.entrySet().toArray()}" rows="10" 
+		                         paginator="true"
+		                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="5,10,15">
+			        <p:column headerText="#{mes.username}">
+			            <h:outputText value="#{map.key}" />
+			        </p:column>
+			 
+			        <p:column headerText="#{mes.ticket_count}">
+			            <h:outputText value="#{map.value}" />
+			        </p:column>
+			 
+		    	</p:dataTable> 
+		    </p:panel> 
+		    
+    	</h:form>
+    </ui:define>
+</ui:composition>
+    
