@@ -1,7 +1,5 @@
 package hu.schonherz.javatraining.issuetracker.service.impl.history;
 
-import java.util.List;
-
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -15,7 +13,6 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.HistoryDao;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 
@@ -27,7 +24,7 @@ import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMa
 public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceLocal {
 
 	@Autowired
-	HistoryDao historyDao;
+	private HistoryDao historyDao;
 	
 	@Override
 	public HistoryVo findById(Long id) {

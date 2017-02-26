@@ -20,14 +20,14 @@ public class BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	String recUserName;
-    String modUserName;
+	private String recUserName;
+    private String modUserName;
     
 	@Temporal(TemporalType.TIMESTAMP)
-	Date recDate;
+	private Date recDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	Date modDate;
+	private Date modDate;
 
 	@PrePersist
 	public void prePersist() {

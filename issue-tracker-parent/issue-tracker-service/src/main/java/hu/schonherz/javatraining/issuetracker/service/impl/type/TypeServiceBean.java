@@ -38,10 +38,10 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 	private TypeDao typeDao;
 
 	@EJB
-	StatusOrderServiceRemote statusOrderService;
+	private StatusOrderServiceRemote statusOrderService;
 
 	@EJB
-	StatusServiceRemote statusService;
+	private StatusServiceRemote statusService;
 
 	@Override
 	public TypeVo findById(Long id) {

@@ -50,9 +50,15 @@
                     </p:column>
 
                     <p:column headerText="#{mes.details}" style="text-align: center">
-                        <p:button outcome="ticketdetails" icon="fa fa-info" >
+                        <div class="row">
+                        <p:button outcome="ticketdetails" icon="fa fa-ellipsis-h" >
                             <f:param name="currentTicketId" value="#{ticket.id}" />
                         </p:button>
+
+                        <p:button outcome="ticketmodify" icon="fa fa-pencil" >
+                            <f:param name="ticketId" value="#{ticket.id}" />
+                        </p:button>
+                        </div>
                     </p:column>
                 </p:dataTable>
 

@@ -1,7 +1,5 @@
 package hu.schonherz.javatraining.issuetracker.service.test;
 
-import java.util.List;
-
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 
@@ -17,7 +15,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.service.history.History
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ManagedBean
@@ -33,6 +30,8 @@ public class TestHistoryService {
 	@EJB
 	private TestUserService.Caller transactionalCaller;
 	
+	private static Long storedId;
+	
 	@Before
 	public void startTheContainer() throws Exception {
 		try {
@@ -46,64 +45,61 @@ public class TestHistoryService {
 	public void test1Save() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				TicketVo ticketVo = ticketServiceLocal.findByUid("TestUid");
 				HistoryVo historyVo = HistoryVo.builder()
 						.modStatus(HistoryEnum.CREATED)
 						.build();
 				
 				historyVo = serviceLocal.save(historyVo, "test");
+				storedId = historyVo.getId();
 				Assert.assertNotEquals(historyVo.getId(), null);
 			} catch (Exception e) {
 				log.error("Error to save", e);
-			}
-			return null;
-		});
-	}
-
-	/*@Test
-	public void test2findByTicket() throws Exception {
-		transactionalCaller.call(() -> {
-			try {
-				TicketVo ticketVo = ticketServiceLocal.findByUid("TestUid");
-				List<HistoryVo> history = serviceLocal.findByTicket(ticketVo);
-				Assert.assertNotEquals(history.size(), 0);
-			} catch (Exception e) {
-				log.error("Error in findByTicket", e);
+				Assert.fail();
 			}
 			return null;
 		});
 	}
 	
 	@Test
-	public void test3findById() throws Exception {
+	public void test2findById() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				TicketVo ticketVo = ticketServiceLocal.findByUid("TestUid");
-				List<HistoryVo> history = serviceLocal.findByTicket(ticketVo);
-				HistoryVo historyVo = history.get(0);
-				HistoryVo historyInDb = serviceLocal.findById(historyVo.getId());
-				
-				Assert.assertEquals(historyVo.getId(), historyInDb.getId());
+				HistoryVo historyInDb = serviceLocal.findById(storedId);
+				Assert.assertNotEquals(historyInDb, null);
 			} catch (Exception e) {
 				log.error("Error in findById", e);
+				Assert.fail();
 			}
 			return null;
 		});
 	}
 	
 	@Test
-	public void test4update() throws Exception {
+	public void test3update() throws Exception {
 		transactionalCaller.call(() -> {
 			try {
-				TicketVo ticketVo = ticketServiceLocal.findByUid("TestUid");
-				List<HistoryVo> history = serviceLocal.findByTicket(ticketVo);
-				HistoryVo historyVo = history.get(0);
+				HistoryVo historyVo = serviceLocal.findById(storedId);
 				historyVo.setModStatus(HistoryEnum.CHANGED_STATUS);
 				serviceLocal.update(historyVo, "test");
 			} catch (Exception e) {
 				log.error("Error to update", e);
+				Assert.fail();
 			}
 			return null;
 		});
-	}*/
+	}
+	
+	@Test
+	public void test4findByIdAfterUpdate() throws Exception {
+		transactionalCaller.call(() -> {
+			try {
+				HistoryVo historyInDb = serviceLocal.findById(storedId);
+				Assert.assertEquals(historyInDb.getModStatus(), HistoryEnum.CHANGED_STATUS);
+			} catch (Exception e) {
+				log.error("Error in findById", e);
+				Assert.fail();
+			}
+			return null;
+		});
+	}
 }

@@ -19,7 +19,7 @@ import hu.schonherz.javatraining.issuetracker.core.entities.TicketEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.TypeEntity;
 import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
 
-public class GenericVoMappers {
+public final class GenericVoMappers {
 	public static final GenericVoMapper<UserEntity, UserVo> userVoMapper;
 	public static final GenericVoMapper<RoleEntity, RoleVo> roleVoMapper;
 	public static final GenericVoMapper<CommentEntity, CommentVo> commentVoMapper;
@@ -42,4 +42,6 @@ public class GenericVoMappers {
 		ticketVoMapper = new GenericVoMapper<>(TicketEntity.class, TicketVo.class);
 		
 	}
+	
+	private GenericVoMappers() {}
 }

@@ -40,10 +40,11 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
             transactionalCaller.call(() -> {
                 try {
                     RoleVo roleVo = new RoleVo();
-                    roleVo.setName("testStatus");
+                    roleVo.setName("testRole");
                     serviceLocal.save(roleVo);
                 } catch (Exception e) {
                     log.error("Error to save role",e);
+                    Assert.fail();
                 }
                 return null;
             });
@@ -54,14 +55,14 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
             transactionalCaller.call(() -> {
                 try {
                     RoleVo vo = serviceLocal.findByName("testRole");
-                    Assert.assertEquals("testStatus", vo.getName());
+                    Assert.assertEquals("testRole", vo.getName());
                 } catch (Exception e) {
                     log.error("Error to Find by name",e);
+                    Assert.fail();
                 }
                 return null;
             });
         }
-
 
     }
 

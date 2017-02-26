@@ -3,6 +3,8 @@ package hu.schonherz.javatraining.issuetracker.service.test;
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -16,6 +18,8 @@ import hu.schonherz.javatraining.issuetracker.service.test.TestUserService.Calle
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ManagedBean
 public class TestStatusService {
+	
+	static final Logger log = LogManager.getLogger(TestStatusService.class.getName());
 
 	@EJB
 	StatusServiceLocal serviceLocal;
@@ -28,7 +32,7 @@ public class TestStatusService {
 		try {
 			CreateContext.ejbContainer.getContext().bind("inject", this);
 		} catch (Throwable e) {
-			throw e;
+			log.error("Error startContainer",e);
 		}
 	}
 
@@ -42,7 +46,8 @@ public class TestStatusService {
 				statusVo.setIsEndStatus(true);
 				serviceLocal.save(statusVo, "testUser");
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error to Save", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -55,7 +60,8 @@ public class TestStatusService {
 				StatusVo vo = serviceLocal.findByName("testStatus");
 				Assert.assertEquals("testStatus", vo.getName());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test2FindByName", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -68,7 +74,8 @@ public class TestStatusService {
 				StatusVo vo = serviceLocal.findByName("testStatus");
 				Assert.assertEquals("testDescription", vo.getDescription());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test3FindByName2", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -82,7 +89,8 @@ public class TestStatusService {
 				StatusVo voById = serviceLocal.findById(vo.getId());
 				Assert.assertEquals(vo, voById);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test4FindById", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -96,7 +104,8 @@ public class TestStatusService {
 				vo.setName("testStatus_updated");
 				serviceLocal.update(vo, "modUser");
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test5Update", e);
+				Assert.fail();
 			}
 			return null;
 		});
@@ -109,7 +118,8 @@ public class TestStatusService {
 				StatusVo vo = serviceLocal.findByName("testStatus_updated");
 				Assert.assertEquals("testStatus_updated", vo.getName());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				log.error("Error in test6FindByNameAfterUpdate", e);
+				Assert.fail();
 			}
 			return null;
 		});

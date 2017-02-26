@@ -27,7 +27,7 @@ import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMa
 public class RoleServiceBean implements RoleServiceLocal, RoleServiceRemote {
 	
 	@Autowired
-	RoleDao roleDao;
+	private RoleDao roleDao;
 
 	@Override
 	public RoleVo findByName(String name) {

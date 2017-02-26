@@ -8,23 +8,20 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import lombok.extern.log4j.Log4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.role.DefaultRoleConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+import lombok.extern.log4j.Log4j;
 
 @WebListener
 @Log4j
 public class StartUpConfig implements ServletContextListener {
-
-	private static final String ROLE_USER = "ROLE_USER";
-	private static final String ROLE_MANAGER = "ROLE_MANAGER";
-	private static final String ROLE_ADMIN = "ROLE_ADMIN";
 	
 	@EJB
 	UserServiceRemote userServiceRemote;
@@ -37,26 +34,27 @@ public class StartUpConfig implements ServletContextListener {
 	
     @Override
     public void contextInitialized(ServletContextEvent event) {
+    	
     	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		
-		RoleVo adminRole = roleServiceRemote.findByName(ROLE_ADMIN);
+		RoleVo adminRole = roleServiceRemote.findByName(DefaultRoleConstants.ROLE_ADMIN);
 		if (adminRole == null) {
 			adminRole = new RoleVo();
-			adminRole.setName(ROLE_ADMIN);
+			adminRole.setName(DefaultRoleConstants.ROLE_ADMIN);
 			adminRole = roleServiceRemote.save(adminRole);
 		}
 		
-		RoleVo managerRole = roleServiceRemote.findByName(ROLE_MANAGER);
+		RoleVo managerRole = roleServiceRemote.findByName(DefaultRoleConstants.ROLE_MANAGER);
 		if (managerRole == null) {
 			managerRole = new RoleVo();
-			managerRole.setName(ROLE_MANAGER);
+			managerRole.setName(DefaultRoleConstants.ROLE_MANAGER);
 			managerRole = roleServiceRemote.save(managerRole);
 		}
 		
-		RoleVo userRole = roleServiceRemote.findByName(ROLE_USER);
+		RoleVo userRole = roleServiceRemote.findByName(DefaultRoleConstants.ROLE_USER);
 		if (userRole == null) {
 			userRole = new RoleVo();
-			userRole.setName(ROLE_USER);
+			userRole.setName(DefaultRoleConstants.ROLE_USER);
 			userRole = roleServiceRemote.save(userRole);
 		}
 		
@@ -64,7 +62,7 @@ public class StartUpConfig implements ServletContextListener {
 		if (testCompany == null) {
 			CompanyVo companyVo = new CompanyVo();
 			companyVo.setName("test");
-			testCompany = companyServiceRemote.save(companyVo, "admin");
+			testCompany = companyServiceRemote.save(companyVo);
 		}
 
 		log.debug("User role id: " + userRole.getId());

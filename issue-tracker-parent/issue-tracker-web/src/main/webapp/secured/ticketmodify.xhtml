@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/issueTrackerMasterLayout.xhtml">
+
+    <ui:define name="customTitle">IssueTracker - #{mes.editor}</ui:define>
+
+    <ui:define name="customHead">
+
+        <f:metadata>
+            <f:viewParam name="ticketId" value="#{modifyTicketView.ticketId}"/>
+        </f:metadata>
+
+    </ui:define>
+
+    <ui:define name="customBody">
+        <h:form id="ticketmodify">
+            <div class="container">
+
+                <div class="panel panel-default" style="margin-top: 2em;">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-1"><p:outputLabel for="title" value="#{mes.title}:"/>
+                            </div>
+                            <div class="col-md-1">
+                                <p:inputText id="title"
+                                             placeholder="#{modifyTicketView.ticketVo.title}"
+                                             value="#{modifyTicketView.ticketVo.title}"
+                                             required="true" label="Title" rendered="#{userSessionBean.admin or userSessionBean.manager}">
+                                    <f:validateLength minimum="4"/>
+                                </p:inputText>
+                                <h:outputText value="#{modifyTicketView.ticketVo.title}" rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="container">
+
+                            <p:panel styleClass="col-md-5" header="#{mes.ticketdata}" style="margin-bottom: 2em;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p:outputLabel for="id" value="#{mes.id}:"/></div>
+                                    <div class="col-md-2">
+                                        <p:inputText id="id" value="#{modifyTicketView.ticketVo.id}" readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p:outputLabel for="type" value="#{mes.type}:"/></div>
+                                    <div class="col-md-2">
+                                        <p:selectOneMenu id="type" value="#{modifyTicketView.typeId}" rendered="#{userSessionBean.admin or userSessionBean.manager}">
+                                            <f:selectItem itemLabel="#{modifyTicketView.ticketVo.type.name}"
+                                                          itemValue="#{modifyTicketView.ticketVo.type.id}"
+                                                          noSelectionOption="false"/>
+                                            <f:selectItems value="#{modifyTicketView.types}"
+                                                           var="type"
+                                                           itemLabel="#{type.name}" itemValue="#{type.id}"/>
+                                        </p:selectOneMenu>
+                                        <h:outputText value="#{modifyTicketView.ticketVo.type.name}" rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p:outputLabel for="user" value="#{mes.user}:"/></div>
+                                    <div class="col-md-2">
+                                        <p:selectOneMenu id="user" value="#{modifyTicketView.userId}">
+                                            <f:selectItem
+                                                    itemLabel="#{modifyTicketView.ticketVo.user.username == null ? mes.nouser : modifyTicketView.ticketVo.user.username}"
+                                                    itemValue="#{modifyTicketView.ticketVo.user.id}"/>
+                                            <f:selectItems value="#{modifyTicketView.users}"
+                                                           var="user"
+                                                           itemLabel="#{user.username}" itemValue="#{user.id}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p:outputLabel for="status" value="#{mes.status}:"/></div>
+                                    <div class="col-md-2">
+                                        <p:selectOneMenu id="status"
+                                                         value="#{modifyTicketView.statusId}">
+                                            <f:selectItem itemLabel="#{modifyTicketView.ticketVo.currentStatus.name}"
+                                                          itemValue="#{modifyTicketView.ticketVo.currentStatus.id}"/>
+                                            <f:selectItems value="#{modifyTicketView.statuses}"
+                                                           var="status"
+                                                           itemLabel="#{status.name}" itemValue="#{status.id}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                            </p:panel>
+
+                            <p:panel styleClass="col-md-5 col-md-offset-1" header="#{mes.description}"
+                                     style="margin-bottom: 2em;">
+                                <h:panelGrid columns="1" cellpadding="10">
+                                    <div class="col-md-12">
+                                    <p:inputTextarea value="#{modifyTicketView.ticketVo.description}" rendered="#{userSessionBean.admin or userSessionBean.manager}"/>
+                                        <h:outputText value="#{modifyTicketView.ticketVo.description}" rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
+                                    </div>
+                                </h:panelGrid>
+                            </p:panel>
+
+                            <p:panel styleClass="col-md-11" header="#{mes.comments}" style="margin-bottom: 1em;">
+                                <h:panelGrid columns="1" cellpadding="10" style="margin-bottom: 1em;">
+                                    <h:outputText value="#{mes.ticket_no_comments}"
+                                                  rendered="#{modifyTicketView.ticketVo.comments.size() == 0}"/>
+                                    <p:dataScroller value="#{modifyTicketView.ticketVo.comments}" var="comment"
+                                                    chunkSize="10"
+                                                    rendered="#{modifyTicketView.ticketVo.comments.size() != 0}">
+                                        <h:panelGrid columns="1" style="width:100%" columnClasses="detail">
+                                            <p:outputPanel>
+                                                <h:panelGrid columns="2" cellpadding="5">
+                                                    <h:outputText value="#{comment.recUserName}:"
+                                                                  style="font-weight: bold"/>
+                                                    <h:outputText value="#{comment.commentText}"/>
+                                                </h:panelGrid>
+                                            </p:outputPanel>
+                                        </h:panelGrid>
+                                    </p:dataScroller>
+                                </h:panelGrid>
+
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+
+                            </p:panel>
+
+
+
+                                <div class="col-md-10">
+                                    <p:commandButton value="#{mes.ticketcreate_save}"
+                                                     actionListener="#{modifyTicketView.updateTicket}"
+                                                     icon="ui-icon-check"/>
+                                </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

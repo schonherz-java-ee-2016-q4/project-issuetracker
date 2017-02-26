@@ -18,38 +18,29 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-
 import java.io.Serializable;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-
-@ManagedBean(name = "ticketCreateModifyView")
+@ManagedBean(name = "modifyTicketView")
 @ViewScoped
 @Log4j
-public class TicketCreateModifyView implements Serializable {
-
-
+public class ModifyTicketView implements Serializable {
 
     private static final String TICKETS_PAGE = "tickets.xhtml";
-    private String recUserName;
-    private String uid;
-    private String threeLetterCompanyID;
     private String title;
     private String description;
     private String clientMail;
     private Long companyId;
-        private Long statusId;
+    private Long statusId;
     private Long typeId;
-    private UserVo user;
-    private List<CommentVo> comments;
-    private List<HistoryVo> history;
     private TicketVo ticketVo;
-    private HistoryVo startHistory;
+    private Long TicketId;
+    private Long userId;
+    private HistoryVo history;
+    private List<HistoryVo> histories;
 
-    private List<CompanyVo> companies;
     private List<TypeVo> types;
     private List<StatusVo> statuses;
     private List<UserVo> users;
@@ -80,86 +71,67 @@ public class TicketCreateModifyView implements Serializable {
 
     @PostConstruct
     public void init() {
-        ticketVo = new TicketVo();
-        history = new ArrayList<>();
-
-        companies = companyServiceRemote.findAll();
-        types = typeServiceRemote.findAll();
-
-
-    }
-
-    public void onOpenEditor(Long userId)
-    {
-        ticketVo = ticketServiceRemote.findById(userId);
-
-        users= userServiceRemote.findAllByCompany(ticketVo.getCompany());
-        types = typeServiceRemote.findAll();
-
-    }
-
-    public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
+        Long ticketId = Long.valueOf(context.getExternalContext().getRequestParameterMap().get("ticketId"));
+        ticketVo = ticketServiceRemote.findById(ticketId);
 
-        threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
-        threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
-        uid = threeLetterCompanyID;
-        startHistory = startHistory.builder()
-                .modStatus(HistoryEnum.CREATED)
-                .build();
-
-        startHistory = historyServiceRemote.save(startHistory, userSessionBean.getUserName());
-        history.add(startHistory);
-
-        ticketVo = ticketVo.builder()
-                .uid(uid)
-                .clientMail(clientMail)
-                .description(description)
-                .title(title)
-                .company(companyServiceRemote.findById(companyId))
-                .type(typeServiceRemote.findById(typeId))
-                .currentStatus(statusServiceRemote.findById(statusId))
-                .user(userServiceRemote.findById(user.getId()))
-                .build();
-
-        try {
-
-            recUserName = userSessionBean.getUserName();
-            ticketVo.setCurrentStatus(ticketVo.getType().getStartEntity());
-
-            ticketServiceRemote.save(ticketVo, recUserName);
-
-            context.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", bundle.getString("ticketcreate_savesucces")));
-            log.info("success to save ticket");
-        } catch (Exception e) {
-
-            context.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
-                log.error("error to save ticket",e);
-
+        users = userServiceRemote.findAll();
+        if (users.contains(ticketVo.getUser())) {
+            users.remove(ticketVo.getUser());
         }
 
+        types = typeServiceRemote.findAll();
+        if (types.contains(ticketVo.getType())) {
+            types.remove(ticketVo.getType());
+        }
 
+        statuses = typeServiceRemote.getStatuses(ticketVo.getType());
+        if (statuses.contains(ticketVo.getCurrentStatus())) {
+            statuses.remove(ticketVo.getCurrentStatus());
+        }
+
+        histories = ticketVo.getHistory();
     }
+
 
     public void updateTicket(){
         FacesContext context = FacesContext.getCurrentInstance();
 
-        ticketVo = ticketVo.builder()
+        history = HistoryVo.builder()
+                .modStatus(HistoryEnum.UPDATED)
+                .build();
+
+        history = historyServiceRemote.save(history, userSessionBean.getUserName());
+        histories.add(history);
+
+        if(!Objects.equals(ticketVo.getCurrentStatus().getId(), statusId))
+        {
+            history = HistoryVo.builder()
+                    .modStatus(HistoryEnum.CHANGED_STATUS)
+                    .build();
+
+            history = historyServiceRemote.save(history, userSessionBean.getUserName());
+            histories.add(history);
+        }
+
+        ticketVo = TicketVo.builder()
                 .currentStatus(statusServiceRemote.findById(statusId))
                 .clientMail(clientMail)
-                .description(description)
-                .title(title)
+                .description(ticketVo.getDescription())
+                .title(ticketVo.getTitle())
                 .company(companyServiceRemote.findById(companyId))
                 .type(typeServiceRemote.findById(typeId))
-                .history(history)
+                .user(userServiceRemote.findById(userId))
+                .history(histories)
                 .build();
+
+
+        ticketVo.setId(TicketId);
 
         try {
 
-            recUserName = userSessionBean.getUserName();
-            ticketServiceRemote.update(ticketVo, recUserName);
+            String modUserName = userSessionBean.getUserName();
+            ticketServiceRemote.update(ticketVo, modUserName);
 
             context.addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", bundle.getString("ticketcreate_savesucces")));
@@ -175,54 +147,6 @@ public class TicketCreateModifyView implements Serializable {
 
     }
 
-    public String getRecUserName() {
-        return recUserName;
-    }
-
-    public void setRecUserName(String recUserName) {
-        this.recUserName = recUserName;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getThreeLetterCompanyID() {
-        return threeLetterCompanyID;
-    }
-
-    public void setThreeLetterCompanyID(String threeLetterCompanyID) {
-        this.threeLetterCompanyID = threeLetterCompanyID;
-    }
-
-
-    public UserVo getUser() {
-        return user;
-    }
-
-    public void setUser(UserVo user) {
-        this.user = user;
-    }
-
-    public List<CommentVo> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentVo> comments) {
-        this.comments = comments;
-    }
-
-    public List<HistoryVo> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<HistoryVo> history) {
-        this.history = history;
-    }
 
     public TicketVo getTicketVo() {
         return ticketVo;
@@ -230,14 +154,6 @@ public class TicketCreateModifyView implements Serializable {
 
     public void setTicketVo(TicketVo ticketVo) {
         this.ticketVo = ticketVo;
-    }
-
-    public List<CompanyVo> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(List<CompanyVo> companies) {
-        this.companies = companies;
     }
 
     public List<TypeVo> getTypes() {
@@ -360,6 +276,48 @@ public class TicketCreateModifyView implements Serializable {
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
+
+    public List<UserVo> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserVo> users) {
+        this.users = users;
+    }
+    public Long getTicketId() {
+        return TicketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        TicketId = ticketId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public HistoryVo getHistory() {
+        return history;
+    }
+
+    public void setHistory(HistoryVo history) {
+        this.history = history;
+    }
+
+    public List<HistoryVo> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<HistoryVo> histories) {
+        this.histories = histories;
+    }
+
+
+
 
 
 

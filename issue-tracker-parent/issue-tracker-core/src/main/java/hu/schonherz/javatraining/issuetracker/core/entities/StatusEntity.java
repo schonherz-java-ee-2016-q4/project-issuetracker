@@ -25,5 +25,4 @@ public class StatusEntity extends BaseEntity implements Serializable {
 	private String name;
 	private String description;
 	private Boolean isEndStatus;
-
 }
