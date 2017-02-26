@@ -1,21 +1,10 @@
 package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.role.DefaultRoleConstants;
-import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.DefaultTicketQuotasConstants;
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
-import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
-import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteLoginService;
-import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteQuotasService;
-import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteQuotasVo;
-import lombok.extern.log4j.Log4j;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -26,13 +15,28 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.DefaultTicketQuotasConstants;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CommentVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
+import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteQuotasService;
+import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteQuotasVo;
+import lombok.extern.log4j.Log4j;
 
 
 @ManagedBean(name = "createTicketView")
@@ -40,6 +44,7 @@ import java.util.ResourceBundle;
 @Log4j
 public class CreateTicketView implements Serializable {
     private static final String TICKETS_PAGE = "tickets.xhtml";
+    private final int companyCutEndIndex = 3;
     private String recUserName;
     private String uid;
     private String threeLetterCompanyID;
@@ -122,7 +127,7 @@ public class CreateTicketView implements Serializable {
         	monthlyMax = quotasOfCompany.getMaxMonthTickets();
         } catch (NamingException e) { }
 
-        threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
+        threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, companyCutEndIndex);
         threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
         uid = threeLetterCompanyID;
         HistoryVo startHistory = HistoryVo.builder()
@@ -144,10 +149,9 @@ public class CreateTicketView implements Serializable {
                 .history(history)
                 .build();
 
-        if(
-        	numberOfTicketsOnCompanyDaily < dailyMax &&
-        	numberOfTicketsOnCompanyWeekly < weeklyMax &&
-        	numberOfTicketsOnCompanyMonthly < monthlyMax) {
+        if(numberOfTicketsOnCompanyDaily < dailyMax
+        	&& numberOfTicketsOnCompanyWeekly < weeklyMax
+        	&& numberOfTicketsOnCompanyMonthly < monthlyMax) {
             try {
 
                 recUserName = userSessionBean.getUserName();

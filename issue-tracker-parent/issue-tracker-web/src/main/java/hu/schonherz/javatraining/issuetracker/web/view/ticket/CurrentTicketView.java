@@ -64,7 +64,8 @@ public class CurrentTicketView {
                     onehistory = new HistoryListViewModel(s,  hvo.getRecDate()); break;
                 case COMMENTED: s = bundle.getString("ticket_history_commeted")+hvo.getRecUserName()+" "+bundle.getString("ticket_history_message")+" ";
                     onehistory = new HistoryListViewModel(s,  hvo.getRecDate()); break;
-                case CHANGED_STATUS: s = bundle.getString("ticket_history_changed_status")+hvo.getRecUserName()+" "+bundle.getString("ticket_history_message")+" ";
+                case CHANGED_STATUS: s = bundle.getString("ticket_history_changed_status")
+                		+hvo.getRecUserName()+" "+bundle.getString("ticket_history_message")+" ";
                     onehistory = new HistoryListViewModel(s,  hvo.getRecDate()); break;
                 default: break;
             }

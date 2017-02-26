@@ -45,47 +45,47 @@ public class TypeServiceBean implements TypeServiceLocal, TypeServiceRemote {
 
 	@Override
 	public TypeVo findById(Long id) {
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.findById(id));
+		return GenericVoMappers.TYPE_VO_MAPPER.toVo(typeDao.findById(id));
 	}
 
 	@Override
 	public TypeVo findByNameAndCompany(String name, CompanyVo company) {
-		CompanyEntity companyEntity = GenericVoMappers.companyVoMapper.toEntity(company);
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.findByNameAndCompany(name, companyEntity));
+		CompanyEntity companyEntity = GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company);
+		return GenericVoMappers.TYPE_VO_MAPPER.toVo(typeDao.findByNameAndCompany(name, companyEntity));
 	}
 
 	@Override
 	public TypeVo findByName(String name) {
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.findByName(name));
+		return GenericVoMappers.TYPE_VO_MAPPER.toVo(typeDao.findByName(name));
 	}
 
 	@Override
 	public List<TypeVo> findByCompany(CompanyVo company) {
-		return GenericVoMappers.typeVoMapper
-				.toVo(typeDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
+		return GenericVoMappers.TYPE_VO_MAPPER
+				.toVo(typeDao.findByCompany(GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company)));
 	}
 
 	@Override
 	public List<TypeVo> findAll() {
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.findAll());
+		return GenericVoMappers.TYPE_VO_MAPPER.toVo(typeDao.findAll());
 	}
 
 	@Override
 	public TypeVo save(TypeVo type, String username) {
 		type.setRecUserName(username);
-		TypeEntity typeEntity = GenericVoMappers.typeVoMapper.toEntity(type);
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(typeEntity));
+		TypeEntity typeEntity = GenericVoMappers.TYPE_VO_MAPPER.toEntity(type);
+		return GenericVoMappers.TYPE_VO_MAPPER.toVo(typeDao.save(typeEntity));
 	}
 	
 	@Override
 	public void delete(TypeVo type) {
-		typeDao.delete(GenericVoMappers.typeVoMapper.toEntity(type));
+		typeDao.delete(GenericVoMappers.TYPE_VO_MAPPER.toEntity(type));
 	}
 
 	@Override
 	public TypeVo update(TypeVo type, String username) {
 		type.setModUserName(username);
-		return GenericVoMappers.typeVoMapper.toVo(typeDao.save(GenericVoMappers.typeVoMapper.toEntity(type)));
+		return GenericVoMappers.TYPE_VO_MAPPER.toVo(typeDao.save(GenericVoMappers.TYPE_VO_MAPPER.toEntity(type)));
 	}
 
 	@Override

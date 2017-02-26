@@ -1,15 +1,10 @@
 package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
-import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
-import lombok.extern.log4j.Log4j;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,10 +13,21 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
+import lombok.extern.log4j.Log4j;
 
 @ManagedBean(name = "modifyTicketView")
 @ViewScoped
@@ -36,7 +42,7 @@ public class ModifyTicketView implements Serializable {
     private Long statusId;
     private Long typeId;
     private TicketVo ticketVo;
-    private Long TicketId;
+    private Long ticketId;
     private Long userId;
     private HistoryVo history;
     private List<HistoryVo> histories;
@@ -126,7 +132,7 @@ public class ModifyTicketView implements Serializable {
                 .build();
 
 
-        ticketVo.setId(TicketId);
+        ticketVo.setId(ticketId);
 
         try {
 
@@ -285,11 +291,11 @@ public class ModifyTicketView implements Serializable {
         this.users = users;
     }
     public Long getTicketId() {
-        return TicketId;
+        return ticketId;
     }
 
     public void setTicketId(Long ticketId) {
-        TicketId = ticketId;
+        ticketId = ticketId;
     }
 
     public Long getUserId() {

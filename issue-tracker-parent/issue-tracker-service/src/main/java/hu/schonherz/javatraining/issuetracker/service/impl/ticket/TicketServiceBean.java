@@ -36,66 +36,66 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 
     @Override
     public TicketVo findById(Long id) {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findById(id));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findById(id));
     }
 
     @Override
     public TicketVo findByUid(String uid) {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByUid(uid));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findByUid(uid));
     }
 
     @Override
     public List<TicketVo> findByUser(UserVo user) {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByUser(GenericVoMappers.userVoMapper.toEntity(user)));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findByUser(GenericVoMappers.USER_VO_MAPPER.toEntity(user)));
     }
 
     @Override
     public List<TicketVo> findByType(TypeVo type) {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByType(GenericVoMappers.typeVoMapper.toEntity(type)));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findByType(GenericVoMappers.TYPE_VO_MAPPER.toEntity(type)));
     }
 
     @Override
     public List<TicketVo> findByCompany(CompanyVo company) {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findByCompany(GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company)));
     }
 
     @Override
     public List<TicketVo> getTicketsByCompanyAndTime(CompanyVo company, Date date) {
-        return GenericVoMappers.ticketVoMapper.toVo(
-        		ticketDao.getTicketsByCompanyAndTime(GenericVoMappers.companyVoMapper.toEntity(company), date));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(
+        		ticketDao.getTicketsByCompanyAndTime(GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company), date));
     }
 
     @Override
     public int getNumberOfTicketsByTypeAndStatus(TypeVo type, StatusVo currentStatus) {
         return ticketDao.getNumberOfTicketsByTypeAndStatus(
-        		GenericVoMappers.typeVoMapper.toEntity(type),GenericVoMappers.statusVoMapper.toEntity(currentStatus));
+        		GenericVoMappers.TYPE_VO_MAPPER.toEntity(type),GenericVoMappers.STATUS_VO_MAPPER.toEntity(currentStatus));
     }
 
     @Override
     public List<TicketVo> findAll() {
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findAll());
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findAll());
     }
 
     @Override
     public TicketVo save(TicketVo ticket, String username) {
         ticket.setRecUserName(username);
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.save(GenericVoMappers.TICKET_VO_MAPPER.toEntity(ticket)));
     }
 
     @Override
     public TicketVo update(TicketVo ticket, String username) {
         ticket.setModUserName(username);
-        return GenericVoMappers.ticketVoMapper.toVo(ticketDao.save(GenericVoMappers.ticketVoMapper.toEntity(ticket)));
+        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.save(GenericVoMappers.TICKET_VO_MAPPER.toEntity(ticket)));
     }
 
 	@Override
 	public int getNumberOfClosedTicketsByUser(UserVo user) {
-		return ticketDao.getNumberOfClosedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+		return ticketDao.getNumberOfClosedTicketsByUser(GenericVoMappers.USER_VO_MAPPER.toEntity(user));
 	}
 
 	@Override
 	public int getNumberOfOpenedTicketsByUser(UserVo user) {
-		return ticketDao.getNumberOfOpenedTicketsByUser(GenericVoMappers.userVoMapper.toEntity(user));
+		return ticketDao.getNumberOfOpenedTicketsByUser(GenericVoMappers.USER_VO_MAPPER.toEntity(user));
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		
 		Date fromDate = c.getTime();
 		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(
-				GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
+				GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company), fromDate, now);
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		
 		Date fromDate = c.getTime();
 		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(
-				GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
+				GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company), fromDate, now);
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
 		
 		Date fromDate = c.getTime();
 		return ticketDao.getNumberOfCreatedTicketsByCompanyBetweenTime(
-				GenericVoMappers.companyVoMapper.toEntity(company), fromDate, now);
+				GenericVoMappers.COMPANY_VO_MAPPER.toEntity(company), fromDate, now);
 	}
 
 }

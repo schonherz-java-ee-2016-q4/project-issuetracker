@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class TypeListView implements Serializable {
 
-	private final String MODIFY_TYPE_PAGE = "tickettype.xhtml";
+	private static final String MODIFY_TYPE_PAGE = "tickettype.xhtml";
 	
 	private String selected;
 	private List<TypeVo> allType;
