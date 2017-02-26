@@ -70,7 +70,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	}
 
 	public UserVo mapRemoteUserVoToUserVo(RemoteUserVo remoteUserVo) {
-		if (remoteUserVo == null) {
+		if (remoteUserVo == null || remoteUserVo.getEmployerCompanyName() == null
+				|| "".equals(remoteUserVo.getEmployerCompanyName())) {
 			return null;
 		}
 		
