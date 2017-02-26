@@ -6,4 +6,5 @@ public interface HistoryService {
 	HistoryVo findById(Long id);
 	HistoryVo save(HistoryVo history, String username);
 	HistoryVo update(HistoryVo history, String username);
+	HistoryVo saveInNewTransaction(HistoryVo history, String username);
 }
