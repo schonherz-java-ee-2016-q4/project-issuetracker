@@ -82,7 +82,7 @@ public class CustomUserDetailsService implements UserDetailsService  {
         for (RoleVo userRole : userRoles) {
             setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
         }
-        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-        return Result;
+        List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);
+        return result;
     }
 }

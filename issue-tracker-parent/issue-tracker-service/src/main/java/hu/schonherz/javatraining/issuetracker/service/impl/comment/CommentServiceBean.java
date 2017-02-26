@@ -30,19 +30,19 @@ public class CommentServiceBean implements CommentServiceLocal, CommentServiceRe
     @Override
     public CommentVo findById(Long id) {
         CommentEntity comment = commentDao.findById(id);
-        return GenericVoMappers.commentVoMapper.toVo(comment);
+        return GenericVoMappers.COMMENT_VO_MAPPER.toVo(comment);
     }
 
     @Override
     public CommentVo save(CommentVo comment, String username) {
         comment.setRecUserName(username);
-        return GenericVoMappers.commentVoMapper.toVo(commentDao.save(GenericVoMappers.commentVoMapper.toEntity(comment)));
+        return GenericVoMappers.COMMENT_VO_MAPPER.toVo(commentDao.save(GenericVoMappers.COMMENT_VO_MAPPER.toEntity(comment)));
     }
 
     @Override
     public CommentVo update(CommentVo comment, String username) {
         comment.setModUserName(username);
 
-        return GenericVoMappers.commentVoMapper.toVo(commentDao.save(GenericVoMappers.commentVoMapper.toEntity(comment)));
+        return GenericVoMappers.COMMENT_VO_MAPPER.toVo(commentDao.save(GenericVoMappers.COMMENT_VO_MAPPER.toEntity(comment)));
     }
 }

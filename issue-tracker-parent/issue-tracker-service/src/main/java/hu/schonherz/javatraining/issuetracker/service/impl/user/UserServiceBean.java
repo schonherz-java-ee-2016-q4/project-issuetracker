@@ -46,27 +46,27 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	
 	@Override
 	public List<UserVo> findAll(){
-        return GenericVoMappers.userVoMapper.toVo(userDao.findAll());
+        return GenericVoMappers.USER_VO_MAPPER.toVo(userDao.findAll());
 	}
 
 	@Override
 	public List<UserVo> findAllByCompany(CompanyVo companyVo){
-        return GenericVoMappers.userVoMapper.toVo(userDao.findAllByCompany(GenericVoMappers.companyVoMapper.toEntity(companyVo)));
+        return GenericVoMappers.USER_VO_MAPPER.toVo(userDao.findAllByCompany(GenericVoMappers.COMPANY_VO_MAPPER.toEntity(companyVo)));
 	}
 
 	@Override
 	public UserVo findById(Long id) {
-		return GenericVoMappers.userVoMapper.toVo(userDao.findById(id));
+		return GenericVoMappers.USER_VO_MAPPER.toVo(userDao.findById(id));
 	}
 
 	@Override
 	public UserVo findByUsername(String username) {
-		return GenericVoMappers.userVoMapper.toVo(userDao.findByUsername(username));
+		return GenericVoMappers.USER_VO_MAPPER.toVo(userDao.findByUsername(username));
 	}
 
 	@Override
 	public UserVo save(UserVo user) {
-		return GenericVoMappers.userVoMapper.toVo(userDao.save(GenericVoMappers.userVoMapper.toEntity(user)));
+		return GenericVoMappers.USER_VO_MAPPER.toVo(userDao.save(GenericVoMappers.USER_VO_MAPPER.toEntity(user)));
 	}
 
 	public UserVo mapRemoteUserVoToUserVo(RemoteUserVo remoteUserVo) {
