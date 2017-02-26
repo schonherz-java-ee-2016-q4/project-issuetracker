@@ -140,14 +140,14 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 		}
 		
 		if (!remoteUserVo.getEmployerCompanyName().equals(userVo.getCompany().getName())) {
-			back.setCompany(CompanyChanged(back, remoteUserVo.getEmployerCompanyName()));
+			back.setCompany(companyChanged(back, remoteUserVo.getEmployerCompanyName()));
 			modified = true;
 		}
 
 		return modified ? back : null;
 	}
 	
-	private CompanyVo CompanyChanged(UserVo user, String newCompanyName) {
+	private CompanyVo companyChanged(UserVo user, String newCompanyName) {
 		CompanyVo company = companyService.findByName(newCompanyName);
 		
 		if (company == null) {
