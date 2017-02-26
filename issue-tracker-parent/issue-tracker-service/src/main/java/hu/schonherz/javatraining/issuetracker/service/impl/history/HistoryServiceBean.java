@@ -44,4 +44,12 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 		return GenericVoMappers.HISTORY_VO_MAPPER.toVo(historyDao.save(GenericVoMappers.HISTORY_VO_MAPPER.toEntity(history)));
 	}
 
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public HistoryVo saveInNewTransaction(HistoryVo history, String username) {
+		history.setRecUserName(username);
+		return GenericVoMappers.HISTORY_VO_MAPPER.toVo(historyDao.save(GenericVoMappers.HISTORY_VO_MAPPER.toEntity(history)));
+	}
+
 }

@@ -40,11 +40,6 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
     }
 
     @Override
-    public TicketVo findByUid(String uid) {
-        return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findByUid(uid));
-    }
-
-    @Override
     public List<TicketVo> findByUser(UserVo user) {
         return GenericVoMappers.TICKET_VO_MAPPER.toVo(ticketDao.findByUser(GenericVoMappers.USER_VO_MAPPER.toEntity(user)));
     }

@@ -15,12 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.role.DefaultRoleConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.service.role.RoleServiceLocal;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceLocal;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 import hu.schonherz.javatraining.issuetracker.core.dao.UserDao;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
@@ -43,6 +48,12 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	
 	@EJB
 	private CompanyServiceLocal companyService;
+	
+	@EJB
+	private TicketServiceLocal ticketService;
+	
+	@EJB
+	private HistoryServiceLocal historyService;
 	
 	@Override
 	public List<UserVo> findAll(){
@@ -127,8 +138,38 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 			default:
 				break;
 		}
+		
+		if (!remoteUserVo.getEmployerCompanyName().equals(userVo.getCompany().getName())) {
+			back.setCompany(companyChanged(back, remoteUserVo.getEmployerCompanyName()));
+			modified = true;
+		}
 
 		return modified ? back : null;
+	}
+	
+	private CompanyVo companyChanged(UserVo user, String newCompanyName) {
+		CompanyVo company = companyService.findByName(newCompanyName);
+		
+		if (company == null) {
+			company = CompanyVo.builder()
+					.name(newCompanyName)
+					.build();
+			company = companyService.save(company);
+		}
+		
+		List<TicketVo> findByUser = ticketService.findByUser(user);
+		HistoryVo changedHistory = HistoryVo.builder()
+				.modStatus(HistoryEnum.UPDATED)
+				.build();
+		
+		for (TicketVo ticketVo : findByUser) {
+			ticketVo.setUser(null);
+			HistoryVo savedHistory = historyService.saveInNewTransaction(changedHistory, user.getUsername());
+			ticketVo.getHistory().add(savedHistory);
+			ticketService.update(ticketVo, user.getUsername());
+		}
+
+		return company;
 	}
 	
 	private UserVo createNewFromRemoteUserVo(RemoteUserVo remoteUserVo) {

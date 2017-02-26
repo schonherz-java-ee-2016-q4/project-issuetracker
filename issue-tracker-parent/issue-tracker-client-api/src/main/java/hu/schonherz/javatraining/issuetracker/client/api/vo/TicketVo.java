@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 public class TicketVo extends BaseVo implements Serializable {
 	private static final long serialVersionUID = -3081483409135655664L;
 
-	private String uid;
 	private String title;
 	private String description;
 	private String clientMail;
