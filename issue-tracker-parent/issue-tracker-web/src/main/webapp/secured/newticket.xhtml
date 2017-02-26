@@ -73,7 +73,7 @@
                                                 <p:selectOneMenu id="type" value="#{createTicketView.typeId}"
                                                                  style="width:100%;">
                                                     <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""/>
+                                                                  itemValue=""  noSelectionOption="false"/>
                                                     <f:selectItems value="#{createTicketView.types}"
                                                                    var="type"
                                                                    itemLabel="#{type.name}" itemValue="#{type.id}"/>
@@ -91,7 +91,7 @@
                                                     <p:ajax listener="#{createTicketView.onChangeCompany}"
                                                             update="user"/>
                                                     <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""/>
+                                                                  itemValue=""  noSelectionOption="false"/>
                                                     <f:selectItems value="#{createTicketView.companies}"
                                                                    var="company"
                                                                    itemLabel="#{company.name}"
@@ -107,7 +107,7 @@
                                                 <p:selectOneMenu id="user" value="#{createTicketView.userId}"
                                                                  style="width:100%;">
                                                     <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""/>
+                                                                  itemValue=""  noSelectionOption="false"/>
                                                     <f:selectItems value="#{createTicketView.users}"
                                                                    var="user"
                                                                    itemLabel="#{user.username}" itemValue="#{user.id}"/>

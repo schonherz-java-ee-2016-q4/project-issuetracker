@@ -77,7 +77,7 @@
                                                          value="#{modifyTicketView.userId}">
                                             <f:selectItem
                                                     itemLabel="#{modifyTicketView.ticketVo.user.username == null ? mes.nouser : modifyTicketView.ticketVo.user.username}"
-                                                    itemValue="#{modifyTicketView.ticketVo.user.id}"/>
+                                                    itemValue="#{modifyTicketView.ticketVo.user.id}"  noSelectionOption="false"/>
                                             <f:selectItems value="#{modifyTicketView.users}"
                                                            var="user"
                                                            itemLabel="#{user.username}" itemValue="#{user.id}"/>
@@ -91,7 +91,7 @@
                                         <p:selectOneMenu id="status" style="width:100%;"
                                                          value="#{modifyTicketView.statusId}">
                                             <f:selectItem itemLabel="#{modifyTicketView.ticketVo.currentStatus.name}"
-                                                          itemValue="#{modifyTicketView.ticketVo.currentStatus.id}"/>
+                                                          itemValue="#{modifyTicketView.ticketVo.currentStatus.id}"  noSelectionOption="false"/>
                                             <f:selectItems value="#{modifyTicketView.statuses}"
                                                            var="status"
                                                            itemLabel="#{status.name}" itemValue="#{status.id}"/>
