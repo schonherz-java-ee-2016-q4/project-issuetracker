@@ -73,8 +73,46 @@
                             </div>
                         </div>
                     </h:form>
+ 
+					<h:form id="ticketsbyuser" rendered="#{ticketsByUserView.companyId != null and userSessionBean.manager and !userSessionBean.admin}">
+						<div class="panel panel-default">
+                            <div class="panel-heading">
+                                #{mes.ticketsbyuser_chart_title}
+                            </div>
+                            <div class="panel-body">
+                            	<h:panelGrid styleClass="col-md-10 col-md-offset-1 StatusesByTypeGrid">
+                            	<p:row>
+                                    <p:column>
+					                    <h:outputText value="#{mes.company_list_select}"/><br/>
+					                    <p:selectOneMenu id="type" value="#{ticketsByUserView.companyId}" style="width:150px">
+					                        <f:selectItem itemLabel="#{mes.ticketcreate_selectone}" itemValue="" />
+					                        <f:selectItems value="#{ticketsByUserView.allCompany}" var="company" itemLabel="#{company.name}" itemValue="#{company.id}" />
+					                    </p:selectOneMenu><br/>
+					               		
+					               		<p:commandButton value="#{mes.ticket_history_choose}" action="#{ticketsByUserView.renderChart}" update="ticketsbyuser" style="margin-top: 3px;"/><br/>
+                            		</p:column>
 
-
+									<p:column><br/>
+	                            	<p:dataTable var="map" value="#{ticketsByUserView.map.entrySet().toArray()}" rows="10" 
+						                         paginator="true"
+						                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						                         rowsPerPageTemplate="5,10,15">
+								        <p:column headerText="#{mes.username}">
+								            <h:outputText value="#{map.key}" />
+								        </p:column>
+								 
+								        <p:column headerText="#{mes.ticket_count}">
+								            <h:outputText value="#{map.value}" />
+								        </p:column>
+								 
+							    	</p:dataTable>
+							    	</p:column>
+							    
+							    </p:row>
+							     </h:panelGrid>
+                            </div>
+                        </div>
+					</h:form>
                 </div>
             </div>
         </div>
