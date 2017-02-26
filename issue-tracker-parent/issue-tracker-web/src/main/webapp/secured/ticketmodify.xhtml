@@ -53,7 +53,9 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p:outputLabel for="type" value="#{mes.type}:"/></div>
+                                        <p:outputLabel for="type" value="#{mes.type}:"/>
+                                    </div>
+                                <div class="col-md-6">
                                     <p:selectOneMenu id="type" style="width:100%;" value="#{modifyTicketView.typeId}"
                                                      rendered="#{userSessionBean.admin or userSessionBean.manager}">
                                         <f:selectItem itemLabel="#{modifyTicketView.ticketVo.type.name}"
@@ -65,6 +67,7 @@
                                     </p:selectOneMenu>
                                     <h:outputText value="#{modifyTicketView.ticketVo.type.name}"
                                                   rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
+                                </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -96,7 +99,7 @@
                                     </div>
                                 </div>
                             </p:panel>
-                        </div>
+
 
 
                         <p:panel styleClass="col-md-5 col-md-offset-1" header="#{mes.description}"
@@ -137,10 +140,10 @@
 
                         <div class="col-md-10">
                             <p:commandButton value="#{mes.ticketcreate_save}"
-                                             actionListener="#{modifyTicketView.updateTicket}"
-                                             icon="ui-icon-check"/>
+                                             actionListener="#{modifyTicketView.updateTicket}" icon="ui-icon-check"/>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </h:form>
