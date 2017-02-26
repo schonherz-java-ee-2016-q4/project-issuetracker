@@ -43,16 +43,16 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p:outputLabel for="id" value="#{mes.id}:"/></div>
-                                    <div class="col-md-2">
-                                        <p:inputText id="id" value="#{modifyTicketView.ticketVo.id}" readonly="true"/>
+                                    <div class="col-md-6">
+                                        <p:inputText id="id"  style="width:100%;" value="#{modifyTicketView.ticketVo.id}" readonly="true"/>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p:outputLabel for="type" value="#{mes.type}:"/></div>
-                                    <div class="col-md-2">
-                                        <p:selectOneMenu id="type" value="#{modifyTicketView.typeId}">
+                                    <div class="col-md-6">
+                                        <p:selectOneMenu id="type" style="width:100%;" value="#{modifyTicketView.typeId}">
                                             <f:selectItem itemLabel="#{modifyTicketView.ticketVo.type.name}"
                                                           itemValue="#{modifyTicketView.ticketVo.type.id}"
                                                           noSelectionOption="false"/>
@@ -65,10 +65,10 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p:outputLabel for="user" value="#{mes.user}:"/></div>
-                                    <div class="col-md-2">
-                                        <p:selectOneMenu id="user" value="#{modifyTicketView.userId}">
+                                    <div class="col-md-6">
+                                        <p:selectOneMenu id="user" style="width:100%;" value="#{modifyTicketView.userId}">
                                             <f:selectItem
-                                                    itemLabel="#{modifyTicketView.ticketVo.user.name == null ? mes.nouser : modifyTicketView.ticketVo.user.name}"
+                                                    itemLabel="#{modifyTicketView.ticketVo.user.username == null ? mes.nouser : modifyTicketView.ticketVo.user.username}"
                                                     itemValue="#{modifyTicketView.ticketVo.user.id}"/>
                                             <f:selectItems value="#{modifyTicketView.users}"
                                                            var="user"
@@ -79,8 +79,8 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p:outputLabel for="status" value="#{mes.status}:"/></div>
-                                    <div class="col-md-2">
-                                        <p:selectOneMenu id="status"
+                                    <div class="col-md-6">
+                                        <p:selectOneMenu id="status" style="width:100%;"
                                                          value="#{modifyTicketView.statusId}">
                                             <f:selectItem itemLabel="#{modifyTicketView.ticketVo.currentStatus.name}"
                                                           itemValue="#{modifyTicketView.ticketVo.currentStatus.id}"/>
