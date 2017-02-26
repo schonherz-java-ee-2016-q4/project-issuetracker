@@ -27,7 +27,7 @@ public class EmailValidator implements Validator, ClientValidator {
     }
 
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if(value == null) {
+        if("".equals(value.toString())) {
             return;
         }
 
