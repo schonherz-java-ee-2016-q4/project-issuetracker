@@ -33,7 +33,7 @@
     <ui:define name="customLink4">
         <c:choose>
             <c:when test="#{p:userPrincipal().name!=null}">
-                <p:link href="/secured/typelist.xhtml">#{mes.tickettypes}</p:link>
+                <p:link rendered="#{userSessionBean.admin}" href="/secured/admin/typelist.xhtml">#{mes.tickettypes}</p:link>
             </c:when>
         </c:choose>
     </ui:define>

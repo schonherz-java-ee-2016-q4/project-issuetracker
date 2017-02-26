@@ -12,7 +12,8 @@
     <security:http auto-config="true" use-expressions="true">
         <security:csrf disabled="true"/>
         <security:headers disabled="true"/>
-        <security:intercept-url pattern="/secured/*" access="hasRole('USER')"/>
+        <security:intercept-url pattern="/secured/*" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/secured/admin/*" access="hasRole('ROLE_ADMIN')"/>
         <security:form-login login-page="/public/login.xhtml"
                              login-processing-url="/login" default-target-url="/secured/index.xhtml"
                              authentication-failure-url="/public/login.xhtml?error=1"

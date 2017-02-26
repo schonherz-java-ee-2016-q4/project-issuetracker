@@ -21,7 +21,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <h:form rendered="#{burndownChartView.companyId != null and userSessionBean.manager}">
+                    <h:form rendered="#{burndownChartView.companyId != null and userSessionBean.manager and !userSessionBean.admin}">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 #{mes.burndownchart}
@@ -40,7 +40,7 @@
                                  rendered="#{ticketsByStatusView.chart.data.keySet().size() != 0}"/>
                     </h:form>
 
-                    <h:form id="typeselect" rendered="#{userSessionBean.manager}">
+                    <h:form id="typeselect" rendered="#{userSessionBean.manager and !userSessionBean.admin}">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 #{mes.typesbystatus_chart_title}
