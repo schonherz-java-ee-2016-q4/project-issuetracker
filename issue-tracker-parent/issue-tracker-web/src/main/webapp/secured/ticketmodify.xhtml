@@ -2,7 +2,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
                 template="/templates/issueTrackerMasterLayout.xhtml">
 
     <ui:define name="customTitle">IssueTracker - #{mes.editor}</ui:define>
@@ -22,16 +22,16 @@
                 <div class="panel panel-default" style="margin-top: 2em;">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-md-1"><p:outputLabel for="title" value="#{mes.title}:"/>
+                            <div class="col-md-1"><h:outputLabel for="title" value="#{mes.title}:"/>
                             </div>
                             <div class="col-md-1">
-                                <p:inputText id="title"
+                                <b:inputText id="title"
                                              placeholder="#{modifyTicketView.ticketVo.title}"
                                              value="#{modifyTicketView.ticketVo.title}"
-                                             required="true" label="Title"
+                                             required="true"
                                              rendered="#{userSessionBean.admin or userSessionBean.manager}">
                                     <f:validateLength minimum="4"/>
-                                </p:inputText>
+                                </b:inputText>
                                 <h:outputText value="#{modifyTicketView.ticketVo.title}"
                                               rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
                             </div>
@@ -44,19 +44,19 @@
                             <p:panel styleClass="col-md-5" header="#{mes.ticketdata}" style="margin-bottom: 2em;">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p:outputLabel for="id" value="#{mes.id}:"/></div>
+                                        <h:outputLabel for="id" value="#{mes.id}:"/></div>
                                     <div class="col-md-6">
-                                        <p:inputText id="id" style="width:100%;" value="#{modifyTicketView.ticketVo.id}"
+                                        <b:inputText id="id" style="width:100%;" value="#{modifyTicketView.ticketVo.id}"
                                                      readonly="true"/>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p:outputLabel for="type" value="#{mes.type}:"/>
+                                        <h:outputLabel for="type" value="#{mes.type}:"/>
                                     </div>
                                 <div class="col-md-6">
-                                    <p:selectOneMenu id="type" style="width:100%;" value="#{modifyTicketView.typeId}"
+                                    <b:selectOneMenu id="type" style="width:100%;" value="#{modifyTicketView.typeId}"
                                                      rendered="#{userSessionBean.admin or userSessionBean.manager}">
                                         <f:selectItem itemLabel="#{modifyTicketView.ticketVo.type.name}"
                                                       itemValue="#{modifyTicketView.ticketVo.type.id}"
@@ -64,16 +64,16 @@
                                         <f:selectItems value="#{modifyTicketView.types}"
                                                        var="type"
                                                        itemLabel="#{type.name}" itemValue="#{type.id}"/>
-                                    </p:selectOneMenu>
+                                    </b:selectOneMenu>
                                     <h:outputText value="#{modifyTicketView.ticketVo.type.name}"
                                                   rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
                                 </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p:outputLabel for="user" value="#{mes.user}:"/></div>
+                                        <h:outputLabel for="user" value="#{mes.user}:"/></div>
                                     <div class="col-md-6">
-                                        <p:selectOneMenu id="user" style="width:100%;"
+                                        <b:selectOneMenu id="user" style="width:100%;"
                                                          value="#{modifyTicketView.userId}">
                                             <f:selectItem
                                                     itemLabel="#{modifyTicketView.ticketVo.user.username == null ? mes.nouser : modifyTicketView.ticketVo.user.username}"
@@ -81,21 +81,21 @@
                                             <f:selectItems value="#{modifyTicketView.users}"
                                                            var="user"
                                                            itemLabel="#{user.username}" itemValue="#{user.id}"/>
-                                        </p:selectOneMenu>
+                                        </b:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p:outputLabel for="status" value="#{mes.status}:"/></div>
+                                        <h:outputLabel for="status" value="#{mes.status}:"/></div>
                                     <div class="col-md-6">
-                                        <p:selectOneMenu id="status" style="width:100%;"
+                                        <b:selectOneMenu id="status" style="width:100%;"
                                                          value="#{modifyTicketView.statusId}">
                                             <f:selectItem itemLabel="#{modifyTicketView.ticketVo.currentStatus.name}"
                                                           itemValue="#{modifyTicketView.ticketVo.currentStatus.id}"  noSelectionOption="false"/>
                                             <f:selectItems value="#{modifyTicketView.statuses}"
                                                            var="status"
                                                            itemLabel="#{status.name}" itemValue="#{status.id}"/>
-                                        </p:selectOneMenu>
+                                        </b:selectOneMenu>
                                     </div>
                                 </div>
                             </p:panel>

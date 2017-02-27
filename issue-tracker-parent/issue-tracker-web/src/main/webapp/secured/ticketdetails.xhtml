@@ -57,7 +57,7 @@
                             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
 
-                            <p:inputTextarea rows="6" cols="50" id="commentText" value="#{addCommentView.commentText}" required="true" autoResize="true"/>
+                            <p:inputTextarea style="width:100%;" id="commentText" value="#{addCommentView.commentText}" required="true" autoResize="true"/>
                             <div><p:commandButton action="#{currentTicketView.addNewComment}" value="#{mes.send}" update="ticketdetails"/></div>
                         </p:panel>
 
