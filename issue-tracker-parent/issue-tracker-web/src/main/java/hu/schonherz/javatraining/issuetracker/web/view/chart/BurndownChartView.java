@@ -85,7 +85,7 @@ public class BurndownChartView {
 
             ticketList = ticketService.getTicketsByCompanyAndBetweenTime(companyService.findById(companyId), stepStart, stepEnd);
             if (ticketList.isEmpty()) {
-                tickets.set(String.valueOf(step).substring(dateCutStartIndex, dateCutEndIndex), 0);
+                tickets.set(String.valueOf(stepStart).substring(dateCutStartIndex, dateCutEndIndex), 0);
 
             } else {
                 for (TicketVo ticket : ticketList) {
