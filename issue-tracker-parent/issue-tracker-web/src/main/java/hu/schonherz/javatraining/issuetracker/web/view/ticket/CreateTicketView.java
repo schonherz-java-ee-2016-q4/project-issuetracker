@@ -14,7 +14,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -194,7 +193,7 @@ public class CreateTicketView implements Serializable {
 
     }
 
-    public void onChangeCompany () {
+    public void onChangeCompany() {
     	CompanyVo findById = companyServiceRemote.findById(companyId);
         users = userServiceRemote.findAllByCompany(findById);
         types = typeServiceRemote.findByCompany(findById);
