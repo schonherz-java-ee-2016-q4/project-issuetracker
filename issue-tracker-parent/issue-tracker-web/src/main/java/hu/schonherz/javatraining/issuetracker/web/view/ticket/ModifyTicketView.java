@@ -78,8 +78,9 @@ public class ModifyTicketView implements Serializable {
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        Long ticketId = Long.valueOf(context.getExternalContext().getRequestParameterMap().get("ticketId"));
+        ticketId = Long.valueOf(context.getExternalContext().getRequestParameterMap().get("ticketId"));
         ticketVo = ticketServiceRemote.findById(ticketId);
+        typeId = ticketVo.getType().getId();
 
         users = userServiceRemote.findAll();
         if (users.contains(ticketVo.getUser())) {

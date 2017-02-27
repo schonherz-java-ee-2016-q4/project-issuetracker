@@ -60,9 +60,31 @@
                                                              label="Title" style="width:100%;" required="true">
 
                                                     <f:validateLength minimum="4"/>
-                                                    <f:validator validatorId="emailValidator" />
 
                                                 </p:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2"><p:outputLabel for="company"
+                                                                                 value="#{mes.ticketcreate_companyname}:"/>
+                                            </div>
+                                            <div class="col-md-10">
+                                            	<p:panelGrid rendered="#{userSessionBean.admin}">
+	                                                <p:selectOneMenu id="company" value="#{createTicketView.companyId}"
+	                                                                 style="width:100%;">
+	                                                    <p:ajax listener="#{createTicketView.onChangeCompany}"
+	                                                            update="newticket"/>
+	                                                    <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
+	                                                                  itemValue="" noSelectionOption="false"/>
+	                                                    <f:selectItems value="#{createTicketView.companies}"
+	                                                                   var="company"
+	                                                                   itemLabel="#{company.name}"
+	                                                                   itemValue="#{company.id}"/>
+	                                                </p:selectOneMenu>
+                                                </p:panelGrid>
+                                                <p:panelGrid rendered="#{!userSessionBean.admin}">
+                                                	<h:outputText value="#{createTicketView.defaultComapny.name}" />
+                                                </p:panelGrid>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -73,29 +95,10 @@
                                                 <p:selectOneMenu id="type" value="#{createTicketView.typeId}"
                                                                  style="width:100%;">
                                                     <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""  noSelectionOption="false"/>
+                                                                  itemValue="" noSelectionOption="false"/>
                                                     <f:selectItems value="#{createTicketView.types}"
                                                                    var="type"
                                                                    itemLabel="#{type.name}" itemValue="#{type.id}"/>
-                                                </p:selectOneMenu>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="col-md-2"><p:outputLabel for="company"
-                                                                                 value="#{mes.ticketcreate_companyname}:"/>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <p:selectOneMenu id="company" value="#{createTicketView.companyId}"
-                                                                 style="width:100%;">
-                                                    <p:ajax listener="#{createTicketView.onChangeCompany}"
-                                                            update="user"/>
-                                                    <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""  noSelectionOption="false"/>
-                                                    <f:selectItems value="#{createTicketView.companies}"
-                                                                   var="company"
-                                                                   itemLabel="#{company.name}"
-                                                                   itemValue="#{company.id}"/>
                                                 </p:selectOneMenu>
                                             </div>
                                         </div>
@@ -107,7 +110,7 @@
                                                 <p:selectOneMenu id="user" value="#{createTicketView.userId}"
                                                                  style="width:100%;">
                                                     <f:selectItem itemLabel="#{mes.ticketcreate_selectone}"
-                                                                  itemValue=""  noSelectionOption="false"/>
+                                                                  itemValue="" noSelectionOption="false"/>
                                                     <f:selectItems value="#{createTicketView.users}"
                                                                    var="user"
                                                                    itemLabel="#{user.username}" itemValue="#{user.id}"/>
