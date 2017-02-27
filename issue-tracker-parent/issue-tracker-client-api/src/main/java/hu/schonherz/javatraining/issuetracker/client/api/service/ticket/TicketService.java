@@ -18,7 +18,7 @@ public interface TicketService {
 	TicketVo update(TicketVo ticket, String username);
 	List<TicketVo> findByType(TypeVo type);
 	List<TicketVo> findByCompany(CompanyVo company);
-	List<TicketVo> getTicketsByCompanyAndTime(CompanyVo company, Date date);
+	List<TicketVo> getTicketsByCompanyAndBetweenTime(CompanyVo company, Date stepStart, Date stepEnd);
 	int getNumberOfTicketsByTypeAndStatus(TypeVo type, StatusVo currentStatus);
 
 	int getNumberOfClosedTicketsByUser(UserVo user);

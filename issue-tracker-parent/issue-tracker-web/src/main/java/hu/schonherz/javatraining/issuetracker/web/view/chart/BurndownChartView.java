@@ -65,10 +65,13 @@ public class BurndownChartView {
         tickets.setLabel(bundle.getString("tickets"));
 
         for (int i = 6; i >= 0; i--) {
-            Date step = new Date(today.getTime() - i * (1000 * 60 * 60 * 24));
-            ticketList = ticketService.getTicketsByCompanyAndTime(companyService.findById(companyId), step);
+            Long time = new Date().getTime();
+            Date stepStart = new Date(time - time % (24 * 60 * 60 * 1000) - i * (1000 * 60 * 60 * 24));
+            Date stepEnd = new Date(time - time % (24 * 60 * 60 * 1000) + (1000 * 60 * 60 * 24) - i * (1000 * 60 * 60 * 24));
+
+            ticketList = ticketService.getTicketsByCompanyAndBetweenTime(companyService.findById(companyId), stepStart, stepEnd);
             if (ticketList.isEmpty()) {
-                tickets.set(String.valueOf(step).substring(4, 10), 0);
+                tickets.set(String.valueOf(stepStart).substring(4, 10), 0);
             } else {
 
                 for (TicketVo ticket : ticketList) {
@@ -77,7 +80,7 @@ public class BurndownChartView {
                     }
                 }
                 openTickets = openTicketList.size();
-                tickets.set(String.valueOf(step).substring(4, 10), openTickets);
+                tickets.set(String.valueOf(stepStart).substring(4, 10), openTickets);
                 if (openTickets > yAxisValue) {
                     yAxisValue = openTickets;
                 }

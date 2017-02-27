@@ -59,13 +59,12 @@ public class TicketServiceBean implements TicketServiceLocal, TicketServiceRemot
         return GenericVoMappers.ticketVoMapper.toVo(ticketDao.findByCompany(GenericVoMappers.companyVoMapper.toEntity(company)));
     }
 
-    @Override
-    public List<TicketVo> getTicketsByCompanyAndTime(CompanyVo company, Date date) {
-        return GenericVoMappers.ticketVoMapper.toVo(
-        		ticketDao.getTicketsByCompanyAndTime(GenericVoMappers.companyVoMapper.toEntity(company), date));
-    }
+	@Override
+	public List<TicketVo> getTicketsByCompanyAndBetweenTime(CompanyVo company, Date stepStart, Date stepEnd) {
+		return GenericVoMappers.ticketVoMapper.toVo(ticketDao.getTicketsByCompanyAndBetweenTime(GenericVoMappers.companyVoMapper.toEntity(company),stepStart,stepEnd));
+	}
 
-    @Override
+	@Override
     public int getNumberOfTicketsByTypeAndStatus(TypeVo type, StatusVo currentStatus) {
         return ticketDao.getNumberOfTicketsByTypeAndStatus(
         		GenericVoMappers.typeVoMapper.toEntity(type),GenericVoMappers.statusVoMapper.toEntity(currentStatus));

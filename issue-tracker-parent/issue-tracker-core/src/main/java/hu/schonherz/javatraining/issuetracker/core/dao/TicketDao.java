@@ -20,10 +20,12 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	List<TicketEntity> findByType(TypeEntity type);
 	List<TicketEntity> findByCompany(CompanyEntity company);
 
-	@Query("SELECT ticket FROM TicketEntity ticket WHERE ticket.company = :company AND ticket.recDate <= :date")
-	List<TicketEntity> getTicketsByCompanyAndTime(
+	@Query("SELECT ticket FROM TicketEntity ticket WHERE ticket.company = :company AND ticket.recDate BETWEEN :stepStart AND :stepEnd")
+	List<TicketEntity> getTicketsByCompanyAndBetweenTime(
 			@Param("company") CompanyEntity company,
-			@Param("date") Date date);
+			@Param("stepStart") Date stepStart,
+			@Param("stepEnd") Date stepEnd);
+
 
 	@Query("SELECT COUNT(ticket.id) FROM TicketEntity ticket WHERE ticket.type = :type AND ticket.currentStatus = :currentStatus")
 	int getNumberOfTicketsByTypeAndStatus(
