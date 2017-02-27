@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -44,7 +45,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CreateTicketView implements Serializable {
     private static final String TICKETS_PAGE = "tickets.xhtml";
-    private String recUserName;
+    private CompanyVo defaultComapny;
+	private String recUserName;
     private String title;
     private String description;
     private String clientMail;
@@ -79,6 +81,9 @@ public class CreateTicketView implements Serializable {
     private UserServiceRemote userServiceRemote;
 
 
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    
     @ManagedProperty("#{userSessionBean}")
     private UserSessionBean userSessionBean;
 
@@ -93,17 +98,34 @@ public class CreateTicketView implements Serializable {
         history = new ArrayList<>();
 
         companies = companyServiceRemote.findAll();
-        types = typeServiceRemote.findAll();
-
-
-
+        defaultComapny = userSessionBean.getCurrentUser().getCompany();
+        users = userSessionBean.isAdmin() ? null : userServiceRemote.findAllByCompany(defaultComapny);
+        types = userSessionBean.isAdmin() ? null : typeServiceRemote.findByCompany(defaultComapny);
 
     }
 
 
     public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
-        CompanyVo companyVo = companyServiceRemote.findById(companyId);
+        
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        if(!pattern.matcher(clientMail.toString()).matches()) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error"), bundle.getString("ticket_empty_email"))
+					);
+			return;
+        }
+        
+        CompanyVo companyVo = userSessionBean.isAdmin() ? companyServiceRemote.findById(companyId) : defaultComapny;
+        
+        if (typeId == null || companyVo == null) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error"), bundle.getString("ticketcreate_saveerror"))
+					);
+			return;
+        }
+        
+        
 
         numberOfTicketsOnCompanyDaily=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyToday(companyVo);
         numberOfTicketsOnCompanyWeekly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisWeek(companyVo);
@@ -165,14 +187,17 @@ public class CreateTicketView implements Serializable {
         }else
         {
             context.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticket_qouta_reached")));
         }
 
 
     }
 
-    public void onChangeCompany () {
-        users = userServiceRemote.findAllByCompany(companyServiceRemote.findById(companyId));
+    public void onChangeCompany() {
+    	CompanyVo findById = companyServiceRemote.findById(companyId);
+        users = userServiceRemote.findAllByCompany(findById);
+        types = typeServiceRemote.findByCompany(findById);
+        log.debug(types);
     }
 
     public String getRecUserName() {
@@ -375,5 +400,11 @@ public class CreateTicketView implements Serializable {
         this.numberOfTicketsOnCompanyMonthly = numberOfTicketsOnCompanyMonthly;
     }
 
+    public CompanyVo getDefaultComapny() {
+		return defaultComapny;
+	}
 
+	public void setDefaultComapny(CompanyVo defaultComapny) {
+		this.defaultComapny = defaultComapny;
+	}
 }
