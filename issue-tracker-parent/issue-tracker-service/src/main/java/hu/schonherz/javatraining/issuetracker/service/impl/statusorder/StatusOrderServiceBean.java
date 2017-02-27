@@ -32,31 +32,31 @@ public class StatusOrderServiceBean implements StatusOrderServiceLocal, StatusOr
 	@Override
 	public List<StatusOrderVo> findByFromStatusId(Long id) {
 		List<StatusOrderEntity> statusOrder = statusOrderDao.findByFromStatusId(id);
-        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
+        return GenericVoMappers.STATUS_ORDER_VO_MAPPER.toVo(statusOrder);
 	}
 
 	@Override
 	public List<StatusOrderVo> findByToStatusId(Long id) {
 		List<StatusOrderEntity> statusOrder = statusOrderDao.findByToStatusId(id);
-        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
+        return GenericVoMappers.STATUS_ORDER_VO_MAPPER.toVo(statusOrder);
 	}
 
 	@Override
 	public StatusOrderVo save(StatusOrderVo statusOrder, String username) {
         statusOrder.setRecUserName(username);
-        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrderDao.save(GenericVoMappers.statusOrderVoMapper.toEntity(statusOrder)));
+        return GenericVoMappers.STATUS_ORDER_VO_MAPPER.toVo(statusOrderDao.save(GenericVoMappers.STATUS_ORDER_VO_MAPPER.toEntity(statusOrder)));
 	}
 
 	@Override
 	public StatusOrderVo update(StatusOrderVo statusOrder, String username) {
         statusOrder.setModUserName(username);
-        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrderDao.save(GenericVoMappers.statusOrderVoMapper.toEntity(statusOrder)));
+        return GenericVoMappers.STATUS_ORDER_VO_MAPPER.toVo(statusOrderDao.save(GenericVoMappers.STATUS_ORDER_VO_MAPPER.toEntity(statusOrder)));
 	}
 
 	@Override
 	public StatusOrderVo findByFromStatusIdAndToStatusId(Long fromId, Long toId) {
 		StatusOrderEntity statusOrder = statusOrderDao.findByFromStatusIdAndToStatusId(fromId, toId);
-        return GenericVoMappers.statusOrderVoMapper.toVo(statusOrder);
+        return GenericVoMappers.STATUS_ORDER_VO_MAPPER.toVo(statusOrder);
 	}
 
 	@Override

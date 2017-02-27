@@ -15,7 +15,6 @@ import hu.schonherz.javatraining.issuetracker.core.entities.UserEntity;
 
 public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	TicketEntity findById(Long id);
-	TicketEntity findByUid(String uid);
 	List<TicketEntity> findByUser(UserEntity user);
 	List<TicketEntity> findByType(TypeEntity type);
 	List<TicketEntity> findByCompany(CompanyEntity company);

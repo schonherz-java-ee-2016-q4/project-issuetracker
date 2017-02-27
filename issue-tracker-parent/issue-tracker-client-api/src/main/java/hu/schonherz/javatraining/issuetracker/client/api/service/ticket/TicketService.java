@@ -11,7 +11,6 @@ import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
 
 public interface TicketService {
 	TicketVo findById(Long id);
-	TicketVo findByUid(String uid);
 	List<TicketVo> findByUser(UserVo user);
 	List<TicketVo> findAll();
 	TicketVo save(TicketVo ticket, String username);

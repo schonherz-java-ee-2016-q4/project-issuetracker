@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 public class TicketEntity extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -3385748756482915829L;
 
-    private String uid;
     private String title;
 
     @Lob

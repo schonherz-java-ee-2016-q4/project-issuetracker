@@ -68,7 +68,6 @@ public class TestTicketService {
                 log.debug(typeVo);
 
                 TicketVo ticketVo = new TicketVo();
-                ticketVo.setUid("TestUid");
                 ticketVo.setTitle("TestTitle");
                 ticketVo.setDescription("TestDescription");
                 ticketVo.setClientMail("TestClientMail");

@@ -24,13 +24,13 @@ import lombok.extern.log4j.Log4j;
 public class StartUpConfig implements ServletContextListener {
 	
 	@EJB
-	UserServiceRemote userServiceRemote;
+	private UserServiceRemote userServiceRemote;
 
 	@EJB
-	RoleServiceRemote roleServiceRemote;
+	private RoleServiceRemote roleServiceRemote;
 	
 	@EJB
-	CompanyServiceRemote companyServiceRemote;
+	private CompanyServiceRemote companyServiceRemote;
 	
     @Override
     public void contextInitialized(ServletContextEvent event) {

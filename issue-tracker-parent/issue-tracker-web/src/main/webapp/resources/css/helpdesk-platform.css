@@ -228,7 +228,7 @@ html, body {
 
 .locale-en {
 	margin: 10; 
-	background-image: url("#{resource['img/flag-en.png']}");
+	background-image: url("url(");
     height: 19px;
     width: 28px;
     border-top-left-radius: 6px;

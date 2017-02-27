@@ -1,21 +1,11 @@
 package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 
-import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.role.DefaultRoleConstants;
-import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.DefaultTicketQuotasConstants;
-import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
-import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
-import hu.schonherz.javatraining.issuetracker.client.api.vo.*;
-import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
-import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteLoginService;
-import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteQuotasService;
-import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteQuotasVo;
-import lombok.extern.log4j.Log4j;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -26,13 +16,28 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.DefaultTicketQuotasConstants;
+import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CommentVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.CompanyVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.UserVo;
+import hu.schonherz.javatraining.issuetracker.web.beans.UserSessionBean;
+import hu.schonherz.project.remote.admin.api.rpc.issuetracker.RemoteQuotasService;
+import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteQuotasVo;
+import lombok.extern.log4j.Log4j;
 
 
 @ManagedBean(name = "createTicketView")
@@ -40,9 +45,8 @@ import java.util.ResourceBundle;
 @Log4j
 public class CreateTicketView implements Serializable {
     private static final String TICKETS_PAGE = "tickets.xhtml";
-    private String recUserName;
-    private String uid;
-    private String threeLetterCompanyID;
+    private CompanyVo defaultComapny;
+	private String recUserName;
     private String title;
     private String description;
     private String clientMail;
@@ -63,7 +67,6 @@ public class CreateTicketView implements Serializable {
     private List<StatusVo> statuses;
     private List<UserVo> users;
 
-
     @EJB
     private TicketServiceRemote ticketServiceRemote;
     @EJB
@@ -78,6 +81,9 @@ public class CreateTicketView implements Serializable {
     private UserServiceRemote userServiceRemote;
 
 
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    
     @ManagedProperty("#{userSessionBean}")
     private UserSessionBean userSessionBean;
 
@@ -92,17 +98,34 @@ public class CreateTicketView implements Serializable {
         history = new ArrayList<>();
 
         companies = companyServiceRemote.findAll();
-        types = typeServiceRemote.findAll();
-
-
-
+        defaultComapny = userSessionBean.getCurrentUser().getCompany();
+        users = userSessionBean.isAdmin() ? null : userServiceRemote.findAllByCompany(defaultComapny);
+        types = userSessionBean.isAdmin() ? null : typeServiceRemote.findByCompany(defaultComapny);
 
     }
 
 
     public void addTicket() {
         FacesContext context = FacesContext.getCurrentInstance();
-        CompanyVo companyVo = companyServiceRemote.findById(companyId);
+        
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        if(!pattern.matcher(clientMail.toString()).matches()) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error"), bundle.getString("ticket_empty_email"))
+					);
+			return;
+        }
+        
+        CompanyVo companyVo = userSessionBean.isAdmin() ? companyServiceRemote.findById(companyId) : defaultComapny;
+        
+        if (typeId == null || companyVo == null) {
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error"), bundle.getString("ticketcreate_saveerror"))
+					);
+			return;
+        }
+        
+        
 
         numberOfTicketsOnCompanyDaily=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyToday(companyVo);
         numberOfTicketsOnCompanyWeekly=ticketServiceRemote.getNumberOfCreatedTicketsByCompanyThisWeek(companyVo);
@@ -122,9 +145,6 @@ public class CreateTicketView implements Serializable {
         	monthlyMax = quotasOfCompany.getMaxMonthTickets();
         } catch (NamingException e) { }
 
-        threeLetterCompanyID = companyServiceRemote.findById(companyId).getName().substring(0, 3);
-        threeLetterCompanyID = threeLetterCompanyID.toUpperCase();
-        uid = threeLetterCompanyID;
         HistoryVo startHistory = HistoryVo.builder()
                 .modStatus(HistoryEnum.CREATED)
                 .build();
@@ -132,8 +152,8 @@ public class CreateTicketView implements Serializable {
         startHistory = historyServiceRemote.save(startHistory, userSessionBean.getUserName());
         history.add(startHistory);
 
+
         ticketVo = TicketVo.builder()
-                .uid(uid)
                 .clientMail(clientMail)
                 .description(description)
                 .title(title)
@@ -144,10 +164,9 @@ public class CreateTicketView implements Serializable {
                 .history(history)
                 .build();
 
-        if(
-        	numberOfTicketsOnCompanyDaily < dailyMax &&
-        	numberOfTicketsOnCompanyWeekly < weeklyMax &&
-        	numberOfTicketsOnCompanyMonthly < monthlyMax) {
+        if(numberOfTicketsOnCompanyDaily < dailyMax
+        	&& numberOfTicketsOnCompanyWeekly < weeklyMax
+        	&& numberOfTicketsOnCompanyMonthly < monthlyMax) {
             try {
 
                 recUserName = userSessionBean.getUserName();
@@ -168,10 +187,17 @@ public class CreateTicketView implements Serializable {
         }else
         {
             context.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticketcreate_saveerror")));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", bundle.getString("ticket_qouta_reached")));
         }
 
 
+    }
+
+    public void onChangeCompany() {
+    	CompanyVo findById = companyServiceRemote.findById(companyId);
+        users = userServiceRemote.findAllByCompany(findById);
+        types = typeServiceRemote.findByCompany(findById);
+        log.debug(types);
     }
 
     public String getRecUserName() {
@@ -180,22 +206,6 @@ public class CreateTicketView implements Serializable {
 
     public void setRecUserName(String recUserName) {
         this.recUserName = recUserName;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getThreeLetterCompanyID() {
-        return threeLetterCompanyID;
-    }
-
-    public void setThreeLetterCompanyID(String threeLetterCompanyID) {
-        this.threeLetterCompanyID = threeLetterCompanyID;
     }
 
     public List<CommentVo> getComments() {
@@ -285,7 +295,6 @@ public class CreateTicketView implements Serializable {
     public void setUserSessionBean(UserSessionBean userSessionBean) {
         this.userSessionBean = userSessionBean;
     }
-
 
     public String getTitle() {
         return title;
@@ -391,7 +400,11 @@ public class CreateTicketView implements Serializable {
         this.numberOfTicketsOnCompanyMonthly = numberOfTicketsOnCompanyMonthly;
     }
 
+    public CompanyVo getDefaultComapny() {
+		return defaultComapny;
+	}
 
-
-
+	public void setDefaultComapny(CompanyVo defaultComapny) {
+		this.defaultComapny = defaultComapny;
+	}
 }

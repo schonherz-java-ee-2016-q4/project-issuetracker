@@ -32,35 +32,35 @@ public class StatusServiceBean implements StatusServiceLocal, StatusServiceRemot
 	@Override
 	public StatusVo findById(Long id) {
 		StatusEntity status = statusDao.findById(id);
-        return GenericVoMappers.statusVoMapper.toVo(status);
+        return GenericVoMappers.STATUS_VO_MAPPER.toVo(status);
 	}
 	
 	@Override
 	public StatusVo findByName(String name) {
 		StatusEntity status = statusDao.findByName(name);
-		return GenericVoMappers.statusVoMapper.toVo(status);
+		return GenericVoMappers.STATUS_VO_MAPPER.toVo(status);
 	}
 
 	@Override
 	public StatusVo save(StatusVo status, String username) {
         status.setRecUserName(username);
-        return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
+        return GenericVoMappers.STATUS_VO_MAPPER.toVo(statusDao.save(GenericVoMappers.STATUS_VO_MAPPER.toEntity(status)));
 	}
 
 	@Override
 	public StatusVo update(StatusVo status, String username) {
         status.setModUserName(username);
-        return GenericVoMappers.statusVoMapper.toVo(statusDao.save(GenericVoMappers.statusVoMapper.toEntity(status)));
+        return GenericVoMappers.STATUS_VO_MAPPER.toVo(statusDao.save(GenericVoMappers.STATUS_VO_MAPPER.toEntity(status)));
 	}
 
 	@Override
 	public List<StatusVo> findAll(){
-		return GenericVoMappers.statusVoMapper.toVo(statusDao.findAll());
+		return GenericVoMappers.STATUS_VO_MAPPER.toVo(statusDao.findAll());
 	}
 
 	@Override
 	public void delete(StatusVo statusVo) {
-		statusDao.delete(GenericVoMappers.statusVoMapper.toEntity(statusVo));
+		statusDao.delete(GenericVoMappers.STATUS_VO_MAPPER.toEntity(statusVo));
 	}
 
 }

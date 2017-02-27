@@ -38,6 +38,12 @@ public class ModifyStatusOrderView implements Serializable {
 	private static final int DIAGRAM_CHANGEY = 6;
 	private static final int DIAGRAM_CHANGEX = 12;
 	
+	private static final int ARROW_WIDTH = 20;
+	private static final int ARROW_LENGTH = 20;
+	private static final double ARROW_LOCATION = 1;
+	private static final int ARROW_DIRECTION = 1;
+	
+	
 	private DefaultDiagramModel model;
 	private List<StatusOrderViewModel> statusOrders;
 	private List<StatusOrderViewModel> oldStatusOrders;
@@ -45,7 +51,8 @@ public class ModifyStatusOrderView implements Serializable {
 	public void init() {
 		model = new DefaultDiagramModel();
 		model.setMaxConnections(-1);
-		model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
+		model.getDefaultConnectionOverlays().add(new ArrowOverlay(
+				ARROW_WIDTH, ARROW_LENGTH, ARROW_LOCATION, ARROW_DIRECTION));
 		FlowChartConnector connector = new FlowChartConnector();
 		connector.setPaintStyle(String.format("{strokeStyle:'%s', lineWidth:%d}", ICON_COLOR, LINE_WIDTH));
 		connector.setHoverPaintStyle(String.format("{fillStyle:'%s'}", ICON_HOVER_COLOR));
@@ -57,8 +64,9 @@ public class ModifyStatusOrderView implements Serializable {
 	public void generateDiagram(List<StatusVo> statuses, List<StatusOrderViewModel> statusOrders) {
 		statuses.forEach(status -> this.addStatus(status.getName()));
 		
-		if (statusOrders == null)
+		if (statusOrders == null) {
 			return;
+		}
 		
 		this.statusOrders = statusOrders;
 		for (StatusOrderViewModel statusOrderViewModel : statusOrders) {
@@ -131,7 +139,8 @@ public class ModifyStatusOrderView implements Serializable {
 		EndPoint toEndPoint = toElement.getEndPoints().get(1);
 		
 		Connection conn = new Connection(fromEndPoint, toEndPoint);
-		conn.getOverlays().add(new ArrowOverlay(20, 20, 1, 1));
+		conn.getOverlays().add(new ArrowOverlay(
+				ARROW_WIDTH, ARROW_LENGTH, ARROW_LOCATION, ARROW_DIRECTION));
 		return conn;
 	}
 

@@ -28,20 +28,28 @@ public class HistoryServiceBean implements HistoryServiceRemote, HistoryServiceL
 	
 	@Override
 	public HistoryVo findById(Long id) {
-		return GenericVoMappers.historyVoMapper.toVo(historyDao.findById(id));
+		return GenericVoMappers.HISTORY_VO_MAPPER.toVo(historyDao.findById(id));
 	}
 
 
 	@Override
 	public HistoryVo save(HistoryVo history, String username) {
 		history.setRecUserName(username);
-		return GenericVoMappers.historyVoMapper.toVo(historyDao.save(GenericVoMappers.historyVoMapper.toEntity(history)));
+		return GenericVoMappers.HISTORY_VO_MAPPER.toVo(historyDao.save(GenericVoMappers.HISTORY_VO_MAPPER.toEntity(history)));
 	}
 
 	@Override
 	public HistoryVo update(HistoryVo history, String username) {
 		history.setModUserName(username);
-		return GenericVoMappers.historyVoMapper.toVo(historyDao.save(GenericVoMappers.historyVoMapper.toEntity(history)));
+		return GenericVoMappers.HISTORY_VO_MAPPER.toVo(historyDao.save(GenericVoMappers.HISTORY_VO_MAPPER.toEntity(history)));
+	}
+
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public HistoryVo saveInNewTransaction(HistoryVo history, String username) {
+		history.setRecUserName(username);
+		return GenericVoMappers.HISTORY_VO_MAPPER.toVo(historyDao.save(GenericVoMappers.HISTORY_VO_MAPPER.toEntity(history)));
 	}
 
 }

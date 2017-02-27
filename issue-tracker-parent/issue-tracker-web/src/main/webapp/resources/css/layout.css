@@ -1,5 +1,5 @@
 .locale-en {
-    background-image: url("#{resource['images/flag-en.png']}") !important;
+    background-image: url("#{resource['img/flag-en.png']}") !important;
     margin: 8px;
     height: 19px;
     width: 28px;
@@ -7,7 +7,7 @@
 }
 
 .locale-hu {
-    background-image: url("#{resource['images/flag-hu.png']}") !important;
+    background-image: url("#{resource['img/flag-hu.png']}") !important;
     margin: 8px;
     height: 19px;
     width: 28px;

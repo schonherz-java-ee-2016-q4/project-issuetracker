@@ -17,7 +17,7 @@
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="shortcut icon" type="image/x-icon" href="/resources/img/logoplanmicro.png"/>
+        <link rel="shortcut icon" type="image/x-icon" href="img/logoplanmicro.png"/>
         <h:outputStylesheet library="css" name="layout.css"/>
         <h:outputStylesheet library="css" name="bootstrap.min.css"/>
 
@@ -53,6 +53,18 @@
                     <div class="navbar-button"><ui:insert name="customLink4"></ui:insert></div>
                     <div class="navbar-button"><ui:insert name="customLink5"></ui:insert></div>
                     <div class="navbar-button navbar-login"><ui:insert name="customLogin"></ui:insert></div>
+                    <div>
+                        <h:form>
+                            <p:commandButton action="#{languageBean.setLanguage('en')}" id="lang1" value=""
+                                             styleClass="locale-en" update="@all"/>
+                        </h:form>
+                    </div>
+                    <div>
+                        <h:form>
+                            <p:commandButton action="#{languageBean.setLanguage('hu')}" value=""
+                                             styleClass="locale-hu" update="@all"/>
+                        </h:form>
+                    </div>
 
                 </div>
             </div>
@@ -67,6 +79,12 @@
                 <ui:insert name="customLink4"></ui:insert>
                 <ui:insert name="customLink5"></ui:insert>
                 <ui:insert name="customLogin"></ui:insert>
+                <div class="local_in_smallnav_parent">
+                    <p:commandButton action="#{languageBean.setLanguage('en')}" id="lang1" value=""
+                                     styleClass="locale-en" update="@all"/>
+                    <p:commandButton action="#{languageBean.setLanguage('hu')}" value=""
+                                     styleClass="locale-hu" update="@all"/>
+                </div>
             </div>
 
             <ui:insert name="customBody" class="custom_body"></ui:insert>
@@ -75,23 +93,10 @@
 
         <div class="footer">
             <div class="custom_footer_text">
-                <ui:insert name="customFooter">
-
-                </ui:insert>
+                <ui:insert name="customFooter"></ui:insert>
             </div>
             <div class="footer_content">
                 <div class="footer_text">&copy; 2017 Schönherz Academy</div>
-                <div class="row">
-
-                    <div>
-                        <h:form>
-                            <p:commandButton action="#{languageBean.setLanguage('en')}" id="lang1" value=""
-                                             styleClass="locale-en" update="@all"/>
-                            <p:commandButton action="#{languageBean.setLanguage('hu')}" value=""
-                                             styleClass="locale-hu" update="@all"/>
-                        </h:form>
-                    </div>
-                </div>
                 <h:graphicImage library="img" name="schonherzlogo.png" styleClass="schonherz-logo"/>
             </div>
         </div>
