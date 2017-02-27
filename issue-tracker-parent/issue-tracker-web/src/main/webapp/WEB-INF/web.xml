@@ -28,6 +28,23 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Production</param-value>
     </context-param>
+    <!-- activate resource caching -->
+    <context-param>
+        <param-name>org.omnifaces.COMBINED_RESOURCE_ACTIVATE_RESOURCE_CACHING</param-name>
+        <param-value>
+            true
+        </param-value>
+    </context-param>
+    <!-- cache ten combined resources at most -->
+    <context-param>
+        <param-name>org.omnifaces.CACHE_SETTING_APPLICATION_MAX_CAPACITY</param-name>
+        <param-value>30</param-value>
+    </context-param>
+    <!-- set the maximum time-to-live of cache entries to one day -->
+    <context-param>
+        <param-name>org.omnifaces.CACHE_SETTING_APPLICATION_TTL</param-name>
+        <param-value>86400</param-value>
+    </context-param>
 
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>

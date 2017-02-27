@@ -111,6 +111,18 @@
 
         <dependencies>
             <dependency>
+                <groupId>net.bootsfaces</groupId>
+                <artifactId>bootsfaces</artifactId>
+                <version>0.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.omnifaces</groupId>
+                <artifactId>omnifaces</artifactId>
+                <version>1.12.1</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>hu.schonherz.javatraining</groupId>
                 <artifactId>issue-tracker-shared-api</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
