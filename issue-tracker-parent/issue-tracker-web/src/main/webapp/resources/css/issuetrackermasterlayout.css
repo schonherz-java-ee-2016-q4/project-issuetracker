@@ -1,0 +1,10 @@
+.ui-selectonemenu{
+    padding-right: 0 !important;
+}
+.ui-selectonemenu-trigger{
+    width: 30px !important;
+}
+
+.ui-selectonemenu-trigger .ui-icon{
+    margin-left: 3px !important;
+}
