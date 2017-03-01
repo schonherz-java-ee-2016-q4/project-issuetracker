@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import hu.schonherz.javatraining.issuetracker.client.api.service.user.DefaultUserConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.shared.AdminJNDIConstants;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.RoleVo;
@@ -37,6 +38,12 @@ public class CustomUserDetailsService implements UserDetailsService  {
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         UserVo user;
         try {
+        	if (username.equals(DefaultUserConstants.USER_ADMIN)
+        		|| username.equals(DefaultUserConstants.USER_MANAGER)
+        		|| username.equals(DefaultUserConstants.USER_USER)) {
+        		throw new NameNotFoundException();
+        	}
+        	
         	Context context = new InitialContext();
         	log.debug("get login service context");
         	RemoteLoginService adminLoginService = (RemoteLoginService) context.lookup(AdminJNDIConstants.JNDI_LOGIN_SERVICE);
