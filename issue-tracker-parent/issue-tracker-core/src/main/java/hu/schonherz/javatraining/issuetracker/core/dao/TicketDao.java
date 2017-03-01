@@ -19,7 +19,8 @@ public interface TicketDao extends JpaRepository<TicketEntity, Long> {
 	List<TicketEntity> findByType(TypeEntity type);
 	List<TicketEntity> findByCompany(CompanyEntity company);
 
-	@Query("SELECT ticket FROM TicketEntity ticket WHERE ticket.company = :company AND ticket.recDate BETWEEN :stepStart AND :stepEnd")
+	@Query("SELECT ticket FROM TicketEntity ticket WHERE ticket.company = :company AND ticket.recDate " +
+			"BETWEEN :stepStart AND :stepEnd AND ticket.currentStatus.isEndStatus = false")
 	List<TicketEntity> getTicketsByCompanyAndBetweenTime(
 			@Param("company") CompanyEntity company,
 			@Param("stepStart") Date stepStart,
