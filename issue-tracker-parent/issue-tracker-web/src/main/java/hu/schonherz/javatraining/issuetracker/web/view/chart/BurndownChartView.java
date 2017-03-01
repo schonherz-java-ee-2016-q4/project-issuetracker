@@ -13,10 +13,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @ManagedBean(name = "burndownChartView")
 @ViewScoped
@@ -24,7 +21,6 @@ import java.util.ResourceBundle;
 @Log4j
 public class BurndownChartView {
 
-    private final long dayInLong = 1000 * 60 * 60 * 24;
     private final int daysInWeek = 7;
     private final int dateCutStartIndex = 4;
     private final int dateCutEndIndex = 10;
@@ -71,17 +67,12 @@ public class BurndownChartView {
         ChartSeries tickets = new ChartSeries();
         tickets.setLabel(bundle.getString("tickets"));
 
-        Long today = new Date().getTime();
-        Date todayMidnight = new Date(today - today % dayInLong);
-        Date oneWeekBeforeMidnight = new Date(today - today % dayInLong - (daysInWeek - 1) * dayInLong);
-
         ticketList = ticketService.getTicketsByCompanyAndBetweenTime(companyService.findById(companyId),
-                oneWeekBeforeMidnight, todayMidnight);
+                getMidnightFromToday(-daysInWeek), getMidnightFromToday(0));
 
         for (int i = daysInWeek - 1; i >= 0; i--) {
-            Long time = new Date().getTime();
-            Date stepStart = new Date(time - time % dayInLong - i * dayInLong);
-            Date stepEnd = new Date(time - time % dayInLong + dayInLong - i * dayInLong);
+            Date stepStart = getMidnightFromToday(-i);
+            Date stepEnd = getMidnightFromToday(-i + 1);
 
             for (TicketVo ticket : ticketList) {
                 if (ticket.getRecDate().after(stepStart) && ticket.getRecDate().before(stepEnd)) {
@@ -102,5 +93,17 @@ public class BurndownChartView {
         yAxisValue += 1;
         model.addSeries(tickets);
         return model;
+    }
+
+    public Date getMidnightFromToday(int days) {
+        Date now = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(now);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.add(Calendar.DATE, days);
+        return c.getTime();
     }
 }
