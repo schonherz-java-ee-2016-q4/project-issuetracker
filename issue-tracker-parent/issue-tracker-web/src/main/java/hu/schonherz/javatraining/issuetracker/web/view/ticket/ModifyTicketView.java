@@ -2,6 +2,7 @@ package hu.schonherz.javatraining.issuetracker.web.view.ticket;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -17,11 +18,13 @@ import javax.faces.context.FacesContext;
 import hu.schonherz.javatraining.issuetracker.client.api.service.company.CompanyServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.history.HistoryServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.status.StatusServiceRemote;
+import hu.schonherz.javatraining.issuetracker.client.api.service.statusorder.StatusOrderServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.ticket.TicketServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.type.TypeServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.service.user.UserServiceRemote;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryEnum;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.HistoryVo;
+import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusOrderVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.StatusVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TicketVo;
 import hu.schonherz.javatraining.issuetracker.client.api.vo.TypeVo;
@@ -64,6 +67,8 @@ public class ModifyTicketView implements Serializable {
     private HistoryServiceRemote historyServiceRemote;
     @EJB
     private UserServiceRemote userServiceRemote;
+    @EJB
+    private StatusOrderServiceRemote statusOrderService;
 
 
     @ManagedProperty("#{userSessionBean}")
@@ -87,15 +92,14 @@ public class ModifyTicketView implements Serializable {
             users.remove(ticketVo.getUser());
         }
 
-        types = typeServiceRemote.findAll();
-        if (types.contains(ticketVo.getType())) {
-            types.remove(ticketVo.getType());
-        }
+        types = new ArrayList<>();
 
-        statuses = typeServiceRemote.getStatuses(ticketVo.getType());
-        if (statuses.contains(ticketVo.getCurrentStatus())) {
-            statuses.remove(ticketVo.getCurrentStatus());
+        List<StatusOrderVo> findByFromStatusId = statusOrderService.findByFromStatusId(ticketVo.getCurrentStatus().getId());
+        statuses = new ArrayList<>();
+        for (StatusOrderVo order : findByFromStatusId) {
+        	statuses.add(statusServiceRemote.findById(order.getToStatusId()));
         }
+        
 
         histories = ticketVo.getHistory();
     }

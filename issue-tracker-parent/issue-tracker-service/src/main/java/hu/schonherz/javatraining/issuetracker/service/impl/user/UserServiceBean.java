@@ -31,6 +31,7 @@ import hu.schonherz.javatraining.issuetracker.core.dao.UserDao;
 import hu.schonherz.javatraining.issuetracker.service.mapper.generic.GenericVoMappers;
 import hu.schonherz.project.remote.admin.api.vo.issuetracker.RemoteUserVo;
 import hu.schonherz.project.remote.admin.api.vo.issuetracker.UserRoles;
+import lombok.extern.log4j.Log4j;
 
 
 @Stateless(mappedName = "UserService")
@@ -38,6 +39,7 @@ import hu.schonherz.project.remote.admin.api.vo.issuetracker.UserRoles;
 @Remote(UserServiceRemote.class)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Log4j
 public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	
 	@Autowired
@@ -81,8 +83,13 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	}
 
 	public UserVo mapRemoteUserVoToUserVo(RemoteUserVo remoteUserVo) {
-		if (remoteUserVo == null || remoteUserVo.getEmployerCompanyName() == null
-				|| "".equals(remoteUserVo.getEmployerCompanyName())) {
+		if (remoteUserVo == null) {
+			log.debug("no user found");
+			return null;
+		}
+		if ((remoteUserVo.getEmployerCompanyName() == null || "".equals(remoteUserVo.getEmployerCompanyName()))
+				&& !UserRoles.ADMIN.equals(remoteUserVo.getRole()) ) {
+			log.debug("user has no company");
 			return null;
 		}
 		
@@ -139,8 +146,10 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 				break;
 		}
 		
-		if (!remoteUserVo.getEmployerCompanyName().equals(userVo.getCompany().getName())) {
-			back.setCompany(companyChanged(back, remoteUserVo.getEmployerCompanyName()));
+		String currentCompanyName = userVo.getCompany() == null ? "" : userVo.getCompany().getName();
+		String newCompanyName = remoteUserVo.getEmployerCompanyName() == null || "".equals(remoteUserVo.getEmployerCompanyName()) ? "" : remoteUserVo.getEmployerCompanyName();
+		if (!newCompanyName.equals(currentCompanyName)) {
+			back.setCompany(companyChanged(back, newCompanyName));
 			modified = true;
 		}
 
@@ -148,13 +157,17 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 	}
 	
 	private CompanyVo companyChanged(UserVo user, String newCompanyName) {
-		CompanyVo company = companyService.findByName(newCompanyName);
+		CompanyVo company = null;
 		
-		if (company == null) {
-			company = CompanyVo.builder()
-					.name(newCompanyName)
-					.build();
-			company = companyService.save(company);
+		if (newCompanyName != null && !"".equals(newCompanyName)) {
+			company = companyService.findByName(newCompanyName);
+			
+			if (company == null) {
+				company = CompanyVo.builder()
+						.name(newCompanyName)
+						.build();
+				company = companyService.save(company);
+			}
 		}
 		
 		List<TicketVo> findByUser = ticketService.findByUser(user);
@@ -192,11 +205,14 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 				break;
 		}
 		
-		CompanyVo company = companyService.findByName(remoteUserVo.getEmployerCompanyName());
-		if (company == null) {
-			company = new CompanyVo();
-			company.setName(remoteUserVo.getEmployerCompanyName());
-			company = companyService.save(company);
+		CompanyVo company = null;
+		if (remoteUserVo.getEmployerCompanyName() != null && !"".equals(remoteUserVo.getEmployerCompanyName())) {
+			company = companyService.findByName(remoteUserVo.getEmployerCompanyName());
+			if (company == null) {
+				company = new CompanyVo();
+				company.setName(remoteUserVo.getEmployerCompanyName());
+				company = companyService.save(company);
+			}
 		}
 		
 		return UserVo.builder()

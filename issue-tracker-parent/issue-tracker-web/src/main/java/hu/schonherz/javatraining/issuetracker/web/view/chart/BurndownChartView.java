@@ -51,7 +51,7 @@ public class BurndownChartView {
 
     @PostConstruct
     public void init() {
-        companyId = userSessionBean.getCurrentUser().getCompany().getId();
+        companyId = userSessionBean.getCurrentUser().getCompany() == null ? null : userSessionBean.getCurrentUser().getCompany().getId();
         createLineModel();
     }
 
