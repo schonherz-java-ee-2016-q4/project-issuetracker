@@ -57,7 +57,7 @@ public class TypeListView implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		allType = typeService.findByCompany(userSessionBean.getCurrentUser().getCompany());
+		allType = typeService.findAll();
 		log.debug("loaded types: " + allType.size());
 	}
 

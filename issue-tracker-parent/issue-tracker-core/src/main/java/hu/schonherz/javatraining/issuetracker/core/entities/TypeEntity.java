@@ -25,7 +25,6 @@ public class TypeEntity extends BaseEntity implements Serializable {
 
 	private String name;
 	
-	@Lob
 	private String description;
 	
 	@ManyToOne

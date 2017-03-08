@@ -107,7 +107,7 @@
                             <h:panelGrid columns="1" cellpadding="10">
                                 <div class="col-md-12">
                                     <p:inputTextarea value="#{modifyTicketView.ticketVo.description}"
-                                                     rendered="#{userSessionBean.admin or userSessionBean.manager}"/>
+                                                     rendered="#{userSessionBean.admin or userSessionBean.manager}"  maxlength="255"/>
                                     <h:outputText value="#{modifyTicketView.ticketVo.description}"
                                                   rendered="#{!userSessionBean.admin and !userSessionBean.manager}"/>
                                 </div>

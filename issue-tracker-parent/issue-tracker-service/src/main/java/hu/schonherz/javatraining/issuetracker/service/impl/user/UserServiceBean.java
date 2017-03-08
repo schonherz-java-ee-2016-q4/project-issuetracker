@@ -88,7 +88,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 			return null;
 		}
 		if ((remoteUserVo.getEmployerCompanyName() == null || "".equals(remoteUserVo.getEmployerCompanyName()))
-				&& !UserRoles.ADMIN.equals(remoteUserVo.getRole()) ) {
+				&& !UserRoles.ADMIN.equals(remoteUserVo.getRole())) {
 			log.debug("user has no company");
 			return null;
 		}
@@ -147,7 +147,8 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 		}
 		
 		String currentCompanyName = userVo.getCompany() == null ? "" : userVo.getCompany().getName();
-		String newCompanyName = remoteUserVo.getEmployerCompanyName() == null || "".equals(remoteUserVo.getEmployerCompanyName()) ? "" : remoteUserVo.getEmployerCompanyName();
+		String newCompanyName = remoteUserVo.getEmployerCompanyName() == null || "".equals(remoteUserVo.getEmployerCompanyName())
+				? "" : remoteUserVo.getEmployerCompanyName();
 		if (!newCompanyName.equals(currentCompanyName)) {
 			back.setCompany(companyChanged(back, newCompanyName));
 			modified = true;
